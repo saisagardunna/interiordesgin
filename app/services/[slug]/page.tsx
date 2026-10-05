@@ -34,7 +34,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       <header className="simple-header service-header border-b border-[#dfd8cb] dark:border-[#222] px-6 md:px-16 py-5 flex justify-between items-center w-full relative">
         <Link href="/" className="brand-mark flex items-center" aria-label="Satwika Architecture and Interior Design">
           <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-hF6nxSDYqKL9yPKHjxBYzPnCEcrMbw.png"
+            src="/images/satwika-logo.png"
             alt="Satwika Architecture and Interior Design"
             className="h-10 md:h-12 w-auto object-contain"
           />

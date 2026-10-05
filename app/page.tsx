@@ -89,9 +89,9 @@ export default function Page() {
           <div className="flex items-center">
             <Link href="/" className="brand-mark flex items-center group" aria-label="Satwika Architecture and Interior Design">
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-hF6nxSDYqKL9yPKHjxBYzPnCEcrMbw.png"
+                src="/images/satwika-logo.png"
                 alt="Satwika Architecture and Interior Design"
-                className="h-12 md:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-12 md:h-14 lg:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
           </div>
@@ -408,12 +408,14 @@ export default function Page() {
       <footer className="footer bg-[#171717] text-white py-16 px-6 md:px-16 border-t border-white/10">
         <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-white/10 pb-12">
           <div className="flex flex-col gap-4">
-            <Link href="/#top" className="brand-mark" aria-label="SAID home">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-hF6nxSDYqKL9yPKHjxBYzPnCEcrMbw.png"
-                alt="Satwika Architecture and Interior Design"
-                className="h-14 w-auto object-contain"
-              />
+            <Link href="/#top" className="brand-mark inline-block group" aria-label="SAID home">
+              <div className="bg-white p-2.5 rounded-md inline-block transition-transform duration-300 group-hover:scale-105">
+                <img
+                  src="/images/satwika-logo.png"
+                  alt="Satwika Architecture and Interior Design"
+                  className="h-12 md:h-14 w-auto object-contain"
+                />
+              </div>
             </Link>
             <p className="text-xs text-white/70 max-w-sm leading-relaxed font-normal">
               Satwika Architecture &amp; Interior Design · Crafting personal luxury spaces across Hyderabad, Bengaluru and India.

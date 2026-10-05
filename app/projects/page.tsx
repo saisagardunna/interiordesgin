@@ -33,7 +33,7 @@ export default function ProjectsPage() {
       <header className="simple-header archive-header border-b border-[#dfd8cb] px-[6vw] md:px-[8vw] py-5 flex justify-between items-center w-full bg-[#faf8f5] relative">
         <Link href="/" className="brand-mark flex items-center" aria-label="Satwika Architecture and Interior Design">
           <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-hF6nxSDYqKL9yPKHjxBYzPnCEcrMbw.png"
+            src="/images/satwika-logo.png"
             alt="Satwika Architecture and Interior Design"
             className="h-10 md:h-12 w-auto object-contain"
           />
