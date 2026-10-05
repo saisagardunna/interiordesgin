@@ -10,8 +10,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: 'Invalid JSON request payload' }, { status: 200 })
     }
 
+    const accessKey = process.env.WEB3FORMS_ACCESS_KEY || '2e493c0c-8a06-48cd-a31d-9d1d8725a9a7'
     const formData = new FormData()
-    formData.append('access_key', '2e493c0c-8a06-48cd-a31d-9d1d8725a9a7')
+    formData.append('access_key', accessKey)
     formData.append('subject', body.subject || 'New SAID Studio Inquiry')
     formData.append('from_name', 'SAID Studio Client Portal')
     formData.append('name', body.name || '')
