@@ -10,7 +10,7 @@ const categoryData: Record<string, { title: string; subtitle: string; descriptio
     description: 'Explore our architectural design studies, spatial planning, and residential interior compositions crafted across India.',
     projects: [
       { title: 'The Courtyard Residence', meta: 'Hyderabad · Residential', image: '/images/courtyard-residence.png', slug: 'the-courtyard-residence' },
-      { title: 'The Walnut Office', meta: 'Bengaluru · Commercial', image: '/images/hero-interior.png', slug: 'the-walnut-office' },
+      { title: 'The Walnut Office', meta: 'Hyderabad · Commercial', image: '/images/walnut/walnut_1.jpg', slug: 'the-walnut-office' },
       { title: 'A House in Light', meta: 'Secunderabad · Residential', image: '/images/courtyard-residence.png', slug: 'a-house-in-light' },
     ],
   },
@@ -38,7 +38,7 @@ const categoryData: Record<string, { title: string; subtitle: string; descriptio
     description: 'Curated artworks, sculptural installations, and bespoke craft embedded into architectural spaces.',
     projects: [
       { title: 'The Material Study', meta: 'Hyderabad · Custom interiors', image: '/images/kitchen-detail.png', slug: 'the-material-study' },
-      { title: 'The Walnut Office', meta: 'Bengaluru · Commercial', image: '/images/hero-interior.png', slug: 'the-walnut-office' },
+      { title: 'The Walnut Office', meta: 'Hyderabad · Commercial', image: '/images/walnut/walnut_1.jpg', slug: 'the-walnut-office' },
     ],
   },
   wellness: {
@@ -56,7 +56,7 @@ const categoryData: Record<string, { title: string; subtitle: string; descriptio
     description: 'Full-scale architectural design and build projects incorporating contemporary simplicity and climate responsiveness.',
     projects: [
       { title: 'The Courtyard Residence', meta: 'Hyderabad · Residential', image: '/images/courtyard-residence.png', slug: 'the-courtyard-residence' },
-      { title: 'The Walnut Office', meta: 'Bengaluru · Commercial', image: '/images/hero-interior.png', slug: 'the-walnut-office' },
+      { title: 'The Walnut Office', meta: 'Hyderabad · Commercial', image: '/images/walnut/walnut_1.jpg', slug: 'the-walnut-office' },
       { title: 'The Stone Kitchen', meta: 'Vizag · Residential', image: '/images/kitchen-detail.png', slug: 'the-stone-kitchen' },
     ],
   },

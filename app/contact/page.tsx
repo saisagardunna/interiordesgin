@@ -97,7 +97,7 @@ function ContactFormContent() {
       }
     } catch (directErr) {
       setErrorMessage(
-        'Network error occurred. Please check your connection or email us directly at Say@said.archi'
+        'Network error occurred. Please check your connection or email us directly at arsatwikag@gmail.com'
       )
     } finally {
       setSubmitting(false)
@@ -135,8 +135,8 @@ function ContactFormContent() {
           </p>
         )}
         <div className="contact-details mt-12 text-base md:text-lg">
-          <a href="mailto:Say@said.archi" className="group text-[#171717] dark:text-[#f4f1ea] font-medium flex items-center gap-3">
-            <Mail className="w-5 h-5 text-[#b89768]" /> Say@said.archi
+          <a href="mailto:arsatwikag@gmail.com" className="group text-[#171717] dark:text-[#f4f1ea] font-medium flex items-center gap-3">
+            <Mail className="w-5 h-5 text-[#b89768]" /> arsatwikag@gmail.com
           </a>
           <a href="tel:+919908001558" className="group text-[#171717] dark:text-[#f4f1ea] font-medium flex items-center gap-3">
             <Phone className="w-5 h-5 text-[#b89768]" /> +91 99080 01558

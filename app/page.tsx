@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Menu, X, MapPin, Camera, Play, Pho
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { RevealSection, ParallaxImage, SharpPhotoFrame, StaggerContainer, StaggerItem } from '@/components/ScrollAnimation'
+import ThreeDHouseTourViewer from '@/components/ThreeDHouseTourViewer'
 
 const heroSlides = [
   {
@@ -47,17 +48,41 @@ const categoryNav = [
 
 const projects = [
   { title: 'The Courtyard Residence', category: 'ARCHITECTURE', meta: 'Hyderabad · Residential', image: '/images/courtyard-residence.png', slug: 'the-courtyard-residence' },
-  { title: 'The Walnut Office', category: 'DESIGN', meta: 'Bengaluru · Commercial', image: '/images/hero-interior.png', slug: 'the-walnut-office' },
+  { title: 'The Walnut Office', category: 'DESIGN', meta: 'Hyderabad · Commercial', image: '/images/walnut/walnut_1.jpg', slug: 'the-walnut-office' },
   { title: 'The Stone Kitchen', category: 'DECOR', meta: 'Vizag · Residential', image: '/images/kitchen-detail.png', slug: 'the-stone-kitchen' },
 ]
 
-const services = [
-  'Interior Architecture',
-  'Interior Fit-Out',
-  'Turnkey Interiors',
-  '3D Visualization',
-  'Custom Furniture',
-  'Modular Kitchens',
+const servicesList = [
+  {
+    title: 'Interior Architecture',
+    slug: 'interior-architecture',
+    desc: 'Spatial planning, interior structural concepts, material rhythm, circulation design and detailed architectural CAD documentation.',
+  },
+  {
+    title: 'Interior Fit-Out',
+    slug: 'interior-fit-out',
+    desc: 'Civil & MEP coordination, precision joinery, custom finish execution, site management and exacting quality control.',
+  },
+  {
+    title: 'Turnkey Interiors',
+    slug: 'turnkey-interiors',
+    desc: 'Single-point accountability from initial sketch to procurement, execution, final interior styling and white-glove handover.',
+  },
+  {
+    title: '3D Visualization',
+    slug: '3d-visualization',
+    desc: 'Photorealistic 3D interior renders, material tactile previews, daylight orientation studies and interactive walkthrough scenes.',
+  },
+  {
+    title: 'Custom Furniture',
+    slug: 'custom-furniture',
+    desc: 'Handcrafted bespoke furniture, custom wardrobes, entertainment units, shop drawings and master artisan woodworking.',
+  },
+  {
+    title: 'Modular Kitchens',
+    slug: 'modular-kitchens',
+    desc: 'Ergonomic culinary workflow design, premium quartz countertops, moisture-resistant cabinetry and German soft-close hardware.',
+  },
 ]
 
 const luxuryEase = [0.22, 1, 0.36, 1] as const
@@ -345,34 +370,65 @@ export default function Page() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-white/20 pt-8">
             <div className="lg:col-span-6 flex flex-col divide-y divide-white/20">
-              {services.map((service, i) => (
-                <button
-                  key={service}
+              {servicesList.map((serviceItem, i) => (
+                <div
+                  key={serviceItem.slug}
                   onClick={() => setActiveService(i)}
-                  className={`py-6 flex items-center justify-between text-left group transition-all duration-300 ${
+                  className={`py-6 flex items-center justify-between text-left group transition-all duration-300 cursor-pointer ${
                     activeService === i ? 'pl-4 text-[#b89768]' : 'text-white'
                   }`}
                 >
                   <div className="flex items-center gap-6">
                     <span className="font-mono text-xs text-[#b89768] font-bold">0{i + 1}</span>
-                    <span className="font-serif text-3xl font-normal group-hover:text-[#b89768] transition-colors">{service}</span>
+                    <Link
+                      href={`/services/${serviceItem.slug}`}
+                      className="font-serif text-3xl font-normal group-hover:text-[#b89768] transition-colors hover:underline"
+                    >
+                      {serviceItem.title}
+                    </Link>
                   </div>
-                  <ArrowUpRight className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity text-[#b89768]" />
-                </button>
+                  <Link
+                    href={`/services/${serviceItem.slug}`}
+                    className="p-2 text-[#b89768] hover:text-white transition-colors"
+                    aria-label={`View details for ${serviceItem.title}`}
+                  >
+                    <ArrowUpRight className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                </div>
               ))}
             </div>
 
-            <div className="lg:col-span-6 flex flex-col justify-center bg-white/5 p-8 md:p-12 border border-white/10 rounded-xs">
+            <div className="lg:col-span-6 flex flex-col justify-center bg-white/5 p-8 md:p-10 border border-white/10 rounded-xs">
               <span className="font-mono text-xs text-[#b89768] uppercase tracking-widest font-bold mb-3">
                 0{activeService + 1} / SERVICE DETAIL
               </span>
-              <h3 className="font-serif text-4xl text-white font-normal mb-4">{services[activeService]}</h3>
-              <p className="text-base text-white/80 leading-relaxed font-normal mb-8">
-                Thoughtful architectural design, exacting material detail and a clear turnkey process that transforms your space.
+              <h3 className="font-serif text-4xl text-white font-normal mb-3">
+                {servicesList[activeService]?.title}
+              </h3>
+              <p className="text-base text-white/80 leading-relaxed font-normal mb-6">
+                {servicesList[activeService]?.desc}
               </p>
-              <Link href="/contact" className="button bg-[#b89768] text-white py-4 px-8 font-mono text-xs uppercase tracking-widest font-bold inline-flex items-center gap-3 w-fit hover:bg-white hover:text-[#171717] transition-colors">
-                Talk to our team <ArrowUpRight className="w-4 h-4" />
-              </Link>
+
+              {servicesList[activeService]?.slug === '3d-visualization' && (
+                <div className="w-full h-[320px] mb-6 rounded-xs overflow-hidden border border-white/10">
+                  <ThreeDHouseTourViewer className="w-full h-full min-h-[320px]" />
+                </div>
+              )}
+
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href={`/services/${servicesList[activeService]?.slug}`}
+                  className="button bg-[#b89768] text-white py-4 px-7 font-mono text-xs uppercase tracking-widest font-bold inline-flex items-center gap-3 w-fit hover:bg-white hover:text-[#171717] transition-colors"
+                >
+                  Explore Service Page <ArrowUpRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href={`/contact?service=${encodeURIComponent(servicesList[activeService]?.title || '')}`}
+                  className="button border border-white/30 text-white py-4 px-7 font-mono text-xs uppercase tracking-widest font-bold inline-flex items-center gap-3 w-fit hover:border-[#b89768] hover:text-[#b89768] transition-colors"
+                >
+                  Talk to our team <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -428,8 +484,8 @@ export default function Page() {
               <span>Block 21, F-1, Vignanpuri Colony, Vidya Nagar, Hyderabad - 44</span>
             </div>
             <div className="flex items-center gap-6 mt-2">
-              <a href="mailto:Say@said.archi" className="hover:text-[#b89768] transition-colors flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#b89768]" /> Say@said.archi
+              <a href="mailto:arsatwikag@gmail.com" className="hover:text-[#b89768] transition-colors flex items-center gap-2">
+                <Mail className="w-4 h-4 text-[#b89768]" /> arsatwikag@gmail.com
               </a>
               <a href="tel:+919908001558" className="hover:text-[#b89768] transition-colors flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#b89768]" /> +91 99080 01558

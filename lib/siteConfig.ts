@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'SAID Studio',
   fullName: 'Satwika Architecture & Interior Design',
   tagline: 'Spaces designed to belong.',
-  contactEmail: 'Say@said.archi',
+  contactEmail: 'arsatwikag@gmail.com',
   contactPhone: '+91 99080 01558',
   location: 'Block 21, F-1, Vignanpuri Colony, Vidya Nagar, Hyderabad - 44',
   instagram: 'https://instagram.com/saidsays_',
@@ -63,8 +63,8 @@ export const siteConfig = {
       id: '02',
       title: 'The Walnut Office',
       category: 'Commercial',
-      meta: 'Bengaluru · Commercial · 2026',
-      image: '/images/hero-interior.png',
+      meta: 'Hyderabad · Commercial · 2026',
+      image: '/images/walnut/walnut_1.jpg',
       widthClass: 'col-span-12 lg:col-span-4',
       aspectRatio: 'aspect-[4/5]',
       slug: 'the-walnut-office',
@@ -92,10 +92,12 @@ export const siteConfig = {
   ],
 
   services: [
-    { id: '01', title: 'ARCHITECTURE', desc: 'Comprehensive residential and commercial architectural design from concept through execution.' },
-    { id: '02', title: 'INTERIOR DESIGN', desc: 'Curation of materials, lighting, bespoke furniture, and spatial flow.' },
-    { id: '03', title: 'SPACE PLANNING', desc: 'Optimizing spatial proportions, movement, and functional harmony.' },
-    { id: '04', title: 'PROJECT CONSULTING', desc: 'Turnkey interior execution, technical details, and site supervision.' },
+    { id: '01', title: 'Interior Architecture', slug: 'interior-architecture', desc: 'Comprehensive residential and commercial spatial planning, structural interior concepts, circulation flow and architectural documentation.' },
+    { id: '02', title: 'Interior Fit-Out', slug: 'interior-fit-out', desc: 'Civil & MEP coordination, precision joinery, custom finish execution, site management and exacting quality control.' },
+    { id: '03', title: 'Turnkey Interiors', slug: 'turnkey-interiors', desc: 'Single-point accountability from initial sketch to procurement, execution, final interior styling and white-glove handover.' },
+    { id: '04', title: '3D Visualization', slug: '3d-visualization', desc: 'Photorealistic 3D interior renders, material tactile previews, daylight orientation studies and interactive walkthrough scenes.' },
+    { id: '05', title: 'Custom Furniture', slug: 'custom-furniture', desc: 'Handcrafted bespoke furniture, custom wardrobes, entertainment units, shop drawings and master artisan woodworking.' },
+    { id: '06', title: 'Modular Kitchens', slug: 'modular-kitchens', desc: 'Ergonomic culinary workflow design, premium quartz countertops, moisture-resistant cabinetry and German soft-close hardware.' },
   ],
 
   processSteps: [

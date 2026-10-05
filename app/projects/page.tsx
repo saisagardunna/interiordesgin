@@ -9,7 +9,7 @@ import { RevealSection, SharpPhotoFrame } from '@/components/ScrollAnimation'
 
 const projects = [
   { number: '01', title: 'The Courtyard Residence', meta: 'Hyderabad · Residential', category: 'Residential', image: '/images/courtyard-residence.png' },
-  { number: '02', title: 'The Walnut Office', meta: 'Bengaluru · Commercial', category: 'Commercial', image: '/images/hero-interior.png' },
+  { number: '02', title: 'The Walnut Office', meta: 'Hyderabad · Commercial', category: 'Commercial', image: '/images/walnut/walnut_1.jpg' },
   { number: '03', title: 'The Stone Kitchen', meta: 'Vizag · Residential', category: 'Residential', image: '/images/kitchen-detail.png' },
   { number: '04', title: 'The Quiet Retreat', meta: 'Hyderabad · Residential', category: 'Residential', image: '/images/hero-interior.png' },
   { number: '05', title: 'A House in Light', meta: 'Secunderabad · Residential', category: 'Residential', image: '/images/courtyard-residence.png' },

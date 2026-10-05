@@ -2,22 +2,86 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Check } from 'lucide-react'
 import { RevealSection, ParallaxImage, SharpPhotoFrame } from '@/components/ScrollAnimation'
+import ThreeDHouseTourViewer from '@/components/ThreeDHouseTourViewer'
 
 const serviceData = {
   'interior-architecture': {
-    number: '01', title: 'Interior architecture', intro: 'The quiet structure behind spaces that feel effortless.', description: 'We shape the bones of a room before we dress it. From spatial planning and circulation to light, proportion and material rhythm, every decision is made to support the way you live.', image: '/images/hero-interior.png', points: ['Spatial planning & zoning', 'Lighting and material strategies', 'Detailed drawings and documentation', 'Residential and commercial interiors'],
+    number: '01',
+    title: 'Interior Architecture',
+    intro: 'The quiet structure behind spaces that feel effortless.',
+    description: 'We shape the bones of a room before we dress it. From spatial planning and circulation to light, proportion and material rhythm, every decision is made to support the way you live.',
+    image: '/images/hero-interior.png',
+    points: [
+      'Spatial planning & zoning',
+      'Lighting and material strategies',
+      'Detailed architectural drawings and CAD documentation',
+      'Residential and commercial interior architecture',
+    ],
   },
   'interior-fit-out': {
-    number: '02', title: 'Interior fit-out', intro: 'Craft, coordination and precision from shell to finished space.', description: 'Our fit-out team turns considered design into a finished interior. We coordinate every trade, finish and installation with one clear standard of quality.', image: '/images/courtyard-residence.png', points: ['Civil and MEP coordination', 'Joinery and finish execution', 'Site supervision and quality control', 'Handover-ready detailing'],
+    number: '02',
+    title: 'Interior Fit-Out',
+    intro: 'Craft, coordination and precision from shell to finished space.',
+    description: 'Our fit-out team turns considered design into a finished interior. We coordinate every trade, finish and installation with one clear standard of quality.',
+    image: '/images/courtyard-residence.png',
+    points: [
+      'Civil and MEP coordination',
+      'Joinery and finish execution',
+      'Site supervision and quality control',
+      'Handover-ready detailing',
+    ],
   },
   'turnkey-interiors': {
-    number: '03', title: 'Turnkey interiors', intro: 'One accountable team. One beautifully resolved result.', description: 'From the first conversation to the final styling, we manage the complete journey. You get a single point of contact and a space that arrives ready to belong to you.', image: '/images/kitchen-detail.png', points: ['Concept to completion', 'Transparent project planning', 'Vendor and procurement management', 'Final styling and handover'],
+    number: '03',
+    title: 'Turnkey Interiors',
+    intro: 'One accountable team. One beautifully resolved result.',
+    description: 'From the first conversation to the final styling, we manage the complete journey. You get a single point of contact and a space that arrives ready to belong to you.',
+    image: '/images/kitchen-detail.png',
+    points: [
+      'Concept to completion management',
+      'Transparent project planning and budgeting',
+      'Vendor and procurement management',
+      'Final styling and white-glove handover',
+    ],
   },
   '3d-visualization': {
-    number: '04', title: '3D visualization', intro: 'See the atmosphere before the first wall is built.', description: 'Our visualizations make an idea tangible. Explore the warmth of a finish, the fall of daylight and the balance of a room before construction begins.', image: '/images/hero-interior.png', points: ['Photorealistic interiors', 'Material and lighting studies', 'Walkthrough-ready scenes', 'GLB model integration coming soon'],
+    number: '04',
+    title: '3D Visualization',
+    intro: 'See the atmosphere before the first wall is built.',
+    description: 'Our visualizations make an idea tangible. Explore the warmth of a finish, the fall of daylight and the balance of a room before construction begins.',
+    image: '/images/hero-interior.png',
+    points: [
+      'Photorealistic 3D interior renders',
+      'Material texture and daylight fall studies',
+      'Walkthrough-ready 360 scene previews',
+      'Interactive spatial layout planning',
+    ],
   },
   'custom-furniture': {
-    number: '05', title: 'Custom furniture', intro: 'Objects made around your rituals, not a catalogue.', description: 'We design and make furniture that completes the architecture. Each piece is drawn around its purpose, crafted with honest materials and made to last.', image: '/images/kitchen-detail.png', points: ['Bespoke storage and cabinetry', 'Material and hardware selection', 'Shop drawings and prototypes', 'Craft-led installation'],
+    number: '05',
+    title: 'Custom Furniture',
+    intro: 'Objects made around your rituals, not a catalogue.',
+    description: 'We design and make furniture that completes the architecture. Each piece is drawn around its purpose, crafted with honest materials and made to last.',
+    image: '/images/kitchen-detail.png',
+    points: [
+      'Bespoke storage, wardrobes and cabinetry',
+      'Material and hardware selection',
+      'Shop drawings and master craftsman prototypes',
+      'Craft-led precision installation',
+    ],
+  },
+  'modular-kitchens': {
+    number: '06',
+    title: 'Modular Kitchens',
+    intro: 'Precision ergonomics, seamless storage and refined culinary spaces.',
+    description: 'Our modular kitchens combine durable engineering with sophisticated aesthetics. Designed for daily rituals, built with moisture-resistant materials and fitted with world-class hardware.',
+    image: '/images/courtyard-residence.png',
+    points: [
+      'Ergonomic culinary workflow planning',
+      'Soft-close German hardware & quartz countertops',
+      'Custom pantry & appliance integration',
+      'Precision site installation & warranty support',
+    ],
   },
 } as const
 
@@ -78,14 +142,18 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </div>
 
         <div className="service-hero-image relative min-h-[500px] lg:min-h-[620px] overflow-hidden p-6 lg:p-12 flex items-center justify-center">
-          <SharpPhotoFrame className="w-full h-full min-h-[460px] lg:min-h-[560px]">
-            <ParallaxImage
-              src={service.image}
-              alt={service.title}
-              speed={7}
-              className="w-full h-full"
-            />
-          </SharpPhotoFrame>
+          {slug === '3d-visualization' ? (
+            <ThreeDHouseTourViewer className="w-full h-full min-h-[460px] lg:min-h-[560px]" />
+          ) : (
+            <SharpPhotoFrame className="w-full h-full min-h-[460px] lg:min-h-[560px]">
+              <ParallaxImage
+                src={service.image}
+                alt={service.title}
+                speed={7}
+                className="w-full h-full"
+              />
+            </SharpPhotoFrame>
+          )}
         </div>
       </section>
 
