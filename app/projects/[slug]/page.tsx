@@ -1,16 +1,100 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import { RevealSection, ParallaxImage, SharpPhotoFrame } from '@/components/ScrollAnimation'
 
 const projects = {
-  'the-courtyard-residence': { number: '01', title: 'The Courtyard Residence', meta: 'Hyderabad · Residential', image: '/images/courtyard/tt-house-psa-architecture_10.jpg', intro: 'A calm, light-filled home shaped around the everyday rituals of family life.', details: 'We composed this residence as a sequence of quiet thresholds: shaded courts, warm timber, tactile stone and openings that bring the garden into view.' },
-  'the-walnut-office': { number: '02', title: 'The Walnut Office', meta: 'Hyderabad · Commercial', image: '/images/walnut/walnut_1.jpg', intro: 'A considered executive workspace in Hyderabad where focus, hospitality and material warmth meet.', details: 'Rich natural walnut wood paneling, soft daylight and carefully proportioned work zones create an executive workplace that feels both purposeful and welcoming.' },
-  'the-stone-kitchen': { number: '03', title: 'The Stone Kitchen', meta: 'Vizag · Residential', image: '/images/kitchen-detail.png', intro: 'A tactile kitchen study in natural stone, timber and precise joinery.', details: 'Every edge and junction was resolved to make daily movement feel effortless, while a restrained palette gives the room a lasting character.' },
-  'the-quiet-retreat': { number: '04', title: 'The Quiet Retreat', meta: 'Hyderabad · Residential', image: '/images/hero-interior.png', intro: 'A private retreat designed for slower mornings and softer evenings.', details: 'The interiors balance privacy with openness through layered light, low visual noise and a palette that ages beautifully.' },
-  'a-house-in-light': { number: '05', title: 'A House in Light', meta: 'Secunderabad · Residential', image: '/images/courtyard/tt-house-psa-architecture_12.jpg', intro: 'A home guided by daylight, proportion and a deep sense of belonging.', details: 'The plan follows the movement of the sun, creating a changing composition of shadow and brightness throughout the day.' },
-  'the-material-study': { number: '06', title: 'The Material Study', meta: 'Hyderabad · Custom interiors', image: '/images/kitchen-detail.png', intro: 'A focused exploration of honest materials and crafted detail.', details: 'The project brings together custom furniture, considered lighting and durable finishes in a compact, highly resolved interior.' },
+  'sri-bioaesthetics': {
+    number: '01',
+    title: 'Sri BioAesthetics Laboratory & Office',
+    meta: 'Hyderabad · Commercial Fit-Out & Office',
+    image: '/images/sri-bio/sri-bio-1.jpg',
+    intro: 'Specialized commercial interior architecture, laboratory fit-out, and executive workplace design for Sri BioAesthetics in Hyderabad.',
+    details: 'SAID executed full spatial planning, sterile workflow zoning, custom joinery, specialized ventilation ceilings, and white-glove handover for Sri BioAesthetics (https://sribioaesthetics.com/).',
+    website: 'https://sribioaesthetics.com/',
+  },
+  'sai-vanamali-miyapur': {
+    number: '02',
+    title: 'Vijay RV’s Sai Vanamali (3 Flat Interiors)',
+    meta: 'Miyapur, Hyderabad · 3 Residential Flats',
+    image: '/images/sai-vanamali/sai-vanamali-1.jpg',
+    intro: 'Turnkey residential interior design and execution for 3 apartments at Vijay RV’s Sai Vanamali, Miyapur.',
+    details: 'Complete interior architecture across 3 residential flats—including custom modular kitchens, teak wardrobes, ambient LED lighting design, civil modifications, and turnkey handover.',
+  },
+  'mukunda-nilayam': {
+    number: '03',
+    title: 'Mukunda Nilayam (3D Renders)',
+    meta: 'Hyderabad · Luxury Architectural Residence',
+    image: '/images/mukunda-nilayam/mukunda-1.jpg',
+    intro: 'Comprehensive 3D architectural renders and interior spatial visualization for Mukunda Nilayam.',
+    details: 'Full 3D visualization suite—exploring daylight orientation, double-height spatial volume, custom slatted timber accents, and luxury finish selections before site construction.',
+  },
+  'the-courtyard-residence': { number: '04', title: 'The Courtyard Residence', meta: 'Jubilee Hills, Hyderabad · Residential', image: '/images/courtyard/tt-house-psa-architecture_10.jpg', intro: 'A calm, light-filled home shaped around the everyday rituals of family life.', details: 'We composed this residence as a sequence of quiet thresholds: shaded courts, warm timber, tactile stone and openings that bring the garden into view.' },
+  'kitchens-and-wardrobes': {
+    number: '05',
+    title: 'Bespoke Modular Kitchens & Luxury Wardrobes',
+    meta: 'Hyderabad · German Hardware, Teak & Veneer Fit-Outs',
+    image: '/images/kitchen-wardrobes/kitchen-wardrobe-1.jpg',
+    intro: 'Custom luxury modular kitchens, acrylic & quartz island counters, walk-in closets, and fluted glass wardrobes executed in Hyderabad.',
+    details: 'Crafted joinery solutions combining moisture-resistant HDMR carcasses, Blum soft-close mechanisms, Italian marble and quartz countertops, LED wardrobe profile channels, and custom veneer paneling.',
+  },
+  'architectural-lighting': {
+    number: '06',
+    title: 'Architectural Lighting & Ceiling Fixtures',
+    meta: 'Hyderabad · Lighting Architecture & Ceilings',
+    image: '/images/lighting/lighting-1.jpg',
+    intro: 'Curated architectural lighting design, ambient ceiling installations, LED channel integration, and luxury chandelier fit-outs across Hyderabad residences.',
+    details: 'Specialized lighting architecture designed to highlight tactile stone textures, wood veneer warm tones, recessed cove illumination, magnetic track lights, and custom decorative ceiling fixtures.',
+  },
+  'the-walnut-office': { number: '07', title: 'The Walnut Office', meta: 'Hyderabad · Commercial', image: '/images/walnut/walnut_1.jpg', intro: 'A considered executive workspace in Hyderabad where focus, hospitality and material warmth meet.', details: 'Rich natural walnut wood paneling, soft daylight and carefully proportioned work zones create an executive workplace that feels both purposeful and welcoming.' },
+  'the-stone-kitchen': { number: '08', title: 'The Stone Kitchen', meta: 'Vizag · Residential', image: '/images/kitchen-detail.png', intro: 'A tactile kitchen study in natural stone, timber and precise joinery.', details: 'Every edge and junction was resolved to make daily movement feel effortless, while a restrained palette gives the room a lasting character.' },
+  'the-quiet-retreat': { number: '09', title: 'The Quiet Retreat', meta: 'Financial District, Hyderabad · Residential', image: '/images/hero-interior.png', intro: 'A private retreat designed for slower mornings and softer evenings.', details: 'The interiors balance privacy with openness through layered light, low visual noise and a palette that ages beautifully.' },
 } as const
+
+const sriBioGallery = Array.from({ length: 12 }, (_, idx) => ({
+  src: `/images/sri-bio/sri-bio-${idx + 1}.jpg`,
+  title: `0${idx + 1} / Sri Bio Site Inspection & Execution View`,
+  desc: `Real site photo of commercial laboratory fit-out, MEP ducting & interior execution phase ${idx + 1}.`,
+  colSpan: idx % 3 === 0 ? 'col-span-12 lg:col-span-8' : 'col-span-12 lg:col-span-4',
+}))
+
+const saiVanamaliGallery = Array.from({ length: 18 }, (_, idx) => ({
+  src: `/images/sai-vanamali/sai-vanamali-${idx + 1}.jpg`,
+  title: `${idx + 1 < 10 ? '0' + (idx + 1) : idx + 1} / Sai Vanamali 3 Flat Interior Site Execution`,
+  desc: `Real site photo of apartment fit-out, joinery, modular kitchen & lighting execution at Vijay RV's Sai Vanamali, Miyapur.`,
+  colSpan: idx % 2 === 0 ? 'col-span-12 lg:col-span-6' : 'col-span-12 lg:col-span-6',
+}))
+
+const mukundaGallery = Array.from({ length: 5 }, (_, idx) => ({
+  src: `/images/mukunda-nilayam/mukunda-${idx + 1}.jpg`,
+  title: `0${idx + 1} / Mukunda Nilayam Architectural 3D Render`,
+  desc: `Photorealistic 3D visualization render showing interior layout, ambient lighting, and timber finishes.`,
+  colSpan: idx === 0 ? 'col-span-12 lg:col-span-12' : 'col-span-12 lg:col-span-6',
+}))
+
+const kitchenWardrobeGallery = [
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-1.jpg', title: '01 / Modern Kitchen Island & Quartz Countertop', desc: 'Sleek handleless kitchen island featuring seamless quartz countertop and ambient breakfast bar lighting.', colSpan: 'col-span-12 lg:col-span-8' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-2.jpg', title: '02 / Fluted Glass & Aluminum Profile Wardrobe', desc: 'Floor-to-ceiling luxury bedroom wardrobe with tinted fluted glass shutters and internal LED lighting.', colSpan: 'col-span-12 lg:col-span-4' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-3.jpg', title: '03 / Teak Veneer Tall Units & Pantry Storage', desc: 'Integrated appliances, pull-out pantry hardware, and rich natural teak veneer joinery.', colSpan: 'col-span-12 lg:col-span-6' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-4.jpg', title: '04 / Walk-In Closet & Sensor LED Profile Lighting', desc: 'Custom master suite walk-in closet with velvet-lined jewelry drawers and sensor LED strip channels.', colSpan: 'col-span-12 lg:col-span-6' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-5.jpg', title: '05 / Minimalist Matte Acrylic Kitchen Finish', desc: 'Fingerprint-resistant anti-scratch matte acrylic cabinetry with German soft-close mechanisms.', colSpan: 'col-span-12 lg:col-span-12' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-6.jpg', title: '06 / Dual-Tone Overhead Cabinets & Backsplash', desc: 'Contrast upper cabinets paired with Italian marble tile backsplash and under-cabinet task lighting.', colSpan: 'col-span-12 lg:col-span-5' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-7.jpg', title: '07 / Sliding Mirror Wardrobe & Vanity Nook', desc: 'Space-maximizing sliding mirror wardrobe doors with seamlessly built-in vanity dressing unit.', colSpan: 'col-span-12 lg:col-span-7' },
+  { src: '/images/kitchen-wardrobes/kitchen-wardrobe-8.jpg', title: '08 / Open Crockery Display & Wine Rack', desc: 'Warm illuminated glass crockery unit with brass metal trim and dedicated wine storage.', colSpan: 'col-span-12 lg:col-span-12' },
+]
+
+const lightingGallery = [
+  { src: '/images/lighting/lighting-1.jpg', title: '01 / Ambient Cove & Recessed Track Lighting', desc: 'Custom recessed ceiling cove with soft warm LED illumination and magnetic track highlights.', colSpan: 'col-span-12 lg:col-span-8' },
+  { src: '/images/lighting/lighting-2.jpg', title: '02 / Sculptural Chandelier & Foyer Illumination', desc: 'Statement decorative chandelier casting ambient light across modern entrance foyers.', colSpan: 'col-span-12 lg:col-span-4' },
+  { src: '/images/lighting/lighting-3.jpg', title: '03 / Linear Ceiling Slots & Accent Glow', desc: 'Precision linear LED slot lighting flush-mounted within seamless gypsum ceilings.', colSpan: 'col-span-12 lg:col-span-6' },
+  { src: '/images/lighting/lighting-4.jpg', title: '04 / Living Room Mood & Feature Wall Lighting', desc: 'Architectural wall washers and warm spotlighting emphasizing natural stone textures.', colSpan: 'col-span-12 lg:col-span-6' },
+  { src: '/images/lighting/lighting-5.jpg', title: '05 / Dining Table Pendant Light Composition', desc: 'Bespoke pendant light cluster creating warm, focused dining ambience.', colSpan: 'col-span-12 lg:col-span-12' },
+  { src: '/images/lighting/lighting-6.jpg', title: '06 / Modular Ceiling Grid & Warm Downlights', desc: 'Symmetrical downlight placement integrated with acoustic timber ceiling baffles.', colSpan: 'col-span-12 lg:col-span-5' },
+  { src: '/images/lighting/lighting-7.jpg', title: '07 / Bedroom Indirect Headboard Lighting', desc: 'Concealed LED strip illumination framing custom upholstered bed backdrops.', colSpan: 'col-span-12 lg:col-span-7' },
+  { src: '/images/lighting/lighting-8.jpg', title: '08 / Exterior Facade & Landscape Illumination', desc: 'Low-glare outdoor architectural up-lighters highlighting building facade geometry.', colSpan: 'col-span-12 lg:col-span-12' },
+]
 
 const courtyardGallery = [
   { src: '/images/courtyard/tt-house-psa-architecture_10.jpg', title: '01 / Main Entrance & Courtyard Facade', desc: 'Light timber louvers and open garden courtyard welcoming sunlight into the core.', colSpan: 'col-span-12 lg:col-span-8' },
@@ -44,30 +128,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const project = projects[slug as keyof typeof projects] ?? projects['the-courtyard-residence']
 
   return (
-    <main className="project-detail-page min-h-screen bg-[#faf8f5] text-[#171717] selection:bg-[#b89768] selection:text-white">
-      <header className="simple-header border-b border-[#dfd8cb] bg-[#faf8f5] text-[#171717] px-6 md:px-16 py-5 flex justify-between items-center w-full relative">
-        <Link href="/" className="brand-mark flex items-center" aria-label="Satwika Architecture and Interior Design">
-          <img
-            src="/images/satwika-logo.png"
-            alt="Satwika Architecture and Interior Design"
-            className="h-10 md:h-12 w-auto object-contain"
-          />
-        </Link>
-        <div className="hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <Link href="/" className="flex flex-col items-center group">
-            <span className="font-serif text-lg md:text-xl tracking-[0.2em] font-light uppercase text-[#171717]">
-              SATWIKA
-            </span>
-            <span className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] text-[#b89768] uppercase font-bold mt-0.5 whitespace-nowrap">
-              INTERIOR &amp; ARCHITECTURE DESIGN
-            </span>
-          </Link>
-        </div>
-        <Link href="/projects" className="text-link group inline-flex items-center gap-2 text-[#171717] font-semibold text-xs font-mono uppercase tracking-widest">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>All projects</span>
-        </Link>
-      </header>
+    <main className="project-detail-page min-h-screen bg-[#faf8f5] text-[#171717] selection:bg-[#b89768] selection:text-white flex flex-col justify-between">
+      <Navbar />
 
       <section className="project-detail-hero grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] min-h-[calc(100vh-88px)] bg-[#faf8f5] text-[#171717]">
         <div className="project-detail-copy p-[8vw] flex flex-col justify-center bg-[#faf8f5] text-[#171717]">
@@ -125,13 +187,233 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             </p>
             <Link
               href={`/contact?project=${encodeURIComponent(project.title)}`}
-              className="button button-dark inline-flex items-center gap-4 bg-[#171717] text-[#f4f1ea] px-8 py-5 text-xs tracking-widest uppercase hover:bg-[#b89768] transition-colors duration-300 shadow-lg group font-bold"
+              className="button button-dark inline-flex items-center gap-4 bg-[#8f6530] text-white px-8 py-5 text-xs tracking-widest uppercase hover:bg-[#724f24] transition-colors duration-300 shadow-lg group font-bold"
             >
               Discuss this project <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </RevealSection>
         </div>
       </section>
+
+      {/* Sri BioAesthetics Site Gallery */}
+      {slug === 'sri-bioaesthetics' && (
+        <section className="project-gallery p-[6vw] md:p-[8vw] bg-[#faf8f5] text-[#171717] border-t border-[#dfd8cb]">
+          <RevealSection className="mb-12">
+            <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
+              Full Project Archive · 12 Site Photos
+            </p>
+            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+              Picture by picture <i className="font-serif italic text-[#8f6530]">commercial site tour.</i>
+            </h2>
+            <p className="text-xs text-[#6e685e] font-sans mt-3">
+              Official client website: <a href="https://sribioaesthetics.com/" target="_blank" rel="noreferrer" className="underline font-bold text-[#8f6530]">https://sribioaesthetics.com/</a>
+            </p>
+          </RevealSection>
+
+          <div className="grid grid-cols-12 gap-8 md:gap-12">
+            {sriBioGallery.map((item, index) => (
+              <RevealSection
+                key={item.src}
+                delay={(index % 4) * 0.1}
+                className={`${item.colSpan} flex flex-col gap-4`}
+              >
+                <div className="relative w-full overflow-hidden rounded-xs border border-[#e0d9cc] bg-[#f4efe6] shadow-sm group">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 px-1">
+                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                    {item.title}
+                  </h3>
+                  <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Sai Vanamali Site Gallery */}
+      {slug === 'sai-vanamali-miyapur' && (
+        <section className="project-gallery p-[6vw] md:p-[8vw] bg-[#faf8f5] text-[#171717] border-t border-[#dfd8cb]">
+          <RevealSection className="mb-12">
+            <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
+              Full Project Archive · 18 Site Photos Across 3 Flats
+            </p>
+            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+              Picture by picture <i className="font-serif italic text-[#8f6530]">residential execution tour.</i>
+            </h2>
+            <p className="text-xs text-[#6e685e] font-sans mt-3">
+              Vijay RV’s Sai Vanamali, Miyapur, Hyderabad · 3 Flats Interior Execution
+            </p>
+          </RevealSection>
+
+          <div className="grid grid-cols-12 gap-8 md:gap-12">
+            {saiVanamaliGallery.map((item, index) => (
+              <RevealSection
+                key={item.src}
+                delay={(index % 4) * 0.1}
+                className={`${item.colSpan} flex flex-col gap-4`}
+              >
+                <div className="relative w-full overflow-hidden rounded-xs border border-[#e0d9cc] bg-[#f4efe6] shadow-sm group">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 px-1">
+                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                    {item.title}
+                  </h3>
+                  <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Mukunda Nilayam Renders Gallery */}
+      {slug === 'mukunda-nilayam' && (
+        <section className="project-gallery p-[6vw] md:p-[8vw] bg-[#faf8f5] text-[#171717] border-t border-[#dfd8cb]">
+          <RevealSection className="mb-12">
+            <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
+              Full Project Archive · 5 Architectural 3D Renders
+            </p>
+            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+              Picture by picture <i className="font-serif italic text-[#8f6530]">3D render tour.</i>
+            </h2>
+            <p className="text-xs text-[#6e685e] font-sans mt-3">
+              Mukunda Nilayam · Photorealistic 3D Renders &amp; Spatial Lighting Suite
+            </p>
+          </RevealSection>
+
+          <div className="grid grid-cols-12 gap-8 md:gap-12">
+            {mukundaGallery.map((item, index) => (
+              <RevealSection
+                key={item.src}
+                delay={(index % 4) * 0.1}
+                className={`${item.colSpan} flex flex-col gap-4`}
+              >
+                <div className="relative w-full overflow-hidden rounded-xs border border-[#e0d9cc] bg-[#f4efe6] shadow-sm group">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 px-1">
+                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                    {item.title}
+                  </h3>
+                  <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Modular Kitchens & Luxury Wardrobes Gallery */}
+      {slug === 'kitchens-and-wardrobes' && (
+        <section className="project-gallery p-[6vw] md:p-[8vw] bg-[#faf8f5] text-[#171717] border-t border-[#dfd8cb]">
+          <RevealSection className="mb-12">
+            <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
+              Full Project Archive · 8 Custom Kitchen &amp; Wardrobe Fit-Out Views
+            </p>
+            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+              Picture by picture <i className="font-serif italic text-[#8f6530]">kitchen &amp; wardrobe tour.</i>
+            </h2>
+            <p className="text-xs text-[#6e685e] font-sans mt-3">
+              Precision Joinery, German Soft-Close Hardware, Walk-In Closets &amp; Quartz Kitchen Islands in Hyderabad.
+            </p>
+          </RevealSection>
+
+          <div className="grid grid-cols-12 gap-8 md:gap-12">
+            {kitchenWardrobeGallery.map((item, index) => (
+              <RevealSection
+                key={item.src}
+                delay={(index % 4) * 0.1}
+                className={`${item.colSpan} flex flex-col gap-4`}
+              >
+                <div className="relative w-full overflow-hidden rounded-xs border border-[#e0d9cc] bg-[#f4efe6] shadow-sm group">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 px-1">
+                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                    {item.title}
+                  </h3>
+                  <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Architectural Lighting Gallery */}
+      {slug === 'architectural-lighting' && (
+        <section className="project-gallery p-[6vw] md:p-[8vw] bg-[#faf8f5] text-[#171717] border-t border-[#dfd8cb]">
+          <RevealSection className="mb-12">
+            <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
+              Full Project Archive · 8 Lighting Architecture Views
+            </p>
+            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+              Picture by picture <i className="font-serif italic text-[#8f6530]">lighting &amp; ceiling tour.</i>
+            </h2>
+            <p className="text-xs text-[#6e685e] font-sans mt-3">
+              Architectural Lighting Design, Ambient Fixtures &amp; Ceiling Integration across Hyderabad Residences.
+            </p>
+          </RevealSection>
+
+          <div className="grid grid-cols-12 gap-8 md:gap-12">
+            {lightingGallery.map((item, index) => (
+              <RevealSection
+                key={item.src}
+                delay={(index % 4) * 0.1}
+                className={`${item.colSpan} flex flex-col gap-4`}
+              >
+                <div className="relative w-full overflow-hidden rounded-xs border border-[#e0d9cc] bg-[#f4efe6] shadow-sm group">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 px-1">
+                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                    {item.title}
+                  </h3>
+                  <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Full Picture-by-Picture Architectural Gallery */}
       {slug === 'the-courtyard-residence' && (
@@ -214,6 +496,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
         </section>
       )}
+
+      <Footer />
     </main>
   )
 }

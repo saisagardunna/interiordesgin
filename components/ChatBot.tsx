@@ -147,7 +147,7 @@ export default function ChatBot() {
       const errorMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'I apologize, but I am having trouble connecting right now. Please reach out directly to our studio team at **arsatwikag@gmail.com** or call **+91 99080 01558**.',
+        content: 'I apologize, but I am having trouble connecting right now. Please reach out directly to our studio team at **satwikaarchitects@gmail.com** or call **+91 99080 01558**.',
         timestamp: formatTimestamp(),
       }
       setMessages((prev) => [...prev, errorMsg])
@@ -313,7 +313,7 @@ export default function ChatBot() {
                 </form>
                 <div className="flex items-center justify-between text-[10px] text-[#666] mt-2 px-1">
                   <span>SAID Studio · Satwika Architecture</span>
-                  <span>arsatwikag@gmail.com · +91 99080 01558</span>
+                  <span>satwikaarchitects@gmail.com · +91 99080 01558</span>
                 </div>
               </div>
             </>

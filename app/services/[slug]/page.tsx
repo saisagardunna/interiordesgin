@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Check } from 'lucide-react'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import { RevealSection, ParallaxImage, SharpPhotoFrame } from '@/components/ScrollAnimation'
 import ThreeDHouseTourViewer from '@/components/ThreeDHouseTourViewer'
 
@@ -75,7 +77,7 @@ const serviceData = {
     title: 'Modular Kitchens',
     intro: 'Precision ergonomics, seamless storage and refined culinary spaces.',
     description: 'Our modular kitchens combine durable engineering with sophisticated aesthetics. Designed for daily rituals, built with moisture-resistant materials and fitted with world-class hardware.',
-    image: '/images/courtyard-residence.png',
+    image: '/images/kitchen-wardrobes/kitchen-wardrobe-1.jpg',
     points: [
       'Ergonomic culinary workflow planning',
       'Soft-close German hardware & quartz countertops',
@@ -94,30 +96,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const service = serviceData[slug as keyof typeof serviceData] ?? serviceData['interior-architecture']
 
   return (
-    <main className="service-page min-h-screen bg-[#f4f1ea] text-[#171717] dark:bg-[#080808] dark:text-[#f4f1ea]">
-      <header className="simple-header service-header border-b border-[#dfd8cb] dark:border-[#222] px-6 md:px-16 py-5 flex justify-between items-center w-full relative">
-        <Link href="/" className="brand-mark flex items-center" aria-label="Satwika Architecture and Interior Design">
-          <img
-            src="/images/satwika-logo.png"
-            alt="Satwika Architecture and Interior Design"
-            className="h-10 md:h-12 w-auto object-contain"
-          />
-        </Link>
-        <div className="hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <Link href="/" className="flex flex-col items-center group">
-            <span className="font-serif text-lg md:text-xl tracking-[0.2em] font-light uppercase text-inherit">
-              SATWIKA
-            </span>
-            <span className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] text-[#b89768] uppercase font-bold mt-0.5 whitespace-nowrap">
-              INTERIOR &amp; ARCHITECTURE DESIGN
-            </span>
-          </Link>
-        </div>
-        <Link href="/" className="text-link group flex items-center gap-2 text-xs font-mono uppercase tracking-widest font-semibold">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>Back home</span>
-        </Link>
-      </header>
+    <main className="service-page min-h-screen bg-[#faf8f5] text-[#171717] flex flex-col justify-between">
+      <Navbar />
 
       <section className="service-hero grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] min-h-[720px] pt-[88px]">
         <div className="service-hero-copy p-[8vw] flex flex-col justify-center">
@@ -183,26 +163,28 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               ))}
             </div>
 
-            <Link href="/contact" className="button button-dark inline-flex items-center gap-4 bg-[#171717] text-[#f4f1ea] px-7 py-4 text-xs tracking-widest uppercase hover:bg-[#b89768] transition-colors duration-300 shadow-lg group">
+            <Link href="/contact" className="button button-dark inline-flex items-center gap-4 bg-[#8f6530] text-white px-7 py-4 text-xs tracking-widest uppercase hover:bg-[#724f24] transition-colors duration-300 shadow-lg group font-bold">
               Start a conversation <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </RevealSection>
         </div>
       </section>
 
-      <section className="service-next p-[8vw] bg-[#171717] text-[#f4f1ea] border-t border-[#2a2a2a]">
+      <section className="service-next p-[8vw] bg-[#faf8f5] text-[#171717] border-t border-[#e8e4dc]">
         <RevealSection>
-          <p className="eyebrow text-[#b89768]">Explore the studio</p>
+          <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-widest">Explore the studio</p>
           <div className="flex flex-col sm:flex-row justify-between gap-6 mt-6">
-            <Link href="/projects" className="font-serif text-3xl md:text-4xl border-b border-[#555149] pb-3 hover:text-[#b89768] hover:border-[#b89768] transition-colors flex items-center gap-3 group">
+            <Link href="/projects" className="font-serif text-3xl md:text-4xl border-b border-[#8f6530] pb-3 text-[#171717] hover:text-[#8f6530] hover:border-[#724f24] transition-colors flex items-center gap-3 group">
               View all projects <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>
-            <Link href="/contact" className="font-serif text-3xl md:text-4xl border-b border-[#555149] pb-3 hover:text-[#b89768] hover:border-[#b89768] transition-colors flex items-center gap-3 group">
+            <Link href="/contact" className="font-serif text-3xl md:text-4xl border-b border-[#8f6530] pb-3 text-[#171717] hover:text-[#8f6530] hover:border-[#724f24] transition-colors flex items-center gap-3 group">
               Plan your space <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>
           </div>
         </RevealSection>
       </section>
+
+      <Footer />
     </main>
   )
 }

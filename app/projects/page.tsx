@@ -3,207 +3,184 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpRight, Filter } from 'lucide-react'
+import { ArrowUpRight, Filter } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import { RevealSection, SharpPhotoFrame } from '@/components/ScrollAnimation'
 
-const projects = [
-  { number: '01', title: 'The Courtyard Residence', meta: 'Hyderabad · Residential', category: 'Residential', image: '/images/courtyard-residence.png' },
-  { number: '02', title: 'The Walnut Office', meta: 'Hyderabad · Commercial', category: 'Commercial', image: '/images/walnut/walnut_1.jpg' },
-  { number: '03', title: 'The Stone Kitchen', meta: 'Vizag · Residential', category: 'Residential', image: '/images/kitchen-detail.png' },
-  { number: '04', title: 'The Quiet Retreat', meta: 'Hyderabad · Residential', category: 'Residential', image: '/images/hero-interior.png' },
-  { number: '05', title: 'A House in Light', meta: 'Secunderabad · Residential', category: 'Residential', image: '/images/courtyard-residence.png' },
-  { number: '06', title: 'The Material Study', meta: 'Hyderabad · Custom interiors', category: 'Custom interiors', image: '/images/kitchen-detail.png' },
+const projectsList = [
+  { number: '01', title: 'Sri BioAesthetics Laboratory & Office', meta: 'Hyderabad · Commercial Fit-Out · 2026', category: 'Commercial', image: '/images/sri-bio/sri-bio-1.jpg', slug: 'sri-bioaesthetics', website: 'https://sribioaesthetics.com/' },
+  { number: '02', title: 'Vijay RV’s Sai Vanamali (3 Flat Interiors)', meta: 'Miyapur, Hyderabad · 3 Residential Flats · 2026', category: 'Residential', image: '/images/sai-vanamali/sai-vanamali-1.jpg', slug: 'sai-vanamali-miyapur' },
+  { number: '03', title: 'Mukunda Nilayam (3D Renders)', meta: 'Hyderabad · Architectural Residence · 2026', category: 'Residential', image: '/images/mukunda-nilayam/mukunda-1.jpg', slug: 'mukunda-nilayam' },
+  { number: '04', title: 'Bespoke Modular Kitchens & Luxury Wardrobes', meta: 'Hyderabad · Modular Joinery & Veneer Fit-Outs · 2026', category: 'Kitchens & Wardrobes', image: '/images/kitchen-wardrobes/kitchen-wardrobe-1.jpg', slug: 'kitchens-and-wardrobes' },
+  { number: '05', title: 'Architectural Lighting & Ceiling Fixtures', meta: 'Hyderabad · Lighting & Ceiling Design · 2026', category: 'Lighting', image: '/images/lighting/lighting-1.jpg', slug: 'architectural-lighting' },
+  { number: '06', title: 'The Courtyard Residence', meta: 'Jubilee Hills, Hyderabad · Residential Villa · 2026', category: 'Residential', image: '/images/courtyard-residence.png', slug: 'the-courtyard-residence' },
+  { number: '07', title: 'The Walnut Office', meta: 'Hyderabad · Executive Commercial · 2026', category: 'Commercial', image: '/images/walnut/walnut_1.jpg', slug: 'the-walnut-office' },
+  { number: '08', title: 'The Stone Kitchen', meta: 'Vizag · Custom Kitchen & Dining · 2026', category: 'Residential', image: '/images/kitchen-detail.png', slug: 'the-stone-kitchen' },
 ]
 
-const categories = ['All', 'Residential', 'Commercial', 'Custom interiors']
-
+const categories = ['All', 'Residential', 'Commercial', 'Kitchens & Wardrobes', 'Lighting', 'Custom interiors']
 const luxuryEase = [0.22, 1, 0.36, 1] as const
 
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState('All')
 
   const filteredProjects = activeCategory === 'All'
-    ? projects
-    : projects.filter((p) => p.category === activeCategory)
+    ? projectsList
+    : projectsList.filter((p) => p.category === activeCategory)
 
   return (
-    <main className="archive-page min-h-screen w-full bg-[#faf8f5] text-[#171717] selection:bg-[#b89768] selection:text-white overflow-x-hidden">
-      {/* Simple Header */}
-      <header className="simple-header archive-header border-b border-[#dfd8cb] px-[6vw] md:px-[8vw] py-5 flex justify-between items-center w-full bg-[#faf8f5] relative">
-        <Link href="/" className="brand-mark flex items-center" aria-label="Satwika Architecture and Interior Design">
-          <img
-            src="/images/satwika-logo.png"
-            alt="Satwika Architecture and Interior Design"
-            className="h-10 md:h-12 w-auto object-contain"
-          />
-        </Link>
-        <div className="hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <Link href="/" className="flex flex-col items-center group">
-            <span className="font-serif text-lg md:text-xl tracking-[0.2em] font-light uppercase text-[#171717]">
-              SATWIKA
-            </span>
-            <span className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] text-[#b89768] uppercase font-bold mt-0.5 whitespace-nowrap">
-              INTERIOR &amp; ARCHITECTURE DESIGN
-            </span>
-          </Link>
-        </div>
-        <Link href="/" className="text-link group flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-[#171717]">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>Back home</span>
-        </Link>
-      </header>
+    <main className="projects-archive-page min-h-screen w-full bg-[#faf8f5] text-[#171717] selection:bg-[#b89768] selection:text-white flex flex-col justify-between overflow-x-hidden">
+      <Navbar />
 
-      {/* Hero / Intro Section - Expansive 2-Column Full-Width Design */}
-      <section className="px-[6vw] md:px-[8vw] pt-20 pb-16 w-full border-b border-[#dfd8cb] bg-[#faf8f5]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end w-full">
-          {/* Left Column: Eyebrow + Huge Title */}
-          <div className="lg:col-span-7">
-            <RevealSection delay={0.1}>
-              <p className="eyebrow flex items-center gap-2 text-xs tracking-[0.2em] font-mono text-[#8f6530] uppercase mb-4 font-bold">
-                <span className="w-2 h-2 rounded-full bg-[#8f6530]" />
-                The project archive
-              </p>
-            </RevealSection>
-
-            <RevealSection delay={0.2} distance={30}>
-              <h1 className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-normal leading-[0.86] tracking-tight text-[#171717]">
-                Spaces made<br />
-                <i className="font-serif italic font-normal text-[#171717]">to belong.</i>
-              </h1>
-            </RevealSection>
-          </div>
-
-          {/* Right Column: Description + Filter Bar */}
-          <div className="lg:col-span-5 flex flex-col justify-end gap-8">
-            <RevealSection delay={0.3}>
-              <p className="text-[#3b3730] text-base md:text-lg leading-relaxed border-l-2 border-[#8f6530] pl-5 font-normal">
-                Explore a selection of homes, workplaces and details shaped by the SAID studio across Hyderabad and beyond.
-              </p>
-            </RevealSection>
-
-            {/* Filter Navigation */}
-            <RevealSection delay={0.4}>
-              <div className="flex flex-col gap-3">
-                <span className="text-xs uppercase tracking-widest text-[#171717] font-mono font-bold flex items-center gap-2">
-                  <Filter className="w-3.5 h-3.5 text-[#b89768]" /> Filter Projects:
+      <div>
+        {/* Hero Section */}
+        <section className="px-6 md:px-16 pt-20 pb-20 border-b border-[#dfd8cb] bg-[#faf8f5] relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+            <div className="lg:col-span-7 space-y-4">
+              <RevealSection delay={0.1}>
+                <span className="font-sans text-xs uppercase tracking-[0.2em] font-bold text-[#8f6530] block">
+                  SAID PROJECT ARCHIVE
                 </span>
-                <div className="flex flex-wrap gap-2.5">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className={`relative px-4 py-2.5 text-xs uppercase tracking-widest font-mono font-bold rounded-full border transition-all duration-300 ${
-                        activeCategory === cat
-                          ? 'bg-[#171717] text-[#f4f1ea] border-[#171717] shadow-lg scale-105'
-                          : 'text-[#171717] border-[#cbbfae] hover:border-[#171717] bg-white hover:bg-white'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </RevealSection>
-          </div>
-        </div>
-      </section>
+              </RevealSection>
 
-      {/* Archive Grid - Full Screen Spanning 2-Column Wide Layout */}
-      <section className="px-[6vw] md:px-[8vw] py-24 w-full">
-        <motion.div
-          layout
-          className="grid grid-cols-1 lg:grid-cols-2 gap-y-24 gap-x-12 lg:gap-x-20 w-full items-start"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => {
-              const slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
-              const contactHref = `/contact?project=${encodeURIComponent(project.title)}`
-              const isOffset = index % 2 === 1
+              <RevealSection delay={0.2}>
+                <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal leading-[0.9] tracking-tight text-[#171717]">
+                  Architectural Works<br />
+                  <i className="font-serif italic text-[#8f6530]">&amp; Spatial Design.</i>
+                </h1>
+              </RevealSection>
+            </div>
 
-              return (
-                <motion.article
-                  layout
-                  initial={{ opacity: 0, y: 45, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.6, delay: index * 0.08, ease: luxuryEase }}
-                  className={`archive-card group flex flex-col w-full ${isOffset ? 'lg:mt-20' : ''}`}
-                  key={project.title}
-                >
-                  {/* Sharp Architectural Photo Frame - Wide Landscape Aspect Ratio Spanning Half Screen */}
-                  <Link
-                    href={`/projects/${slug}`}
-                    aria-label={`View ${project.title} project details`}
-                    className="block w-full"
-                  >
-                    <SharpPhotoFrame
-                      number={project.number}
-                      badgeText={project.category}
-                      className="w-full aspect-[16/10] min-h-[320px] sm:min-h-[400px] md:min-h-[460px] lg:min-h-[520px]"
-                    >
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        sizes="(max-width: 760px) 100vw, 50vw"
-                        priority={index < 2}
-                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-108"
-                      />
+            <div className="lg:col-span-5 flex flex-col justify-end gap-6">
+              <RevealSection delay={0.3}>
+                <p className="text-[#3b3730] text-base md:text-lg leading-relaxed border-l-2 border-[#8f6530] pl-5 font-normal">
+                  Explore a selection of residential homes, executive offices, and custom interior fit-outs shaped by the SAID studio across Hyderabad and beyond.
+                </p>
+              </RevealSection>
 
-                      {/* Glass Overlay & Arrow Icon */}
-                      <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-end p-6">
-                        <span className="w-12 h-12 bg-white text-[#171717] rounded-full flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                          <ArrowUpRight className="w-6 h-6" />
-                        </span>
-                      </div>
-                    </SharpPhotoFrame>
-                  </Link>
-
-                  {/* Metadata & Actions */}
-                  <div className="archive-meta pt-5 mt-5 border-t border-[#dfd8cb] flex justify-between items-start gap-6 w-full">
-                    <div>
-                      <Link href={`/projects/${slug}`} aria-label={`Read the full ${project.title} project`}>
-                        <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors duration-300 leading-tight">
-                          {project.title}
-                        </h2>
-                      </Link>
-                      <p className="text-xs text-[#6b6459] uppercase tracking-widest mt-2 font-mono font-semibold">
-                        {project.meta}
-                      </p>
-                    </div>
-
-                    <Link
-                      href={contactHref}
-                      className="archive-enquire text-xs uppercase tracking-widest font-bold text-[#8f6530] hover:text-[#171717] flex items-center gap-1.5 transition-colors duration-300 whitespace-nowrap pt-2 border-b border-[#8f6530] pb-0.5"
-                      aria-label={`Enquire about ${project.title}`}
-                    >
-                      Enquire <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </Link>
+              {/* Filter Tabs */}
+              <RevealSection delay={0.4}>
+                <div className="flex flex-col gap-3">
+                  <span className="text-xs uppercase tracking-widest text-[#171717] font-sans font-bold flex items-center gap-2">
+                    <Filter className="w-3.5 h-3.5 text-[#b89768]" /> Filter Projects:
+                  </span>
+                  <div className="flex flex-wrap gap-2.5">
+                    {categories.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveCategory(cat)}
+                        className={`relative px-4 py-2 text-xs uppercase tracking-widest font-sans font-bold rounded-full border transition-all duration-300 ${
+                          activeCategory === cat
+                            ? 'bg-[#171717] text-white border-[#171717] shadow-md scale-105'
+                            : 'text-[#171717] border-[#cbbfae] hover:border-[#171717] bg-white'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
                   </div>
-                </motion.article>
-              )
-            })}
-          </AnimatePresence>
-        </motion.div>
-      </section>
+                </div>
+              </RevealSection>
+            </div>
+          </div>
+        </section>
 
-      {/* Bottom CTA */}
-      <RevealSection className="archive-cta bg-[#f4efe6] py-28 px-[6vw] md:px-[8vw] border-t border-[#dfd8cb] w-full">
-        <div className="max-w-4xl">
-          <p className="eyebrow text-[#8f6530] text-xs font-mono uppercase tracking-widest font-bold">Have a project in mind?</p>
-          <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[0.92] tracking-tight my-6 text-[#171717]">
-            Let&apos;s make<br />
-            <i className="font-serif italic text-[#8f6530]">something lasting.</i>
-          </h2>
-          <Link
-            href="/contact"
-            className="button button-dark inline-flex items-center gap-4 bg-[#171717] text-[#f4f1ea] px-8 py-5 text-xs tracking-widest uppercase hover:bg-[#b89768] hover:text-white transition-all duration-300 shadow-xl hover:-translate-y-1 font-semibold"
+        {/* Animated Projects Grid */}
+        <section className="px-6 md:px-16 py-24 max-w-[1440px] mx-auto w-full">
+          <motion.div
+            layout
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 w-full items-start"
           >
-            Begin a conversation <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </RevealSection>
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => {
+                const contactHref = `/contact?project=${encodeURIComponent(project.title)}`
+                const isOffset = index % 2 === 1
+
+                return (
+                  <motion.article
+                    layout
+                    initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.55, delay: index * 0.08, ease: luxuryEase }}
+                    className={`archive-card group flex flex-col w-full bg-white p-6 border border-[#e8e4dc] hover:border-[#8f6530] transition-all duration-500 hover:shadow-2xl rounded-xs ${
+                      isOffset ? 'lg:mt-12' : ''
+                    }`}
+                    key={project.title}
+                  >
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="block w-full"
+                    >
+                      <SharpPhotoFrame
+                        number={project.number}
+                        badgeText={project.category}
+                        className="w-full aspect-[16/10] min-h-[300px] sm:min-h-[380px]"
+                      >
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          sizes="(max-width: 760px) 100vw, 50vw"
+                          priority={index < 2}
+                          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-108"
+                        />
+                        <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-end p-6">
+                          <span className="w-12 h-12 bg-white text-[#171717] rounded-full flex items-center justify-center shadow-xl transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                            <ArrowUpRight className="w-6 h-6" />
+                          </span>
+                        </div>
+                      </SharpPhotoFrame>
+                    </Link>
+
+                    <div className="archive-meta pt-5 mt-5 border-t border-[#dfd8cb] flex justify-between items-start gap-6 w-full">
+                      <div>
+                        <Link href={`/projects/${project.slug}`}>
+                          <h2 className="font-serif text-xl sm:text-2xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors duration-300 leading-snug">
+                            {project.title}
+                          </h2>
+                        </Link>
+                        <p className="text-xs text-[#6b6459] uppercase tracking-widest mt-2 font-sans font-semibold">
+                          {project.meta}
+                        </p>
+                      </div>
+
+                      <Link
+                        href={contactHref}
+                        className="text-xs uppercase tracking-widest font-bold text-[#8f6530] hover:text-[#171717] flex items-center gap-1 transition-colors whitespace-nowrap pt-2 border-b border-[#8f6530] pb-0.5"
+                      >
+                        Enquire <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </Link>
+                    </div>
+                  </motion.article>
+                )
+              })}
+            </AnimatePresence>
+          </motion.div>
+        </section>
+
+        {/* CTA */}
+        <section className="bg-[#faf8f5] text-[#171717] py-28 px-6 md:px-16 text-center border-t border-[#e8e4dc]">
+          <div className="max-w-3xl mx-auto space-y-8">
+            <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block">
+              PORTFOLIO INQUIRIES
+            </span>
+            <h2 className="font-serif text-4xl sm:text-6xl font-normal text-[#171717]">
+              Have a custom project <i className="font-serif italic text-[#8f6530]">in mind?</i>
+            </h2>
+            <Link
+              href="/contact"
+              className="bg-[#8f6530] text-white py-4 px-8 font-sans text-xs uppercase tracking-widest font-bold inline-flex items-center gap-2 hover:bg-[#724f24] transition-colors shadow-lg rounded-xs"
+            >
+              Begin Consultation <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </section>
+      </div>
+
+      <Footer />
     </main>
   )
 }

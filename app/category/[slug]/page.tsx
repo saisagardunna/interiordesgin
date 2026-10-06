@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Filter } from 'lucide-react'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import { RevealSection, SharpPhotoFrame, StaggerContainer, StaggerItem } from '@/components/ScrollAnimation'
 
 const categoryData: Record<string, { title: string; subtitle: string; description: string; projects: Array<{ title: string; meta: string; image: string; slug: string }> }> = {
@@ -82,31 +84,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const data = categoryData[catKey] ?? categoryData['design']
 
   return (
-    <main className="category-page min-h-screen bg-[#faf8f5] text-[#171717] selection:bg-[#b89768] selection:text-white">
-      {/* Editorial Header */}
-      <header className="simple-header border-b border-[#dfd8cb] bg-[#faf8f5] px-6 md:px-16 py-5 flex justify-between items-center w-full relative">
-        <Link href="/" className="brand-mark flex items-center" aria-label="Satwika Architecture and Interior Design">
-          <img
-            src="/images/satwika-logo.png"
-            alt="Satwika Architecture and Interior Design"
-            className="h-10 md:h-12 w-auto object-contain"
-          />
-        </Link>
-        <div className="hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <Link href="/" className="flex flex-col items-center group">
-            <span className="font-serif text-lg md:text-xl tracking-[0.2em] font-light uppercase text-[#171717]">
-              SATWIKA
-            </span>
-            <span className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] text-[#b89768] uppercase font-bold mt-0.5 whitespace-nowrap">
-              INTERIOR &amp; ARCHITECTURE DESIGN
-            </span>
-          </Link>
-        </div>
-        <Link href="/projects" className="text-link group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest font-semibold text-[#171717]">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>All projects</span>
-        </Link>
-      </header>
+    <main className="category-page min-h-screen bg-[#faf8f5] text-[#171717] selection:bg-[#b89768] selection:text-white flex flex-col justify-between">
+      <Navbar />
 
       {/* Category Hero Header */}
       <section className="px-6 md:px-16 lg:px-24 pt-20 pb-16 w-full border-b border-[#dfd8cb] bg-white">
@@ -215,6 +194,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           </Link>
         </div>
       </section>
+
+      <Footer />
     </main>
   )
 }
