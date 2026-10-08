@@ -40,6 +40,7 @@ export default function AdminDashboardPage() {
   const [settings, setSettings] = useState<StudioSettings>({
     contactEmail: 'satwikaarchitects@gmail.com',
     contactPhone: '+91 99080 01558',
+    whatsappPhone: '+91 99080 01558',
     locationAddress: 'Block 21, F-1, Vignanpuri Colony, Vidya Nagar, Hyderabad - 44',
     latitude: 17.489842,
     longitude: 78.400996,
@@ -92,27 +93,17 @@ export default function AdminDashboardPage() {
       }
     }
     initData()
-  }, [router])
 
-  // Security Auto-Logout Hook 1: Auto-Logout when Tab / Window closes
-  useEffect(() => {
-    const handleTabOrWindowClose = () => {
-      try { sessionStorage.removeItem('said_admin_session_active') } catch {}
-      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-        navigator.sendBeacon('/api/admin/logout')
-      } else {
-        fetch('/api/admin/logout', { method: 'POST', keepalive: true }).catch(() => {})
-      }
-    }
-
-    window.addEventListener('pagehide', handleTabOrWindowClose)
-    window.addEventListener('beforeunload', handleTabOrWindowClose)
+    window.addEventListener('storage', fetchAllData)
+    window.addEventListener('focus', fetchAllData)
 
     return () => {
-      window.removeEventListener('pagehide', handleTabOrWindowClose)
-      window.removeEventListener('beforeunload', handleTabOrWindowClose)
+      window.removeEventListener('storage', fetchAllData)
+      window.removeEventListener('focus', fetchAllData)
     }
-  }, [])
+  }, [router])
+
+
 
   // Security Auto-Logout Hook 2: Inactivity Timeout (Auto-logout after 15 minutes of idle)
   useEffect(() => {
@@ -311,19 +302,34 @@ export default function AdminDashboardPage() {
     try {
       if (editingReviewId) {
         // Update
+        const updatedItem: ReviewItem = {
+          id: editingReviewId,
+          author: revAuthor.trim(),
+          role: revRole.trim() || 'Client',
+          location: revLocation.trim() || 'Hyderabad',
+          project: revProject.trim() || 'Residential Interiors',
+          quote: revQuote.trim(),
+          rating: Number(revRating) || 5,
+          published: revPublished,
+          createdAt: new Date().toISOString().split('T')[0],
+        }
+
+        setReviews((prev) => {
+          const updatedList = prev.map((r) => (r.id === editingReviewId ? updatedItem : r))
+          try {
+            localStorage.setItem('said_cached_reviews', JSON.stringify(updatedList))
+            const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+            const updatedCustom = localCustom.map((c: any) => (c.id === editingReviewId ? updatedItem : c))
+            localStorage.setItem('said_custom_reviews', JSON.stringify(updatedCustom))
+            window.dispatchEvent(new Event('storage'))
+          } catch {}
+          return updatedList
+        })
+
         const res = await fetch('/api/admin/reviews', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: editingReviewId,
-            author: revAuthor,
-            role: revRole,
-            location: revLocation,
-            project: revProject,
-            quote: revQuote,
-            rating: revRating,
-            published: revPublished,
-          }),
+          body: JSON.stringify(updatedItem),
         })
         const data = await res.json()
         if (data.success) {
@@ -345,9 +351,30 @@ export default function AdminDashboardPage() {
           }),
         })
         const data = await res.json()
-        if (data.success) {
-          showToast('New review published')
+        const newRev: ReviewItem = data.success && data.review ? data.review : {
+          id: `rev-${Date.now()}`,
+          author: revAuthor.trim(),
+          role: revRole.trim() || 'Client',
+          location: revLocation.trim() || 'Hyderabad',
+          project: revProject.trim() || 'Residential Interiors',
+          quote: revQuote.trim(),
+          rating: Number(revRating) || 5,
+          published: revPublished,
+          createdAt: new Date().toISOString().split('T')[0],
         }
+
+        setReviews((prev) => {
+          const updatedList = [newRev, ...prev.filter((r) => r.id !== newRev.id)]
+          try {
+            localStorage.setItem('said_cached_reviews', JSON.stringify(updatedList))
+            const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+            const updatedCustom = [newRev, ...localCustom.filter((c: any) => c.id !== newRev.id)]
+            localStorage.setItem('said_custom_reviews', JSON.stringify(updatedCustom))
+            window.dispatchEvent(new Event('storage'))
+          } catch {}
+          return updatedList
+        })
+        showToast('New review published')
       }
       setShowReviewModal(false)
       fetchAllData()
@@ -357,16 +384,28 @@ export default function AdminDashboardPage() {
   }
 
   const handleToggleReviewPublished = async (review: ReviewItem) => {
+    const updatedStatus = !review.published
+    setReviews((prev) => {
+      const updatedList = prev.map((r) => (r.id === review.id ? { ...r, published: updatedStatus } : r))
+      try {
+        localStorage.setItem('said_cached_reviews', JSON.stringify(updatedList))
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+        const updatedCustom = localCustom.map((c: any) => (c.id === review.id ? { ...c, published: updatedStatus } : c))
+        localStorage.setItem('said_custom_reviews', JSON.stringify(updatedCustom))
+        window.dispatchEvent(new Event('storage'))
+      } catch {}
+      return updatedList
+    })
+
     try {
       const res = await fetch('/api/admin/reviews', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: review.id, published: !review.published }),
+        body: JSON.stringify({ id: review.id, published: updatedStatus }),
       })
       const data = await res.json()
       if (data.success) {
-        showToast(review.published ? 'Review hidden' : 'Review published')
-        fetchAllData()
+        showToast(updatedStatus ? 'Review published' : 'Review hidden')
       }
     } catch (err) {
       showToast('Failed to update review status.')
@@ -381,6 +420,7 @@ export default function AdminDashboardPage() {
         localStorage.setItem('said_cached_reviews', JSON.stringify(updated))
         const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
         localStorage.setItem('said_custom_reviews', JSON.stringify(localCustom.filter((c: any) => c.id !== id)))
+        window.dispatchEvent(new Event('storage'))
       } catch {}
       return updated
     })
@@ -405,7 +445,8 @@ export default function AdminDashboardPage() {
       })
       const data = await res.json()
       if (data.success) {
-        showToast('Studio terminal settings updated')
+        try { localStorage.setItem('said_cached_settings', JSON.stringify(settings)) } catch {}
+        showToast('Studio terminal settings & WhatsApp number updated')
       }
     } catch (err) {
       showToast('Failed to update settings.')
@@ -863,7 +904,7 @@ export default function AdminDashboardPage() {
             </div>
 
             <form onSubmit={handleSaveSettings} className="space-y-6 font-mono text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="text-[#b89768] font-bold block mb-1">Contact Email</label>
                   <input
@@ -882,6 +923,18 @@ export default function AdminDashboardPage() {
                     value={settings.contactPhone}
                     onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
                     className="w-full bg-[#121212] border border-[#333] p-3.5 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[#25D366] font-bold block mb-1">WhatsApp Direct Number</label>
+                  <input
+                    type="text"
+                    value={settings.whatsappPhone || ''}
+                    onChange={(e) => setSettings({ ...settings, whatsappPhone: e.target.value })}
+                    placeholder="e.g. +91 99080 01558"
+                    className="w-full bg-[#121212] border border-[#333] p-3.5 text-white rounded-xs focus:border-[#25D366] focus:outline-none"
                     required
                   />
                 </div>

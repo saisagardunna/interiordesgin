@@ -186,7 +186,12 @@ export default function ContactPage() {
 
       try {
         const localInq = JSON.parse(localStorage.getItem('said_custom_inquiries') || '[]')
-        localStorage.setItem('said_custom_inquiries', JSON.stringify([inqPayload, ...localInq]))
+        const updatedInq = [inqPayload, ...localInq.filter((i: any) => i.id !== inqPayload.id)]
+        localStorage.setItem('said_custom_inquiries', JSON.stringify(updatedInq))
+
+        const cachedInq = JSON.parse(localStorage.getItem('said_cached_inquiries') || '[]')
+        const updatedCachedInq = [inqPayload, ...cachedInq.filter((i: any) => i.id !== inqPayload.id)]
+        localStorage.setItem('said_cached_inquiries', JSON.stringify(updatedCachedInq))
       } catch {}
 
       // 3. Save Scheduled Call entry so it populates SCHEDULED CALLS & CALENDAR in Admin Dashboard
@@ -213,7 +218,14 @@ export default function ContactPage() {
 
       try {
         const localCalls = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
-        localStorage.setItem('said_custom_calls', JSON.stringify([callPayload, ...localCalls]))
+        const updatedCalls = [callPayload, ...localCalls.filter((c: any) => c.id !== callPayload.id)]
+        localStorage.setItem('said_custom_calls', JSON.stringify(updatedCalls))
+
+        const cachedCalls = JSON.parse(localStorage.getItem('said_cached_calls') || '[]')
+        const updatedCachedCalls = [callPayload, ...cachedCalls.filter((c: any) => c.id !== callPayload.id)]
+        localStorage.setItem('said_cached_calls', JSON.stringify(updatedCachedCalls))
+
+        window.dispatchEvent(new Event('storage'))
       } catch {}
 
       setSubmitted(true)

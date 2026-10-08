@@ -158,22 +158,53 @@ export default function TestimonialsPage() {
 
   useEffect(() => {
     const fetchReviews = async () => {
+      let localCustom: ReviewItem[] = []
+      let localCached: ReviewItem[] = []
+      try {
+        localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+        localCached = JSON.parse(localStorage.getItem('said_cached_reviews') || '[]')
+      } catch {}
+
+      const initialCombined = [...localCustom, ...localCached.filter((c) => !localCustom.some((m) => m.id === c.id))]
+      if (initialCombined.length > 0) {
+        const publishedLocal = initialCombined.filter((r) => r.published !== false)
+        if (publishedLocal.length > 0) {
+          setReviewsList(publishedLocal)
+        }
+      }
+
       try {
         const res = await fetch('/api/admin/reviews', { cache: 'no-store' })
         const data = await res.json()
         if (data.success && Array.isArray(data.reviews) && data.reviews.length > 0) {
-          const publishedOnly = data.reviews.filter((r: ReviewItem) => r.published !== false)
+          const customIds = new Set(localCustom.map((c) => c.id))
+          const merged = [
+            ...localCustom,
+            ...data.reviews.filter((r: ReviewItem) => !customIds.has(r.id))
+          ]
+          const publishedOnly = merged.filter((r: ReviewItem) => r.published !== false)
           if (publishedOnly.length > 0) {
             setReviewsList(publishedOnly)
+            try {
+              localStorage.setItem('said_cached_reviews', JSON.stringify(data.reviews))
+            } catch {}
           }
         }
       } catch (err) {
-        console.warn('Failed to load live testimonials, showing default list.', err)
+        console.warn('Failed to load live testimonials, using local cache fallback.', err)
       } finally {
         setLoading(false)
       }
     }
+
     fetchReviews()
+    window.addEventListener('focus', fetchReviews)
+    window.addEventListener('storage', fetchReviews)
+
+    return () => {
+      window.removeEventListener('focus', fetchReviews)
+      window.removeEventListener('storage', fetchReviews)
+    }
   }, [])
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
@@ -194,28 +225,44 @@ export default function TestimonialsPage() {
       })
 
       const data = await res.json()
-      if (data.success && data.review) {
-        setReviewsList((prev) => [data.review, ...prev])
-        try {
-          const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
-          localStorage.setItem('said_custom_reviews', JSON.stringify([data.review, ...localCustom.filter((c: any) => c.id !== data.review.id)]))
-        } catch {}
-        setSuccessMessage('Thank you! Your review has been published successfully.')
-        setForm({
-          author: '',
-          role: 'Private Residence Client',
-          location: 'Hyderabad',
-          project: '',
-          quote: '',
-          rating: 5,
-        })
-        setTimeout(() => {
-          setModalOpen(false)
-          setSuccessMessage('')
-        }, 2000)
-      } else {
-        alert(data.error || 'Failed to submit review.')
+      const newReview: ReviewItem = data.success && data.review ? data.review : {
+        id: `rev-${Date.now()}`,
+        author: form.author.trim(),
+        role: form.role.trim() || 'Client',
+        location: form.location.trim() || 'Hyderabad',
+        project: form.project.trim() || 'Residential Interiors',
+        quote: form.quote.trim(),
+        rating: Number(form.rating) || 5,
+        published: true,
+        createdAt: new Date().toISOString().split('T')[0],
       }
+
+      setReviewsList((prev) => [newReview, ...prev.filter((r) => r.id !== newReview.id)])
+      try {
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+        const updatedCustom = [newReview, ...localCustom.filter((c: any) => c.id !== newReview.id)]
+        localStorage.setItem('said_custom_reviews', JSON.stringify(updatedCustom))
+
+        const localCached = JSON.parse(localStorage.getItem('said_cached_reviews') || '[]')
+        const updatedCached = [newReview, ...localCached.filter((c: any) => c.id !== newReview.id)]
+        localStorage.setItem('said_cached_reviews', JSON.stringify(updatedCached))
+
+        window.dispatchEvent(new Event('storage'))
+      } catch {}
+
+      setSuccessMessage('Thank you! Your review has been published successfully.')
+      setForm({
+        author: '',
+        role: 'Private Residence Client',
+        location: 'Hyderabad',
+        project: '',
+        quote: '',
+        rating: 5,
+      })
+      setTimeout(() => {
+        setModalOpen(false)
+        setSuccessMessage('')
+      }, 2000)
     } catch (err) {
       alert('Network error. Please try again.')
     } finally {

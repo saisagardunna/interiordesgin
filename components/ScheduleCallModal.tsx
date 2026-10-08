@@ -179,7 +179,14 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
 
       try {
         const localCalls = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
-        localStorage.setItem('said_custom_calls', JSON.stringify([callPayload, ...localCalls]))
+        const updatedCalls = [callPayload, ...localCalls.filter((c: any) => c.id !== callPayload.id)]
+        localStorage.setItem('said_custom_calls', JSON.stringify(updatedCalls))
+
+        const cachedCalls = JSON.parse(localStorage.getItem('said_cached_calls') || '[]')
+        const updatedCached = [callPayload, ...cachedCalls.filter((c: any) => c.id !== callPayload.id)]
+        localStorage.setItem('said_cached_calls', JSON.stringify(updatedCached))
+
+        window.dispatchEvent(new Event('storage'))
       } catch {}
 
       const data = await res.json()

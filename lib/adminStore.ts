@@ -44,6 +44,7 @@ export interface InquiryItem {
 export interface StudioSettings {
   contactEmail: string
   contactPhone: string
+  whatsappPhone: string
   locationAddress: string
   latitude: number
   longitude: number
@@ -139,6 +140,7 @@ let inquiriesStore: InquiryItem[] = [
 let settingsStore: StudioSettings = {
   contactEmail: 'satwikaarchitects@gmail.com',
   contactPhone: '+91 99080 01558',
+  whatsappPhone: '+91 99080 01558',
   locationAddress: 'Block 21, F-1, Vignanpuri Colony, Vidya Nagar, Hyderabad - 44',
   latitude: 17.489842,
   longitude: 78.400996,
@@ -436,6 +438,7 @@ export async function getStudioSettings(): Promise<StudioSettings> {
       settingsStore = {
         contactEmail: s.contactEmail || s.contact_email || settingsStore.contactEmail,
         contactPhone: s.contactPhone || s.contact_phone || settingsStore.contactPhone,
+        whatsappPhone: s.whatsappPhone || s.whatsapp_phone || settingsStore.whatsappPhone,
         locationAddress: s.locationAddress || s.location_address || settingsStore.locationAddress,
         latitude: Number(s.latitude) || settingsStore.latitude,
         longitude: Number(s.longitude) || settingsStore.longitude,
@@ -459,6 +462,7 @@ export async function updateStudioSettings(newSettings: Partial<StudioSettings>)
         id: 'main_settings',
         contact_email: settingsStore.contactEmail,
         contact_phone: settingsStore.contactPhone,
+        whatsapp_phone: settingsStore.whatsappPhone,
         location_address: settingsStore.locationAddress,
         latitude: settingsStore.latitude,
         longitude: settingsStore.longitude,

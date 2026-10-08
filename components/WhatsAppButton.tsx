@@ -1,18 +1,46 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 export default function WhatsAppButton() {
   const pathname = usePathname()
+  const [whatsappPhone, setWhatsappPhone] = useState('919908001558')
 
   // Hide WhatsApp button on all Admin panel routes
   if (pathname?.startsWith('/admin')) {
     return null
   }
 
-  const whatsappNumber = '919908001558'
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const cached = localStorage.getItem('said_cached_settings')
+        if (cached) {
+          const parsed = JSON.parse(cached)
+          if (parsed.whatsappPhone || parsed.contactPhone) {
+            const raw = parsed.whatsappPhone || parsed.contactPhone
+            const cleanDigits = raw.replace(/\D/g, '')
+            if (cleanDigits) setWhatsappPhone(cleanDigits)
+          }
+        }
+
+        const res = await fetch('/api/admin/settings')
+        const data = await res.json()
+        if (data.success && data.settings) {
+          const raw = data.settings.whatsappPhone || data.settings.contactPhone
+          if (raw) {
+            const cleanDigits = raw.replace(/\D/g, '')
+            if (cleanDigits) setWhatsappPhone(cleanDigits)
+          }
+        }
+      } catch {}
+    }
+    loadSettings()
+  }, [])
+
   const message = encodeURIComponent('Hello SAID Studio, I would like to inquire about interior architecture and design services.')
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`
+  const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${message}`
 
   return (
     <div className="fixed right-0 top-[65%] sm:top-[68%] -translate-y-1/2 z-[999]">
