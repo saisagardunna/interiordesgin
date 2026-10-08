@@ -175,7 +175,13 @@ export async function getScheduledCalls(): Promise<ScheduledCall[]> {
           createdAt: c.createdAt || c.created_at || new Date().toISOString(),
         }))
         .filter((c) => !deletedCallIds.has(c.id))
-      callsStore = fetchedCalls
+      
+      const existingIds = new Set(fetchedCalls.map(c => c.id))
+      const combined = [
+        ...fetchedCalls,
+        ...callsStore.filter(c => !existingIds.has(c.id) && !deletedCallIds.has(c.id))
+      ]
+      callsStore = combined
       return callsStore
     }
   } catch (err) {
@@ -262,7 +268,13 @@ export async function getInquiries(): Promise<InquiryItem[]> {
           submittedAt: i.submittedAt || i.submitted_at || new Date().toISOString(),
         }))
         .filter((i) => !deletedInquiryIds.has(i.id))
-      inquiriesStore = fetchedInquiries
+
+      const existingIds = new Set(fetchedInquiries.map(i => i.id))
+      const combined = [
+        ...fetchedInquiries,
+        ...inquiriesStore.filter(i => !existingIds.has(i.id) && !deletedInquiryIds.has(i.id))
+      ]
+      inquiriesStore = combined
       return inquiriesStore
     }
   } catch (err) {
@@ -319,7 +331,7 @@ export async function deleteInquiry(id: string): Promise<boolean> {
 export async function getReviews(): Promise<ReviewItem[]> {
   try {
     const { data, error } = await supabase.from('reviews').select('*')
-    if (!error && Array.isArray(data) && data.length > 0) {
+    if (!error && Array.isArray(data)) {
       const fetchedReviews: ReviewItem[] = data
         .map((r: any) => ({
           id: String(r.id),
@@ -337,6 +349,7 @@ export async function getReviews(): Promise<ReviewItem[]> {
       const existingIds = new Set(fetchedReviews.map(r => r.id))
       const combined = [
         ...fetchedReviews,
+        ...reviewsStore.filter(r => !existingIds.has(r.id) && !deletedReviewIds.has(r.id)),
         ...defaultReviews.filter(d => !existingIds.has(d.id) && !deletedReviewIds.has(d.id))
       ]
       reviewsStore = combined

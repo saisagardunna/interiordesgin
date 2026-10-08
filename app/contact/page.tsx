@@ -164,38 +164,57 @@ export default function ContactPage() {
       })
 
       // 2. Save Inquiry to Admin Terminal for WEB3 & CONTACT INQUIRIES tab (with GPS Location & Open Maps)
+      const inqPayload = {
+        id: `inq-${Date.now()}`,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        location: formData.location,
+        service: formData.service,
+        budget: formData.budget,
+        message: formData.message,
+        coordinates: formData.latitude && formData.longitude ? `Lat: ${formData.latitude}, Long: ${formData.longitude}` : '',
+        googleMapsUrl: formData.maps_link || (formData.latitude && formData.longitude ? `https://www.google.com/maps?q=${formData.latitude},${formData.longitude}` : ''),
+        submittedAt: new Date().toISOString(),
+      }
+
       await fetch('/api/admin/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          location: formData.location,
-          service: formData.service,
-          budget: formData.budget,
-          message: formData.message,
-          coordinates: formData.latitude && formData.longitude ? `Lat: ${formData.latitude}, Long: ${formData.longitude}` : '',
-          googleMapsUrl: formData.maps_link || (formData.latitude && formData.longitude ? `https://www.google.com/maps?q=${formData.latitude},${formData.longitude}` : ''),
-        }),
+        body: JSON.stringify(inqPayload),
       })
 
+      try {
+        const localInq = JSON.parse(localStorage.getItem('said_custom_inquiries') || '[]')
+        localStorage.setItem('said_custom_inquiries', JSON.stringify([inqPayload, ...localInq]))
+      } catch {}
+
       // 3. Save Scheduled Call entry so it populates SCHEDULED CALLS & CALENDAR in Admin Dashboard
+      const callPayload = {
+        id: `call-${Date.now()}`,
+        clientName: formData.name,
+        clientPhone: formData.phone,
+        clientEmail: formData.email,
+        location: formData.location,
+        serviceRequired: formData.service,
+        estimatedBudget: formData.budget,
+        scheduledDate: formData.scheduledDate,
+        scheduledTime: formData.scheduledTime,
+        notes: formData.message,
+        status: 'Pending' as const,
+        createdAt: new Date().toISOString(),
+      }
+
       await fetch('/api/admin/schedule-call', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          clientName: formData.name,
-          clientPhone: formData.phone,
-          clientEmail: formData.email,
-          location: formData.location,
-          serviceRequired: formData.service,
-          estimatedBudget: formData.budget,
-          scheduledDate: formData.scheduledDate,
-          scheduledTime: formData.scheduledTime,
-          notes: formData.message,
-        }),
+        body: JSON.stringify(callPayload),
       })
+
+      try {
+        const localCalls = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
+        localStorage.setItem('said_custom_calls', JSON.stringify([callPayload, ...localCalls]))
+      } catch {}
 
       setSubmitted(true)
     } catch (err) {

@@ -156,8 +156,15 @@ export default function AdminDashboardPage() {
       const setData = await setRes.json()
 
       if (callsData.success && Array.isArray(callsData.calls)) {
-        setCalls(callsData.calls)
-        try { localStorage.setItem('said_cached_calls', JSON.stringify(callsData.calls)) } catch {}
+        let localCustom: ScheduledCall[] = []
+        try { localCustom = JSON.parse(localStorage.getItem('said_custom_calls') || '[]') } catch {}
+        const callIds = new Set(callsData.calls.map((c: ScheduledCall) => c.id))
+        const mergedCalls = [
+          ...callsData.calls,
+          ...localCustom.filter((c: ScheduledCall) => !callIds.has(c.id))
+        ]
+        setCalls(mergedCalls)
+        try { localStorage.setItem('said_cached_calls', JSON.stringify(mergedCalls)) } catch {}
       } else {
         try {
           const cached = localStorage.getItem('said_cached_calls')
@@ -166,8 +173,15 @@ export default function AdminDashboardPage() {
       }
 
       if (inqData.success && Array.isArray(inqData.inquiries)) {
-        setInquiries(inqData.inquiries)
-        try { localStorage.setItem('said_cached_inquiries', JSON.stringify(inqData.inquiries)) } catch {}
+        let localCustom: InquiryItem[] = []
+        try { localCustom = JSON.parse(localStorage.getItem('said_custom_inquiries') || '[]') } catch {}
+        const inqIds = new Set(inqData.inquiries.map((i: InquiryItem) => i.id))
+        const mergedInq = [
+          ...inqData.inquiries,
+          ...localCustom.filter((i: InquiryItem) => !inqIds.has(i.id))
+        ]
+        setInquiries(mergedInq)
+        try { localStorage.setItem('said_cached_inquiries', JSON.stringify(mergedInq)) } catch {}
       } else {
         try {
           const cached = localStorage.getItem('said_cached_inquiries')
@@ -176,8 +190,15 @@ export default function AdminDashboardPage() {
       }
 
       if (revData.success && Array.isArray(revData.reviews)) {
-        setReviews(revData.reviews)
-        try { localStorage.setItem('said_cached_reviews', JSON.stringify(revData.reviews)) } catch {}
+        let localCustom: ReviewItem[] = []
+        try { localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]') } catch {}
+        const revIds = new Set(revData.reviews.map((r: ReviewItem) => r.id))
+        const mergedRev = [
+          ...revData.reviews,
+          ...localCustom.filter((c: ReviewItem) => !revIds.has(c.id))
+        ]
+        setReviews(mergedRev)
+        try { localStorage.setItem('said_cached_reviews', JSON.stringify(mergedRev)) } catch {}
       }
 
       if (setData.success && setData.settings) {
@@ -223,7 +244,11 @@ export default function AdminDashboardPage() {
     // 1. Optimistic instant UI state update (Zero popups)
     setCalls((prev) => {
       const updated = prev.filter((c) => c.id !== id)
-      try { localStorage.setItem('said_cached_calls', JSON.stringify(updated)) } catch {}
+      try {
+        localStorage.setItem('said_cached_calls', JSON.stringify(updated))
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
+        localStorage.setItem('said_custom_calls', JSON.stringify(localCustom.filter((c: any) => c.id !== id)))
+      } catch {}
       return updated
     })
     showToast('Call entry deleted')
@@ -240,7 +265,11 @@ export default function AdminDashboardPage() {
     // 1. Optimistic instant UI state update (Zero popups)
     setInquiries((prev) => {
       const updated = prev.filter((i) => i.id !== id)
-      try { localStorage.setItem('said_cached_inquiries', JSON.stringify(updated)) } catch {}
+      try {
+        localStorage.setItem('said_cached_inquiries', JSON.stringify(updated))
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_inquiries') || '[]')
+        localStorage.setItem('said_custom_inquiries', JSON.stringify(localCustom.filter((c: any) => c.id !== id)))
+      } catch {}
       return updated
     })
     showToast('Inquiry entry removed')
@@ -348,7 +377,11 @@ export default function AdminDashboardPage() {
     // 1. Optimistic instant UI state update (Zero popups)
     setReviews((prev) => {
       const updated = prev.filter((r) => r.id !== id)
-      try { localStorage.setItem('said_cached_reviews', JSON.stringify(updated)) } catch {}
+      try {
+        localStorage.setItem('said_cached_reviews', JSON.stringify(updated))
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+        localStorage.setItem('said_custom_reviews', JSON.stringify(localCustom.filter((c: any) => c.id !== id)))
+      } catch {}
       return updated
     })
     showToast('Review deleted')

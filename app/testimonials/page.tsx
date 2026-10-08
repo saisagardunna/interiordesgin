@@ -196,6 +196,10 @@ export default function TestimonialsPage() {
       const data = await res.json()
       if (data.success && data.review) {
         setReviewsList((prev) => [data.review, ...prev])
+        try {
+          const localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+          localStorage.setItem('said_custom_reviews', JSON.stringify([data.review, ...localCustom.filter((c: any) => c.id !== data.review.id)]))
+        } catch {}
         setSuccessMessage('Thank you! Your review has been published successfully.')
         setForm({
           author: '',

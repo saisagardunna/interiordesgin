@@ -33,6 +33,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
   const closeMenu = () => setMenuOpen(false)
 
   const isActive = (href: string) => {
@@ -125,15 +136,15 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* Mobile Animated Nav Drawer */}
+        {/* Mobile Nav Drawer */}
         <AnimatePresence>
           {menuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="mobile-menu fixed inset-0 z-50 bg-white/98 backdrop-blur-xl text-[#171717] flex flex-col justify-between p-6 sm:p-8 lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="mobile-menu fixed inset-0 z-[100] bg-white text-[#171717] flex flex-col justify-between p-6 sm:p-8 lg:hidden h-screen"
             >
               <div className="flex justify-between items-center border-b border-[#e8e4dc] pb-4">
                 <div className="flex items-center gap-2">
@@ -149,12 +160,7 @@ export default function Navbar() {
                 {navItems.map((item, idx) => {
                   const active = isActive(item.href)
                   return (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.04, duration: 0.3 }}
-                    >
+                    <div key={item.label}>
                       <Link
                         href={item.href}
                         onClick={closeMenu}
@@ -168,7 +174,7 @@ export default function Navbar() {
                         </span>
                         <ArrowUpRight className={`w-5 h-5 transition-transform ${active ? 'text-[#8f6530]' : 'opacity-30'}`} />
                       </Link>
-                    </motion.div>
+                    </div>
                   )
                 })}
               </div>
