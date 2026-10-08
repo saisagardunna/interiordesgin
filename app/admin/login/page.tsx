@@ -28,6 +28,7 @@ export default function AdminLoginPage() {
 
       const data = await res.json()
       if (data.success) {
+        try { sessionStorage.setItem('said_admin_session_active', '1') } catch {}
         router.push('/admin')
       } else {
         setErrorMsg(data.error || 'Invalid credentials. Please verify your email and password.')
@@ -92,7 +93,7 @@ export default function AdminLoginPage() {
               <input
                 type="email"
                 value={email}
-                placeholder="Enter admin email (e.g. satwikaarchitects@gmail.com)"
+                placeholder="Enter admin email address"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#121212] border border-[#333] p-4 text-sm text-white font-mono rounded-xs focus:border-[#8f6530] focus:outline-none placeholder:text-[#555]"
                 required

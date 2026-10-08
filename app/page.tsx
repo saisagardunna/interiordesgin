@@ -54,6 +54,88 @@ const featuredProjects = [
   { title: 'The Stone Kitchen', category: 'INTERIORS', meta: 'Vizag · Bespoke Kitchen & Dining', image: '/images/kitchen-detail.png', slug: 'the-stone-kitchen' },
 ]
 
+const happyPatronsData = [
+  {
+    id: 'patron-1',
+    name: 'K. Satyanarayana & Family',
+    role: 'Private Villa Client',
+    project: 'The Courtyard Residence',
+    location: 'Jubilee Hills, Hyderabad',
+    quote: 'Every detail felt intentional and crafted around the way we live. SAID transformed our home into a peaceful sanctuary.',
+    image: '/images/courtyard-residence.png',
+    link: '/projects/the-courtyard-residence',
+  },
+  {
+    id: 'patron-2',
+    name: 'Vijay RV & Homeowners',
+    role: '3 Flat Interiors Client',
+    project: 'Sai Vanamali',
+    location: 'Miyapur, Hyderabad',
+    quote: 'Entrusting SAID with 3 residential flat interior works was our best decision. Modular kitchens to wardrobes are flawless!',
+    image: '/images/sai-vanamali/sai-vanamali-1.jpg',
+    link: '/projects/sai-vanamali-miyapur',
+  },
+  {
+    id: 'patron-3',
+    name: 'Sri BioAesthetics Team',
+    role: 'Commercial Client',
+    project: 'Sri BioAesthetics Laboratory',
+    location: 'Hyderabad',
+    quote: 'Delivered our specialized commercial laboratory fit-out & executive offices with exceptional speed & precision.',
+    image: '/images/sri-bio/sri-bio-1.jpg',
+    link: '/projects/sri-bioaesthetics',
+  },
+  {
+    id: 'patron-4',
+    name: 'Dr. Vikram Reddy',
+    role: 'Villa Owner',
+    project: 'The Quiet Retreat',
+    location: 'Financial District, Hyderabad',
+    quote: 'Single-point accountability meant we never had to chase contractors or joinery workers. White-glove handover!',
+    image: '/images/hero-interior.png',
+    link: '/portfolio',
+  },
+  {
+    id: 'patron-5',
+    name: 'Mukunda Nilayam Residence',
+    role: 'Architectural Residence',
+    project: 'Mukunda Nilayam 3D Suite',
+    location: 'Hyderabad',
+    quote: 'Photorealistic 3D visualization allowed us to experience daylight orientation and timber finishes before site execution.',
+    image: '/images/mukunda-nilayam/mukunda-1.jpg',
+    link: '/projects/mukunda-nilayam',
+  },
+  {
+    id: 'patron-6',
+    name: 'Executive Workplace Client',
+    role: 'Commercial Workspace',
+    project: 'The Walnut Office',
+    location: 'Hyderabad',
+    quote: 'Rich natural walnut paneling and daylight create an executive workplace that feels purposeful and welcoming.',
+    image: '/images/walnut/walnut_1.jpg',
+    link: '/projects/the-walnut-office',
+  },
+  {
+    id: 'patron-7',
+    name: 'Modern Culinary Patrons',
+    role: 'Kitchen Fit-Out',
+    project: 'The Stone Kitchen',
+    location: 'Vizag',
+    quote: 'A tactile kitchen study in natural stone, timber and precise joinery with Blum soft-close hardware.',
+    image: '/images/kitchen-detail.png',
+    link: '/services/modular-kitchens',
+  },
+]
+
+const corporateClientLogosData = [
+  { id: 'client-1', name: 'My Home Group', logoUrl: '/images/clients/my-home-group.png' },
+  { id: 'client-2', name: 'Sri Sri Holistic Hospitals', logoUrl: '/images/clients/sri-sri-holistic-hospitals.png' },
+  { id: 'client-3', name: 'Sri Bio', logoUrl: '/images/clients/sri-bio.png' },
+  { id: 'client-4', name: 'Lanco Hills', logoUrl: '/images/clients/lanco-hills.png' },
+  { id: 'client-5', name: 'Pragmatic Play', logoUrl: '/images/clients/pragmatic-play.png' },
+  { id: 'client-6', name: 'Yashoda Hospitals', logoUrl: '/images/clients/yashoda-hospitals.png' },
+]
+
 const luxuryEase = [0.22, 1, 0.36, 1] as const
 
 export default function Home() {
@@ -101,7 +183,7 @@ export default function Home() {
                   {heroSlides[currentSlide].category}
                 </span>
                 <Link href={heroSlides[currentSlide].link} className="group">
-                  <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-white leading-[1.1] tracking-normal group-hover:text-[#b89768] transition-colors">
+                  <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal text-white leading-[1.15] tracking-normal group-hover:text-[#b89768] transition-colors">
                     {heroSlides[currentSlide].title}
                   </h1>
                 </Link>
@@ -146,11 +228,11 @@ export default function Home() {
                 <span className="w-2 h-2 rounded-full bg-[#8f6530]" />
                 ABOUT US &amp; OUR STORY
               </p>
-              <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[0.94] text-[#171717] mb-8">
+              <h2 className="font-serif text-2xl sm:text-4xl font-normal leading-[1.1] text-[#171717] mb-8">
                 We make space for <br />
                 <i className="font-serif italic text-[#8f6530]">better living.</i>
               </h2>
-              <p className="text-base md:text-lg leading-relaxed text-[#4e4a43] mb-10 max-w-2xl mx-auto font-normal">
+              <p className="text-base md:text-lg leading-relaxed text-[#2d2a25] mb-10 max-w-2xl mx-auto font-normal">
                 SAID — Satwika Architecture and Interior Design — is a design and build atelier shaping personal homes, executive workplaces, and quiet residential sanctuaries across South India.
               </p>
               
@@ -179,7 +261,7 @@ export default function Home() {
             <RevealSection className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
               <div>
                 <p className="eyebrow font-sans text-xs text-[#8f6530] uppercase tracking-[0.2em] font-bold mb-3">PORTFOLIO ARCHIVE</p>
-                <h2 className="font-serif text-5xl md:text-7xl font-normal text-[#171717]">
+                <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#171717]">
                   Made for the <i className="font-serif italic text-[#8f6530]">everyday.</i>
                 </h2>
               </div>
@@ -209,7 +291,7 @@ export default function Home() {
                     <div className="pt-4 border-t border-[#e8e4dc] flex justify-between items-start gap-4">
                       <div>
                         <h3 className="font-serif text-lg sm:text-xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors">{project.title}</h3>
-                        <p className="font-sans text-xs uppercase tracking-widest text-[#6b6459] mt-1.5 font-semibold">{project.meta}</p>
+                        <p className="font-sans text-xs uppercase tracking-widest text-[#2d2a25] mt-1.5 font-semibold">{project.meta}</p>
                       </div>
                       <ArrowUpRight className="w-5 h-5 text-[#8f6530] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </div>
@@ -226,7 +308,7 @@ export default function Home() {
             <RevealSection className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
               <div>
                 <p className="eyebrow font-sans text-xs text-[#8f6530] uppercase tracking-[0.2em] font-bold mb-3">OUR SERVICES</p>
-                <h2 className="font-serif text-5xl md:text-7xl font-normal text-[#171717]">
+                <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#171717]">
                   From first sketch to <i className="font-serif italic text-[#8f6530]">final handover.</i>
                 </h2>
               </div>
@@ -286,7 +368,7 @@ export default function Home() {
             <RevealSection className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14">
               <div>
                 <p className="eyebrow font-sans text-xs text-[#8f6530] uppercase tracking-[0.2em] font-bold mb-3">OUR BLOGS</p>
-                <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+                <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#171717]">
                   Design Journal &amp; <i className="font-serif italic text-[#8f6530]">Articles.</i>
                 </h2>
               </div>
@@ -296,45 +378,148 @@ export default function Home() {
             </RevealSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="bg-white p-8 border border-[#e8e4dc] rounded-xs flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white p-8 border border-[#e8e4dc] rounded-xs flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow group">
                 <div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold uppercase block mb-3">ARCHITECTURE JOURNAL</span>
-                  <h3 className="font-serif text-3xl font-normal text-[#171717] mb-4">
-                    The Art of Natural Light in Modern Hyderabad Villas
-                  </h3>
+                  <Link href="/blogs/the-art-of-natural-light-hyderabad-villas">
+                    <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#171717] mb-4 group-hover:text-[#8f6530] transition-colors">
+                      The Art of Natural Light in Modern Hyderabad Villas
+                    </h3>
+                  </Link>
                   <p className="text-sm text-[#4e4a43] leading-relaxed mb-8">
                     How courtyard architecture and strategic skylights transform indoor temperature and ambient mood in South Indian luxury residences.
                   </p>
                 </div>
-                <Link href="/blogs" className="font-sans text-xs uppercase tracking-widest font-bold text-[#8f6530] inline-flex items-center gap-1">
-                  Read Story <ArrowUpRight className="w-4 h-4" />
+                <Link href="/blogs/the-art-of-natural-light-hyderabad-villas" className="font-sans text-xs uppercase tracking-widest font-bold text-[#8f6530] inline-flex items-center gap-1 hover:text-[#171717] transition-colors">
+                  Read Full Story <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
 
-              <div className="bg-white p-8 border border-[#e8e4dc] rounded-xs flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white p-8 border border-[#e8e4dc] rounded-xs flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow group">
                 <div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold uppercase block mb-3">MATERIAL GUIDE</span>
-                  <h3 className="font-serif text-3xl font-normal text-[#171717] mb-4">
-                    Choosing Between Sintered Italian Marble &amp; Quartz
-                  </h3>
+                  <Link href="/blogs/sintered-italian-marble-vs-quartz-kitchens">
+                    <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#171717] mb-4 group-hover:text-[#8f6530] transition-colors">
+                      Choosing Between Sintered Italian Marble &amp; Quartz
+                    </h3>
+                  </Link>
                   <p className="text-sm text-[#4e4a43] leading-relaxed mb-8">
                     A comprehensive technical comparison of porosity, scratch resistance, heat endurance, and maintenance for high-end kitchens.
                   </p>
                 </div>
-                <Link href="/blogs" className="font-sans text-xs uppercase tracking-widest font-bold text-[#8f6530] inline-flex items-center gap-1">
-                  Read Story <ArrowUpRight className="w-4 h-4" />
+                <Link href="/blogs/sintered-italian-marble-vs-quartz-kitchens" className="font-sans text-xs uppercase tracking-widest font-bold text-[#8f6530] inline-flex items-center gap-1 hover:text-[#171717] transition-colors">
+                  Read Full Story <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* SECTION 5: TESTIMONIALS */}
-        <section className="py-24 px-6 md:px-16 bg-white border-b border-[#e8e4dc]">
+        {/* SECTION 5: OUR HAPPY PATRONS - HORIZONTAL AUTO-MOVING MARQUEE */}
+        <section className="py-24 bg-white border-b border-[#e8e4dc] overflow-hidden">
+          <div className="max-w-[1440px] mx-auto px-6 md:px-16 mb-12">
+            <RevealSection className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div>
+                <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block mb-2">
+                  OUR HAPPY PATRONS
+                </span>
+                <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#171717]">
+                  We Treat Every Client <i className="font-serif italic text-[#8f6530]">Like Family.</i>
+                </h2>
+              </div>
+            </RevealSection>
+          </div>
+
+          <div className="relative overflow-hidden py-4 select-none group">
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+            <div className="animate-marquee flex items-center gap-8 group-hover:[animation-play-state:paused]" style={{ animationDuration: '45s' }}>
+              {[...happyPatronsData, ...happyPatronsData].map((patron, idx) => (
+                <Link
+                  key={`${patron.id}-${idx}`}
+                  href={patron.link}
+                  className="w-[260px] sm:w-[360px] bg-[#faf8f5] hover:bg-white border border-[#e8e4dc] hover:border-[#8f6530] rounded-xs p-4 sm:p-5 shrink-0 flex flex-col justify-between transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group/patron relative overflow-hidden cursor-pointer"
+                >
+                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xs border border-[#e8e4dc] mb-4">
+                    <Image
+                      src={patron.image}
+                      alt={patron.name}
+                      fill
+                      sizes="360px"
+                      className="object-cover transition-transform duration-700 group-hover/patron:scale-105"
+                    />
+                    <div className="absolute top-3 left-3 bg-[#121212]/90 backdrop-blur-md text-white text-[9px] font-mono px-2.5 py-1 rounded-xs uppercase tracking-wider font-bold">
+                      {patron.role}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <blockquote className="font-serif text-base sm:text-lg font-normal text-[#171717] group-hover/patron:text-[#8f6530] transition-colors leading-snug">
+                      &ldquo;{patron.quote}&rdquo;
+                    </blockquote>
+                    <div className="pt-3 border-t border-[#e8e4dc] flex items-center justify-between">
+                      <div>
+                        <h3 className="font-serif text-base font-medium text-[#171717]">{patron.name}</h3>
+                        <p className="font-sans text-[11px] text-[#8f6530] font-semibold mt-0.5">{patron.location}</p>
+                      </div>
+                      <ArrowUpRight className="w-4 h-4 text-[#8f6530] group-hover/patron:translate-x-0.5 group-hover/patron:-translate-y-0.5 transition-transform shrink-0" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 5B: OUR TRUSTED CLIENTS & CORPORATE PATRONS - HORIZONTAL LOGO MARQUEE */}
+        <section className="py-20 bg-white border-b border-[#e8e4dc] overflow-hidden select-none">
+          <div className="max-w-[1440px] mx-auto px-6 md:px-16 mb-10 text-center">
+            <RevealSection>
+              <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block mb-2">
+                OUR TRUSTED CLIENTS &amp; CORPORATE PATRONS
+              </span>
+              <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#171717]">
+                Architectural Partnerships &amp; <i className="font-serif italic text-[#8f6530]">Institutional Alliances</i>
+              </h2>
+            </RevealSection>
+          </div>
+
+          <div className="relative overflow-hidden py-6 bg-white group">
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
+
+            <div
+              className="animate-marquee flex items-center gap-8 sm:gap-12 group-hover:[animation-play-state:paused]"
+              style={{ animationDuration: '55s' }}
+            >
+              {[
+                ...corporateClientLogosData,
+                ...corporateClientLogosData,
+                ...corporateClientLogosData,
+                ...corporateClientLogosData,
+              ].map((client, idx) => (
+                <div
+                  key={`${client.id}-${idx}`}
+                  className="w-[220px] sm:w-[270px] h-[120px] sm:h-[140px] bg-white border border-[#e8e4dc] hover:border-[#8f6530] rounded-xs p-6 shrink-0 flex items-center justify-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group/logo relative cursor-pointer"
+                >
+                  <img
+                    src={client.logoUrl}
+                    alt={client.name}
+                    className="max-h-[75px] max-w-[200px] w-auto h-auto object-contain transition-all duration-500 group-hover/logo:scale-110"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 6: TESTIMONIALS */}
+        <section className="py-24 px-6 md:px-16 bg-[#faf8f5] border-b border-[#e8e4dc]">
           <div className="max-w-[1440px] mx-auto text-center max-w-4xl">
             <RevealSection>
               <Quote className="w-12 h-12 text-[#8f6530] mx-auto mb-8 opacity-80" />
-              <blockquote className="font-serif text-2xl sm:text-4xl text-[#171717] font-normal italic leading-snug mb-8">
+              <blockquote className="font-serif text-xl sm:text-2xl text-[#171717] font-normal italic leading-snug mb-8">
                 “EVERY DETAIL FELT INTENTIONAL AND CRAFTED AROUND THE WAY WE LIVE. SAID TRANSFORMED OUR HOME INTO A PEACEFUL SANCTUARY.”
               </blockquote>
               <p className="font-sans text-xs uppercase tracking-widest text-[#8f6530] font-bold mb-3">
@@ -353,7 +538,7 @@ export default function Home() {
             <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block mb-4">
               CONTACT SAID STUDIO
             </span>
-            <h2 className="font-serif text-4xl sm:text-6xl font-normal mb-8 text-[#171717]">
+            <h2 className="font-serif text-2xl sm:text-4xl font-normal mb-8 text-[#171717]">
               Ready to start your <i className="font-serif italic text-[#8f6530]">project journey?</i>
             </h2>
             <div className="flex flex-wrap justify-center gap-5">

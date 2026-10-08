@@ -142,10 +142,15 @@ let settingsStore: StudioSettings = {
   locationAddress: 'Block 21, F-1, Vignanpuri Colony, Vidya Nagar, Hyderabad - 44',
   latitude: 17.489842,
   longitude: 78.400996,
-  rates2BHK: '₹12 Lakhs – ₹18 Lakhs',
-  rates3BHK: '₹18 Lakhs – ₹28 Lakhs',
-  rates4BHKVilla: '₹30 Lakhs – ₹50+ Lakhs',
+  rates2BHK: 'Bespoke Urban Residence (Custom Estimate)',
+  rates3BHK: 'Bespoke Luxury Flat (Custom Estimate)',
+  rates4BHKVilla: 'Bespoke Villa & Estate (Custom Estimate)',
 }
+
+// Persistent Deleted Item Trackers
+const deletedCallIds = new Set<string>()
+const deletedInquiryIds = new Set<string>()
+const deletedReviewIds = new Set<string>()
 
 // ----------------------
 // SCHEDULED CALLS
@@ -153,28 +158,30 @@ let settingsStore: StudioSettings = {
 export async function getScheduledCalls(): Promise<ScheduledCall[]> {
   try {
     const { data, error } = await supabase.from('scheduled_calls').select('*')
-    if (!error && data && data.length > 0) {
-      const fetchedCalls: ScheduledCall[] = data.map((c: any) => ({
-        id: String(c.id),
-        clientName: c.clientName || c.client_name || 'Client',
-        clientPhone: c.clientPhone || c.client_phone || '',
-        clientEmail: c.clientEmail || c.client_email || '',
-        location: c.location || 'Hyderabad',
-        serviceRequired: c.serviceRequired || c.service_required || 'Interior Architecture',
-        estimatedBudget: c.estimatedBudget || c.estimated_budget || '₹15L - ₹30L',
-        scheduledDate: c.scheduledDate || c.scheduled_date || new Date().toISOString().split('T')[0],
-        scheduledTime: c.scheduledTime || c.scheduled_time || '10:00 AM',
-        notes: c.notes || '',
-        status: (c.status as ScheduledCall['status']) || 'Pending',
-        createdAt: c.createdAt || c.created_at || new Date().toISOString(),
-      }))
+    if (!error && Array.isArray(data)) {
+      const fetchedCalls: ScheduledCall[] = data
+        .map((c: any) => ({
+          id: String(c.id),
+          clientName: c.clientName || c.client_name || 'Client',
+          clientPhone: c.clientPhone || c.client_phone || '',
+          clientEmail: c.clientEmail || c.client_email || '',
+          location: c.location || 'Hyderabad',
+          serviceRequired: c.serviceRequired || c.service_required || 'Interior Architecture',
+          estimatedBudget: c.estimatedBudget || c.estimated_budget || '₹15L - ₹30L',
+          scheduledDate: c.scheduledDate || c.scheduled_date || new Date().toISOString().split('T')[0],
+          scheduledTime: c.scheduledTime || c.scheduled_time || '10:00 AM',
+          notes: c.notes || '',
+          status: (c.status as ScheduledCall['status']) || 'Pending',
+          createdAt: c.createdAt || c.created_at || new Date().toISOString(),
+        }))
+        .filter((c) => !deletedCallIds.has(c.id))
       callsStore = fetchedCalls
       return callsStore
     }
   } catch (err) {
     console.warn('Supabase scheduled_calls fetch fallback to store:', err)
   }
-  return callsStore
+  return callsStore.filter((c) => !deletedCallIds.has(c.id))
 }
 
 export async function addScheduledCall(call: Omit<ScheduledCall, 'id' | 'createdAt'>): Promise<ScheduledCall> {
@@ -183,7 +190,7 @@ export async function addScheduledCall(call: Omit<ScheduledCall, 'id' | 'created
     id: `call-${Date.now()}`,
     createdAt: new Date().toISOString(),
   }
-  callsStore = [newCall, ...callsStore]
+  callsStore = [newCall, ...callsStore.filter((c) => !deletedCallIds.has(c.id))]
 
   try {
     await supabase.from('scheduled_calls').insert([
@@ -223,6 +230,7 @@ export async function updateCallStatus(id: string, status: ScheduledCall['status
 }
 
 export async function deleteCall(id: string): Promise<boolean> {
+  deletedCallIds.add(id)
   callsStore = callsStore.filter(c => c.id !== id)
   try {
     await supabase.from('scheduled_calls').delete().eq('id', id)
@@ -238,27 +246,29 @@ export async function deleteCall(id: string): Promise<boolean> {
 export async function getInquiries(): Promise<InquiryItem[]> {
   try {
     const { data, error } = await supabase.from('inquiries').select('*')
-    if (!error && data && data.length > 0) {
-      const fetchedInquiries: InquiryItem[] = data.map((i: any) => ({
-        id: String(i.id),
-        name: i.name || 'Client',
-        phone: i.phone || '',
-        email: i.email || '',
-        location: i.location || '',
-        service: i.service || '',
-        budget: i.budget || '',
-        message: i.message || '',
-        coordinates: i.coordinates || '',
-        googleMapsUrl: i.googleMapsUrl || i.google_maps_url || '',
-        submittedAt: i.submittedAt || i.submitted_at || new Date().toISOString(),
-      }))
+    if (!error && Array.isArray(data)) {
+      const fetchedInquiries: InquiryItem[] = data
+        .map((i: any) => ({
+          id: String(i.id),
+          name: i.name || 'Client',
+          phone: i.phone || '',
+          email: i.email || '',
+          location: i.location || '',
+          service: i.service || '',
+          budget: i.budget || '',
+          message: i.message || '',
+          coordinates: i.coordinates || '',
+          googleMapsUrl: i.googleMapsUrl || i.google_maps_url || '',
+          submittedAt: i.submittedAt || i.submitted_at || new Date().toISOString(),
+        }))
+        .filter((i) => !deletedInquiryIds.has(i.id))
       inquiriesStore = fetchedInquiries
       return inquiriesStore
     }
   } catch (err) {
     console.warn('Supabase inquiries fetch fallback to store:', err)
   }
-  return inquiriesStore
+  return inquiriesStore.filter((i) => !deletedInquiryIds.has(i.id))
 }
 
 export async function addInquiry(inquiry: Omit<InquiryItem, 'id' | 'submittedAt'>): Promise<InquiryItem> {
@@ -267,7 +277,7 @@ export async function addInquiry(inquiry: Omit<InquiryItem, 'id' | 'submittedAt'
     id: `inq-${Date.now()}`,
     submittedAt: new Date().toISOString(),
   }
-  inquiriesStore = [newInq, ...inquiriesStore]
+  inquiriesStore = [newInq, ...inquiriesStore.filter((i) => !deletedInquiryIds.has(i.id))]
 
   try {
     await supabase.from('inquiries').insert([
@@ -293,6 +303,7 @@ export async function addInquiry(inquiry: Omit<InquiryItem, 'id' | 'submittedAt'
 }
 
 export async function deleteInquiry(id: string): Promise<boolean> {
+  deletedInquiryIds.add(id)
   inquiriesStore = inquiriesStore.filter(i => i.id !== id)
   try {
     await supabase.from('inquiries').delete().eq('id', id)
@@ -308,25 +319,33 @@ export async function deleteInquiry(id: string): Promise<boolean> {
 export async function getReviews(): Promise<ReviewItem[]> {
   try {
     const { data, error } = await supabase.from('reviews').select('*')
-    if (!error && data && data.length > 0) {
-      const fetchedReviews: ReviewItem[] = data.map((r: any) => ({
-        id: String(r.id),
-        author: r.author || 'Client',
-        role: r.role || 'Client',
-        location: r.location || 'Hyderabad',
-        project: r.project || 'Residential',
-        quote: r.quote || '',
-        rating: Number(r.rating) || 5,
-        published: r.published !== false,
-        createdAt: r.createdAt || r.created_at || new Date().toISOString().split('T')[0],
-      }))
-      reviewsStore = fetchedReviews
+    if (!error && Array.isArray(data) && data.length > 0) {
+      const fetchedReviews: ReviewItem[] = data
+        .map((r: any) => ({
+          id: String(r.id),
+          author: r.author || 'Client',
+          role: r.role || 'Client',
+          location: r.location || 'Hyderabad',
+          project: r.project || 'Residential',
+          quote: r.quote || '',
+          rating: Number(r.rating) || 5,
+          published: r.published !== false && r.is_published !== false,
+          createdAt: r.createdAt || r.created_at || new Date().toISOString().split('T')[0],
+        }))
+        .filter((r) => !deletedReviewIds.has(r.id))
+      
+      const existingIds = new Set(fetchedReviews.map(r => r.id))
+      const combined = [
+        ...fetchedReviews,
+        ...defaultReviews.filter(d => !existingIds.has(d.id) && !deletedReviewIds.has(d.id))
+      ]
+      reviewsStore = combined
       return reviewsStore
     }
   } catch (err) {
     console.warn('Supabase reviews fetch fallback to store:', err)
   }
-  return reviewsStore
+  return reviewsStore.filter((r) => !deletedReviewIds.has(r.id))
 }
 
 export async function addReview(review: Omit<ReviewItem, 'id' | 'createdAt'>): Promise<ReviewItem> {
@@ -335,7 +354,7 @@ export async function addReview(review: Omit<ReviewItem, 'id' | 'createdAt'>): P
     id: `rev-${Date.now()}`,
     createdAt: new Date().toISOString().split('T')[0],
   }
-  reviewsStore = [newReview, ...reviewsStore]
+  reviewsStore = [newReview, ...reviewsStore.filter((r) => !deletedReviewIds.has(r.id))]
 
   try {
     await supabase.from('reviews').insert([
@@ -383,6 +402,7 @@ export async function updateReview(id: string, updated: Partial<ReviewItem>): Pr
 }
 
 export async function deleteReview(id: string): Promise<boolean> {
+  deletedReviewIds.add(id)
   reviewsStore = reviewsStore.filter(r => r.id !== id)
   try {
     await supabase.from('reviews').delete().eq('id', id)

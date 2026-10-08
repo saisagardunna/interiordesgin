@@ -106,12 +106,12 @@ export default function ServicesPage() {
                 OUR SERVICES · DESIGN &amp; BUILD
               </span>
 
-              <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal text-[#171717] tracking-tight leading-[0.95] mb-8">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#171717] tracking-tight leading-[1.1] mb-8">
                 Comprehensive Architectural <br />
                 <i className="font-serif italic text-[#8f6530]">&amp; Interior Solutions.</i>
               </h1>
 
-              <p className="text-lg md:text-xl text-[#4e4a43] leading-relaxed font-light max-w-3xl">
+              <p className="text-lg md:text-xl text-[#2d2a25] leading-relaxed font-light max-w-3xl">
                 From initial spatial concept and photorealistic 3D modeling to civil fit-out and white-glove turnkey handover—we manage every phase with single-point accountability.
               </p>
             </RevealSection>
@@ -156,7 +156,7 @@ export default function ServicesPage() {
                 {servicesData[activeServiceIdx].subtitle}
               </p>
 
-              <p className="text-base text-[#4e4a43] leading-relaxed font-normal">
+              <p className="text-base text-[#2d2a25] leading-relaxed font-normal">
                 {servicesData[activeServiceIdx].description}
               </p>
 
@@ -180,7 +180,7 @@ export default function ServicesPage() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {servicesData[activeServiceIdx].deliverables.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-xs font-sans text-[#4e4a43]">
+                    <div key={i} className="flex items-start gap-3 text-xs font-sans text-[#2d2a25]">
                       <CheckCircle2 className="w-4 h-4 text-[#8f6530] shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
@@ -227,7 +227,7 @@ export default function ServicesPage() {
                 <div key={step.no} className="bg-white p-8 border border-[#e8e4dc] rounded-xs space-y-3 shadow-sm hover:shadow-md transition-shadow">
                   <span className="font-sans text-xs font-bold text-[#8f6530] block">{step.no}</span>
                   <h3 className="font-serif text-2xl font-normal text-[#171717]">{step.title}</h3>
-                  <p className="text-xs text-[#4e4a43] leading-relaxed font-sans">{step.desc}</p>
+                  <p className="text-xs text-[#2d2a25] leading-relaxed font-sans">{step.desc}</p>
                 </div>
               ))}
             </div>

@@ -3,7 +3,8 @@
 import React, { useRef } from 'react'
 import { motion, useScroll, useTransform, Variants } from 'framer-motion'
 
-const luxuryEase = [0.22, 1, 0.36, 1] as const
+// Classic luxury architectural ease
+const classicProfessionalEase = [0.16, 1, 0.3, 1] as const
 
 interface RevealProps {
   children: React.ReactNode
@@ -20,8 +21,8 @@ export function RevealSection({
   className = '',
   delay = 0,
   direction = 'up',
-  distance = 30,
-  duration = 0.8,
+  distance = 16,
+  duration = 0.7,
   role,
 }: RevealProps) {
   const getInitialY = () => {
@@ -49,13 +50,13 @@ export function RevealSection({
         y: 0,
         x: 0,
       }}
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true, margin: '-15px' }}
       transition={{
         duration,
         delay,
-        ease: luxuryEase,
+        ease: classicProfessionalEase,
       }}
-      className={className}
+      className={`transform-gpu ${className}`}
     >
       {children}
     </motion.div>
@@ -72,7 +73,7 @@ interface StaggerContainerProps {
 export function StaggerContainer({
   children,
   className = '',
-  staggerDelay = 0.12,
+  staggerDelay = 0.08,
   delay = 0,
 }: StaggerContainerProps) {
   const containerVariants: Variants = {
@@ -91,7 +92,7 @@ export function StaggerContainer({
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true, margin: '-15px' }}
       className={className}
     >
       {children}
@@ -107,20 +108,19 @@ export function StaggerItem({
   className?: string
 }) {
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 35, scale: 0.98 },
+    hidden: { opacity: 0, y: 14 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        duration: 0.85,
-        ease: luxuryEase,
+        duration: 0.65,
+        ease: classicProfessionalEase,
       },
     },
   }
 
   return (
-    <motion.div variants={itemVariants} className={className}>
+    <motion.div variants={itemVariants} className={`transform-gpu ${className}`}>
       {children}
     </motion.div>
   )
@@ -131,14 +131,14 @@ interface ParallaxImageProps {
   alt: string
   className?: string
   aspectRatio?: string
-  speed?: number // Range -10 to 10
+  speed?: number
 }
 
 export function ParallaxImage({
   src,
   alt,
   className = '',
-  speed = 8,
+  speed = 3,
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -146,9 +146,9 @@ export function ParallaxImage({
     offset: ['start end', 'end start'],
   })
 
-  // Movement range 5% - 12%
+  // Subtle classic depth
   const y = useTransform(scrollYProgress, [0, 1], [`-${speed}%`, `${speed}%`])
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.04, 1.01, 1.04])
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.02, 1.005, 1.02])
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
@@ -178,14 +178,12 @@ export function SharpPhotoFrame({
 }: SharpPhotoFrameProps) {
   return (
     <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.4, ease: luxuryEase }}
-      className={`sharp-frame relative group cursor-pointer overflow-hidden border border-[#d8d0c3] bg-white text-[#171717] shadow-md transition-shadow duration-500 hover:shadow-2xl ${className}`}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.4, ease: classicProfessionalEase }}
+      className={`sharp-frame relative group cursor-pointer overflow-hidden border border-[#d8d0c3] bg-white text-[#171717] shadow-sm transition-all duration-500 hover:shadow-lg ${className}`}
     >
-      {/* Inner sharp mat line */}
       <div className="absolute inset-1.5 border border-black/10 z-10 pointer-events-none transition-colors duration-500 group-hover:border-black/20" />
 
-      {/* Number Badge */}
       {number && (
         <span className="absolute top-4 left-4 z-20 font-mono text-[11px] font-semibold tracking-widest text-[#171717] px-2.5 py-1 bg-white/90 backdrop-blur-md border border-black/10 rounded-xs shadow-sm">
           {number}
@@ -198,7 +196,6 @@ export function SharpPhotoFrame({
         </span>
       )}
 
-      {/* Frame Content */}
       <div className="w-full h-full relative overflow-hidden">{children}</div>
     </motion.div>
   )

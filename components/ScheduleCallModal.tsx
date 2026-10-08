@@ -69,10 +69,10 @@ const servicesList = [
 ]
 
 const budgetTiers = [
-  { label: '₹12L — ₹18L', sub: '2 BHK Apartment' },
-  { label: '₹18L — ₹30L', sub: '3 BHK Residence' },
-  { label: '₹30L — ₹60L', sub: '4 BHK Luxury Flat' },
-  { label: '₹60L — ₹1.5 Cr+', sub: 'Villa / Penthouse' },
+  { label: 'Bespoke Fit-Out', sub: 'Compact & Urban Living' },
+  { label: 'Full Residence', sub: 'Spacious Residential Spaces' },
+  { label: 'Luxury Villa / Estate', sub: 'High-End Architectural Build' },
+  { label: 'Commercial Workplace', sub: 'Executive Offices & Studios' },
 ]
 
 export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModalProps) {
@@ -88,7 +88,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
   const [selectedDate, setSelectedDate] = useState<string>(() => getFormattedDate(1))
   const [selectedTime, setSelectedTime] = useState<string>('11:30 AM')
   const [service, setService] = useState('Interior Architecture')
-  const [budget, setBudget] = useState('₹18L — ₹30L')
+  const [budget, setBudget] = useState('Full Residence')
 
   const [clientName, setClientName] = useState('')
   const [clientPhone, setClientPhone] = useState('')
@@ -254,7 +254,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
                   }`}>
                     01
                   </span>
-                  <span className={step === 1 ? 'text-white font-bold tracking-wider uppercase' : 'text-[#888] font-normal uppercase'}>
+                  <span className={step === 1 ? 'text-white font-bold tracking-wider uppercase' : 'text-[#c7c1b5] font-normal uppercase'}>
                     Date, Time &amp; Service
                   </span>
                 </div>
@@ -269,11 +269,11 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
 
                 <div className="flex items-center gap-3">
                   <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-mono font-bold ${
-                    step === 2 ? 'bg-[#8f6530] text-white' : 'bg-[#2a2723] text-[#888]'
+                    step === 2 ? 'bg-[#8f6530] text-white' : 'bg-[#2a2723] text-[#c7c1b5]'
                   }`}>
                     02
                   </span>
-                  <span className={step === 2 ? 'text-white font-bold tracking-wider uppercase' : 'text-[#888] font-normal uppercase'}>
+                  <span className={step === 2 ? 'text-white font-bold tracking-wider uppercase' : 'text-[#c7c1b5] font-normal uppercase'}>
                     Your Details &amp; Location
                   </span>
                 </div>
@@ -461,7 +461,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
                       {/* Estimated Budget Selector */}
                       <div>
                         <label className="font-sans text-xs uppercase tracking-widest font-bold text-[#b89768] block mb-2">
-                          4. Estimated Project Investment
+                          4. Project Scope
                         </label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                           {budgetTiers.map((b) => (
@@ -475,7 +475,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
                                   : 'bg-[#181715] text-[#b5af9f] border-[#2e2a24] hover:border-[#8f6530]'
                               }`}
                             >
-                              <div className="font-mono text-xs">{b.label}</div>
+                              <div className="font-sans text-xs font-semibold">{b.label}</div>
                               <div className="text-[9.5px] opacity-70 font-sans mt-0.5">{b.sub}</div>
                             </button>
                           ))}
@@ -489,7 +489,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
                           onClick={() => setStep(2)}
                           className="w-full bg-[#8f6530] text-white py-4 font-sans text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#b89768] transition-all rounded-xs shadow-xl flex items-center justify-center gap-2"
                         >
-                          Continue To Contact Details <ArrowRight className="w-4 h-4" />
+                          Continue To Contact Information <ArrowRight className="w-4 h-4" />
                         </button>
                       </div>
                     </motion.div>
@@ -538,7 +538,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
                           <input
                             type="tel"
                             required
-                            placeholder="+91 99080 01558"
+                            placeholder="+91 XXXXX XXXXX"
                             value={clientPhone}
                             onChange={(e) => setClientPhone(e.target.value)}
                             className="w-full bg-[#181715] border border-[#2e2a24] p-3.5 text-sm text-white font-mono rounded-xs focus:border-[#8f6530] focus:outline-none placeholder:text-[#555]"
@@ -551,7 +551,7 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
                           </label>
                           <input
                             type="email"
-                            placeholder="arsatwikag@gmail.com"
+                            placeholder="name@example.com"
                             value={clientEmail}
                             onChange={(e) => setClientEmail(e.target.value)}
                             className="w-full bg-[#181715] border border-[#2e2a24] p-3.5 text-sm text-white font-mono rounded-xs focus:border-[#8f6530] focus:outline-none placeholder:text-[#555]"

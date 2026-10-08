@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getReviews, addReview, updateReview, deleteReview } from '@/lib/adminStore'
+import { isAuthorizedAdmin } from '@/lib/auth'
 
 export async function GET() {
   const reviews = await getReviews()
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
       project: String(project || 'Residential Interiors').trim(),
       quote: String(quote).trim(),
       rating: Number(rating) || 5,
-      published: published !== false,
+      published: published !== undefined ? Boolean(published) : true,
     })
 
     return NextResponse.json({ success: true, review })
@@ -32,6 +33,10 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   try {
     const body = await request.json()
     const { id, ...updatedFields } = body
@@ -51,6 +56,10 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')

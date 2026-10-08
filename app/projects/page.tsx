@@ -135,14 +135,14 @@ export default function ProjectsPage() {
                       </SharpPhotoFrame>
                     </Link>
 
-                    <div className="archive-meta pt-5 mt-5 border-t border-[#dfd8cb] flex justify-between items-start gap-6 w-full">
-                      <div>
+                    <div className="archive-meta pt-4 sm:pt-5 mt-4 sm:mt-5 border-t border-[#dfd8cb] flex justify-between items-start gap-3 w-full">
+                      <div className="min-w-0 flex-1">
                         <Link href={`/projects/${project.slug}`}>
-                          <h2 className="font-serif text-xl sm:text-2xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors duration-300 leading-snug">
+                          <h2 className="font-serif text-base sm:text-lg md:text-xl lg:text-2xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors duration-300 leading-snug break-words">
                             {project.title}
                           </h2>
                         </Link>
-                        <p className="text-xs text-[#6b6459] uppercase tracking-widest mt-2 font-sans font-semibold">
+                        <p className="text-[10px] sm:text-xs text-[#6b6459] uppercase tracking-widest mt-1.5 font-sans font-semibold">
                           {project.meta}
                         </p>
                       </div>

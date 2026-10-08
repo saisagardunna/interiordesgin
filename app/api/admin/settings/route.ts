@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getStudioSettings, updateStudioSettings } from '@/lib/adminStore'
+import { isAuthorizedAdmin } from '@/lib/auth'
 
 export async function GET() {
   const settings = await getStudioSettings()
@@ -7,6 +8,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   try {
     const body = await request.json()
     const updated = await updateStudioSettings(body)

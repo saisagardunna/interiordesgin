@@ -109,7 +109,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </RevealSection>
 
           <RevealSection delay={0.2} distance={40}>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-normal leading-[0.86] tracking-tight my-6 max-w-lg">
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.1] tracking-tight my-6 max-w-lg">
               {service.title}
             </h1>
           </RevealSection>
@@ -140,7 +140,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       <section className="service-story grid grid-cols-1 lg:grid-cols-2 gap-[10vw] p-[8vw] bg-[#e4ded4] dark:bg-[#121212] border-t border-[#d5cebf] dark:border-[#222]">
         <RevealSection>
           <p className="eyebrow text-[#b89768]">Our approach</p>
-          <h2 className="font-serif text-4xl md:text-6xl font-normal leading-[0.95] tracking-tight mt-4">
+          <h2 className="font-serif text-2xl md:text-3xl font-normal leading-[1.1] tracking-tight mt-4">
             Details that make<br />
             <i className="font-serif italic text-[#b89768]">the difference.</i>
           </h2>

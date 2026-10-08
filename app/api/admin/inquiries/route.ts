@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server'
 import { getInquiries, addInquiry, deleteInquiry } from '@/lib/adminStore'
+import { isAuthorizedAdmin } from '@/lib/auth'
 
 export async function GET() {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   const inquiries = await getInquiries()
   return NextResponse.json({ success: true, inquiries })
 }
@@ -34,6 +39,10 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')

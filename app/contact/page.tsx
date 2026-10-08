@@ -221,7 +221,7 @@ export default function ContactPage() {
                 START A PROJECT · CONTACT US
               </span>
 
-              <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal text-[#171717] tracking-tight leading-[0.95] mb-8">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#171717] tracking-tight leading-[1.1] mb-8">
                 Let&apos;s Build Something <br />
                 <i className="font-serif italic text-[#8f6530]">Quietly Extraordinary.</i>
               </h1>
@@ -376,7 +376,7 @@ export default function ContactPage() {
                       <input
                         type="tel"
                         required
-                        placeholder="+91 99080 01558"
+                        placeholder="+91 XXXXX XXXXX"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full px-4 py-3 bg-[#faf8f5] border border-[#e8e4dc] focus:border-[#8f6530] focus:outline-none text-sm text-[#171717]"
@@ -392,7 +392,7 @@ export default function ContactPage() {
                       <input
                         type="email"
                         required
-                        placeholder="satwikaarchitects@gmail.com"
+                        placeholder="name@example.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full px-4 py-3 bg-[#faf8f5] border border-[#e8e4dc] focus:border-[#8f6530] focus:outline-none text-sm text-[#171717]"

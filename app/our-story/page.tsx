@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowUpRight, Compass, Layers, ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, Compass, Layers, ShieldCheck, Quote, Sparkles, Heart } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { RevealSection, SharpPhotoFrame, StaggerContainer, StaggerItem } from '@/components/ScrollAnimation'
@@ -20,23 +20,23 @@ export default function OurStoryPage() {
                 OUR STORY · SAID STUDIO
               </span>
 
-              <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal text-[#171717] tracking-tight leading-[0.95] mb-8">
-                Crafting Spaces <br />
-                <i className="font-serif italic text-[#8f6530]">That Belong To You.</i>
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#171717] tracking-tight leading-[1.1] mb-8">
+                Spaces Made To Be Lived In, <br />
+                <i className="font-serif italic text-[#8f6530]">Not Simply Looked At.</i>
               </h1>
 
-              <p className="text-lg md:text-2xl text-[#4e4a43] leading-relaxed font-light max-w-3xl">
-                Satwika Architecture &amp; Interior Design was born out of a single guiding belief: architecture and interior design are not merely about aesthetics—they are about how light, material, and volume orchestrate your everyday living.
+              <p className="text-lg md:text-2xl text-[#2d2a25] leading-relaxed font-light max-w-3xl border-l-2 border-[#8f6530] pl-6 py-1">
+                SAID — Satwika Architects &amp; Interior Designers — began with a simple belief: good design is not just about how a space looks, but about how it makes you feel and how effortlessly it becomes a part of your life.
               </p>
             </RevealSection>
           </div>
         </section>
 
-        {/* Narrative Section 1: Origins & Vision */}
+        {/* Narrative Section 1: Two Generations, One Vision */}
         <section className="py-28 px-6 md:px-16 bg-white border-b border-[#e8e4dc]">
           <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             <RevealSection className="lg:col-span-6">
-              <SharpPhotoFrame badgeText="THE ATELIER" className="w-full aspect-[4/3] rounded-xs shadow-lg">
+              <SharpPhotoFrame badgeText="HERITAGE & VISION" className="w-full aspect-[4/3] rounded-xs shadow-lg">
                 <img
                   src="/images/courtyard-residence.png"
                   alt="SAID Studio Architectural Craftsmanship"
@@ -47,24 +47,104 @@ export default function OurStoryPage() {
 
             <RevealSection className="lg:col-span-6 flex flex-col justify-center space-y-6">
               <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block">
-                CHAPTER I / THE BEGINNING
+                CHAPTER I / THE FOUNDATION
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl font-normal text-[#171717]">
-                A quiet pursuit of <i className="font-serif italic text-[#8f6530]">spatial harmony.</i>
+              <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717] leading-tight">
+                Experience &amp; Fresh Ideas, <br />
+                <i className="font-serif italic text-[#8f6530]">Timeless &amp; Contemporary.</i>
               </h2>
-              <div className="space-y-4 text-base text-[#4e4a43] leading-relaxed font-normal">
+              <div className="space-y-5 text-base text-[#2d2a25] leading-relaxed font-normal">
                 <p>
-                  Founded in Hyderabad, SAID began as an architectural response to generic, mass-produced interiors. Our founder, G. Ramesh Goud, envisioned a studio that brings architectural discipline and high-craft interior execution under one unified roof.
+                  Architecture has always been close to me. Growing up with my father, who has spent over 25 years in the profession, I was introduced to architecture early on. His experience taught me to appreciate the fundamentals—the importance of proportion, materials, functionality, and most importantly, the process behind bringing an idea to life.
                 </p>
                 <p>
-                  From residential courtyard villas in Jubilee Hills to commercial executive sanctuaries across South India, our work is defined by natural light, honest material expression, and white-glove turnkey completion.
+                  My own journey brought a different perspective—one shaped by curiosity, contemporary design, and a desire to explore new possibilities. SAID grew from bringing these two perspectives together: experience and fresh ideas, timeless principles and contemporary thinking.
                 </p>
               </div>
             </RevealSection>
           </div>
         </section>
 
-        {/* Narrative Section 2: Values Timeline */}
+        {/* Narrative Section 2: People, Purpose & End-to-End Execution */}
+        <section className="py-28 px-6 md:px-16 bg-[#faf8f5] border-b border-[#e8e4dc]">
+          <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <RevealSection className="lg:col-span-6 order-2 lg:order-1 flex flex-col justify-center space-y-6">
+              <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block">
+                CHAPTER II / PEOPLE &amp; PURPOSE
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl font-normal text-[#171717] leading-tight">
+                Designed around the <br />
+                <i className="font-serif italic text-[#8f6530]">people who inhabit them.</i>
+              </h2>
+              <div className="space-y-5 text-base text-[#2d2a25] leading-relaxed font-normal">
+                <p>
+                  We approach every project by first understanding the people behind it—their lifestyle, aspirations, routines, and stories—and then translating them into spaces that feel personal and purposeful.
+                </p>
+                <p>
+                  From architecture and interiors to execution and project management, we believe in being involved from the first thought to the final detail. Our work balances aesthetics with practicality, creating spaces that are refined, comfortable, and built to last.
+                </p>
+              </div>
+            </RevealSection>
+
+            <RevealSection className="lg:col-span-6 order-1 lg:order-2">
+              <SharpPhotoFrame badgeText="TURNKEY EXECUTION" className="w-full aspect-[4/3] rounded-xs shadow-lg">
+                <img
+                  src="/images/hero-interior.png"
+                  alt="SAID Studio Bespoke Interior Design"
+                  className="w-full h-full object-cover"
+                />
+              </SharpPhotoFrame>
+            </RevealSection>
+          </div>
+        </section>
+
+        {/* Highlight Banner / Ethos Section */}
+        <section className="py-24 px-6 md:px-16 bg-white border-b border-[#e8e4dc]">
+          <div className="max-w-[1440px] mx-auto">
+            <RevealSection className="text-center max-w-4xl mx-auto space-y-6">
+              <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block">
+                CHAPTER III / BEYOND PASSING TRENDS
+              </span>
+              
+              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-[#171717]">
+                Spaces with Character &amp; <br />
+                <i className="font-serif italic text-[#8f6530]">Timeless Appeal.</i>
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left pt-6">
+                <div className="bg-[#faf8f5] p-8 border border-[#e8e4dc] rounded-xs space-y-3">
+                  <span className="font-sans text-xs text-[#8f6530] font-bold uppercase block">01 / CHARACTER OVER HYPE</span>
+                  <p className="text-base text-[#2d2a25] leading-relaxed">
+                    We don't believe in following trends simply for the sake of them. We believe in creating spaces with character—spaces that feel right today and continue to feel right for years to come.
+                  </p>
+                </div>
+
+                <div className="bg-[#faf8f5] p-8 border border-[#e8e4dc] rounded-xs space-y-3">
+                  <span className="font-sans text-xs text-[#8f6530] font-bold uppercase block">02 / PURPOSEFUL &amp; THOUGHTFUL</span>
+                  <p className="text-base text-[#2d2a25] leading-relaxed">
+                    We don't believe in designing spaces around passing trends. We design to create spaces that reflect the people who inhabit them—thoughtful in detail, purposeful in function, and timeless in their appeal.
+                  </p>
+                </div>
+              </div>
+            </RevealSection>
+          </div>
+        </section>
+
+        {/* Signature Statement Banner */}
+        <section className="py-24 px-6 md:px-16 bg-gradient-to-br from-[#1c1916] via-[#171717] to-[#121212] text-[#f4efe6] border-b border-[#2e2a24] relative overflow-hidden">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8f6530]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
+            <Quote className="w-12 h-12 text-[#b89768] mx-auto opacity-80" />
+            <blockquote className="font-serif text-3xl sm:text-5xl font-normal italic text-white leading-snug tracking-wide">
+              “We bring together ideas, experience and intention to create spaces that are made to be lived in, not simply looked at.”
+            </blockquote>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-[#b89768] font-bold">
+              — SAID Studio · Satwika Architects &amp; Interior Designers
+            </p>
+          </div>
+        </section>
+
+        {/* Three Pillars Overview */}
         <section className="py-28 px-6 md:px-16 bg-[#faf8f5] border-b border-[#e8e4dc]">
           <div className="max-w-[1440px] mx-auto">
             <RevealSection className="text-center max-w-3xl mx-auto mb-20 space-y-3">
@@ -84,8 +164,8 @@ export default function OurStoryPage() {
                   </div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold tracking-widest block">01 / ARCHITECTURE</span>
                   <h3 className="font-serif text-3xl font-normal text-[#171717]">Spatial Rhythms</h3>
-                  <p className="text-base text-[#4e4a43] leading-relaxed">
-                    We map sun orientation, air breeze, and room proportions so every square foot feels airy, peaceful, and naturally lit.
+                  <p className="text-base text-[#2d2a25] leading-relaxed">
+                    We map proportion, sun orientation, daylight, and airflow so every room feels airy, comfortable, and naturally lit.
                   </p>
                 </div>
               </StaggerItem>
@@ -97,7 +177,7 @@ export default function OurStoryPage() {
                   </div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold tracking-widest block">02 / MATERIALS</span>
                   <h3 className="font-serif text-3xl font-normal text-[#171717]">Tactile Truth</h3>
-                  <p className="text-base text-[#4e4a43] leading-relaxed">
+                  <p className="text-base text-[#2d2a25] leading-relaxed">
                     Italian marbles, solid teak, natural quartz, brushed brass, and textured linens—curated to age gracefully with time.
                   </p>
                 </div>
@@ -109,9 +189,9 @@ export default function OurStoryPage() {
                     <ShieldCheck className="w-6 h-6 text-[#8f6530]" />
                   </div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold tracking-widest block">03 / EXECUTION</span>
-                  <h3 className="font-serif text-3xl font-normal text-[#171717]">Calm Delivery</h3>
-                  <p className="text-base text-[#4e4a43] leading-relaxed">
-                    One accountable point of contact for civil, electrical, plumbing, joinery, and styling—eliminating site friction and delays.
+                  <h3 className="font-serif text-3xl font-normal text-[#171717]">End-to-End Craft</h3>
+                  <p className="text-base text-[#2d2a25] leading-relaxed">
+                    Involved from the first thought to the final detail—eliminating site friction and delivering refined, seamless spaces.
                   </p>
                 </div>
               </StaggerItem>
@@ -119,7 +199,7 @@ export default function OurStoryPage() {
           </div>
         </section>
 
-        {/* CTA Banner Section - Light Warm Theme with High Contrast Text */}
+        {/* CTA Banner Section */}
         <section className="py-24 px-6 md:px-16 bg-[#faf8f5] text-[#171717] text-center border-t border-[#e8e4dc]">
           <div className="max-w-3xl mx-auto space-y-8">
             <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block">

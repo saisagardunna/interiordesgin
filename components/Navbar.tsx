@@ -94,7 +94,7 @@ export default function Navbar() {
         </div>
 
         {/* Primary Desktop Navigation Bar */}
-        <nav className={`hidden lg:flex items-center justify-center border-t border-[#e8e4dc] transition-all duration-300 font-sans text-xs md:text-[13px] uppercase tracking-[0.16em] font-medium text-[#171717] ${
+        <nav className={`hidden lg:flex items-center justify-center border-t border-[#e8e4dc] transition-all duration-300 font-sans text-xs md:text-[13px] uppercase tracking-[0.16em] font-semibold text-[#171717] ${
           scrolled ? 'py-1.5 px-6 bg-white/95 backdrop-blur-md' : 'py-2.5 px-6 bg-white'
         }`}>
           <div className="flex flex-wrap justify-center items-center gap-6 xl:gap-9">
@@ -106,11 +106,10 @@ export default function Navbar() {
                   href={item.href}
                   className="relative py-1 px-1.5 transition-colors duration-300 group"
                 >
-                  <span className={`relative z-10 transition-colors ${active ? 'font-bold text-[#8f6530]' : 'text-[#2a2825] group-hover:text-[#8f6530]'}`}>
+                  <span className={`relative z-10 transition-colors ${active ? 'font-bold text-[#8f6530]' : 'text-[#171717] font-semibold group-hover:text-[#8f6530]'}`}>
                     {item.label}
                   </span>
 
-                  {/* Animated active indicator under link */}
                   {active ? (
                     <motion.div
                       layoutId="activeNavIndicator"

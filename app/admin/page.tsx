@@ -43,9 +43,9 @@ export default function AdminDashboardPage() {
     locationAddress: 'Block 21, F-1, Vignanpuri Colony, Vidya Nagar, Hyderabad - 44',
     latitude: 17.489842,
     longitude: 78.400996,
-    rates2BHK: '₹12 Lakhs – ₹18 Lakhs',
-    rates3BHK: '₹18 Lakhs – ₹28 Lakhs',
-    rates4BHKVilla: '₹30 Lakhs – ₹50+ Lakhs',
+    rates2BHK: 'Bespoke Urban Residence (Custom Estimate)',
+    rates3BHK: 'Bespoke Luxury Flat (Custom Estimate)',
+    rates4BHKVilla: 'Bespoke Villa & Estate (Custom Estimate)',
   })
 
   // Filter States
@@ -75,8 +75,11 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const initData = async () => {
       try {
+        const isSessionActive = sessionStorage.getItem('said_admin_session_active') === '1'
         const authRes = await fetch('/api/admin/check-auth')
-        if (!authRes.ok) {
+        if (!authRes.ok || !isSessionActive) {
+          await fetch('/api/admin/logout', { method: 'POST' }).catch(() => {})
+          try { sessionStorage.removeItem('said_admin_session_active') } catch {}
           router.push('/admin/login')
           return
         }
@@ -89,6 +92,53 @@ export default function AdminDashboardPage() {
       }
     }
     initData()
+  }, [router])
+
+  // Security Auto-Logout Hook 1: Auto-Logout when Tab / Window closes
+  useEffect(() => {
+    const handleTabOrWindowClose = () => {
+      try { sessionStorage.removeItem('said_admin_session_active') } catch {}
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        navigator.sendBeacon('/api/admin/logout')
+      } else {
+        fetch('/api/admin/logout', { method: 'POST', keepalive: true }).catch(() => {})
+      }
+    }
+
+    window.addEventListener('pagehide', handleTabOrWindowClose)
+    window.addEventListener('beforeunload', handleTabOrWindowClose)
+
+    return () => {
+      window.removeEventListener('pagehide', handleTabOrWindowClose)
+      window.removeEventListener('beforeunload', handleTabOrWindowClose)
+    }
+  }, [])
+
+  // Security Auto-Logout Hook 2: Inactivity Timeout (Auto-logout after 15 minutes of idle)
+  useEffect(() => {
+    let idleTimer: NodeJS.Timeout
+
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer)
+      // Auto-logout after 15 minutes of idle (900,000 ms)
+      idleTimer = setTimeout(async () => {
+        try { sessionStorage.removeItem('said_admin_session_active') } catch {}
+        await fetch('/api/admin/logout', { method: 'POST' })
+        showToast('Session expired due to 15 minutes of inactivity.')
+        setTimeout(() => {
+          router.push('/admin/login')
+        }, 1500)
+      }, 15 * 60 * 1000)
+    }
+
+    const activityEvents = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
+    activityEvents.forEach((evt) => window.addEventListener(evt, resetIdleTimer))
+    resetIdleTimer()
+
+    return () => {
+      clearTimeout(idleTimer)
+      activityEvents.forEach((evt) => window.removeEventListener(evt, resetIdleTimer))
+    }
   }, [router])
 
   const fetchAllData = async () => {
@@ -146,6 +196,7 @@ export default function AdminDashboardPage() {
   }
 
   const handleLogout = async () => {
+    try { sessionStorage.removeItem('said_admin_session_active') } catch {}
     await fetch('/api/admin/logout', { method: 'POST' })
     router.push('/admin/login')
   }
@@ -169,30 +220,36 @@ export default function AdminDashboardPage() {
   }
 
   const handleDeleteCall = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this scheduled call entry?')) return
+    // 1. Optimistic instant UI state update (Zero popups)
+    setCalls((prev) => {
+      const updated = prev.filter((c) => c.id !== id)
+      try { localStorage.setItem('said_cached_calls', JSON.stringify(updated)) } catch {}
+      return updated
+    })
+    showToast('Call entry deleted')
+
+    // 2. Perform backend API delete
     try {
-      const res = await fetch(`/api/admin/schedule-call?id=${id}`, { method: 'DELETE' })
-      const data = await res.json()
-      if (data.success) {
-        showToast('Call entry deleted')
-        fetchAllData()
-      }
+      await fetch(`/api/admin/schedule-call?id=${id}`, { method: 'DELETE' })
     } catch (err) {
-      showToast('Failed to delete entry.')
+      console.error('Failed to delete call on backend:', err)
     }
   }
 
   const handleDeleteInquiry = async (id: string) => {
-    if (!confirm('Are you sure you want to remove this inquiry entry?')) return
+    // 1. Optimistic instant UI state update (Zero popups)
+    setInquiries((prev) => {
+      const updated = prev.filter((i) => i.id !== id)
+      try { localStorage.setItem('said_cached_inquiries', JSON.stringify(updated)) } catch {}
+      return updated
+    })
+    showToast('Inquiry entry removed')
+
+    // 2. Perform backend API delete
     try {
-      const res = await fetch(`/api/admin/inquiries?id=${id}`, { method: 'DELETE' })
-      const data = await res.json()
-      if (data.success) {
-        showToast('Inquiry entry removed')
-        fetchAllData()
-      }
+      await fetch(`/api/admin/inquiries?id=${id}`, { method: 'DELETE' })
     } catch (err) {
-      showToast('Failed to remove inquiry.')
+      console.error('Failed to remove inquiry on backend:', err)
     }
   }
 
@@ -288,16 +345,19 @@ export default function AdminDashboardPage() {
   }
 
   const handleDeleteReview = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this review?')) return
+    // 1. Optimistic instant UI state update (Zero popups)
+    setReviews((prev) => {
+      const updated = prev.filter((r) => r.id !== id)
+      try { localStorage.setItem('said_cached_reviews', JSON.stringify(updated)) } catch {}
+      return updated
+    })
+    showToast('Review deleted')
+
+    // 2. Perform backend API delete
     try {
-      const res = await fetch(`/api/admin/reviews?id=${id}`, { method: 'DELETE' })
-      const data = await res.json()
-      if (data.success) {
-        showToast('Review deleted')
-        fetchAllData()
-      }
+      await fetch(`/api/admin/reviews?id=${id}`, { method: 'DELETE' })
     } catch (err) {
-      showToast('Failed to delete review.')
+      console.error('Failed to delete review on backend:', err)
     }
   }
 
@@ -830,10 +890,10 @@ export default function AdminDashboardPage() {
               </div>
 
               <div className="space-y-3 pt-4 border-t border-[#2a2a2a]">
-                <h3 className="font-serif text-xl text-white">Pricing &amp; Rate Guidelines</h3>
+                <h3 className="font-serif text-xl text-white">Project Scope &amp; Bespoke Rate Guidelines</h3>
 
                 <div>
-                  <label className="text-[#888] block mb-1">2 BHK Interior Rate Range</label>
+                  <label className="text-[#888] block mb-1">Apartment / Urban Residence Estimate Guideline</label>
                   <input
                     type="text"
                     value={settings.rates2BHK}
@@ -843,7 +903,7 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div>
-                  <label className="text-[#888] block mb-1">3 BHK Interior Rate Range</label>
+                  <label className="text-[#888] block mb-1">Full Residence / Luxury Flat Estimate Guideline</label>
                   <input
                     type="text"
                     value={settings.rates3BHK}
@@ -853,7 +913,7 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div>
-                  <label className="text-[#888] block mb-1">4 BHK &amp; Villa Interior Rate Range</label>
+                  <label className="text-[#888] block mb-1">Villa &amp; Estate Fit-Out Estimate Guideline</label>
                   <input
                     type="text"
                     value={settings.rates4BHKVilla}

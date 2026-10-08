@@ -46,7 +46,7 @@ export default function PortfolioPage() {
               </RevealSection>
 
               <RevealSection delay={0.2}>
-                <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal leading-[0.92] tracking-tight text-[#171717]">
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.1] tracking-tight text-[#171717]">
                   Curated Works &amp;<br />
                   <i className="font-serif italic text-[#8f6530]">Architectural Spaces.</i>
                 </h1>
@@ -102,7 +102,7 @@ export default function PortfolioPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.5, delay: index * 0.08, ease: luxuryEase }}
-                    className="group flex flex-col w-full bg-white p-6 border border-[#e8e4dc] hover:border-[#b89768] transition-all duration-300 hover:shadow-xl rounded-xs"
+                    className="group flex flex-col w-full bg-white p-4 sm:p-6 border border-[#e8e4dc] hover:border-[#b89768] transition-all duration-300 hover:shadow-xl rounded-xs"
                     key={project.number + project.title}
                   >
                     <Link
@@ -130,14 +130,14 @@ export default function PortfolioPage() {
                       </SharpPhotoFrame>
                     </Link>
 
-                    <div className="pt-5 mt-4 border-t border-[#e8e4dc] flex justify-between items-start gap-4">
-                      <div>
+                    <div className="pt-4 sm:pt-5 mt-3 sm:mt-4 border-t border-[#e8e4dc] flex justify-between items-start gap-3">
+                      <div className="min-w-0 flex-1">
                         <Link href={`/projects/${project.slug}`}>
-                          <h2 className="font-serif text-xl sm:text-2xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors leading-snug">
+                          <h2 className="font-serif text-base sm:text-lg md:text-xl lg:text-2xl font-normal text-[#171717] group-hover:text-[#8f6530] transition-colors leading-snug break-words">
                             {project.title}
                           </h2>
                         </Link>
-                        <p className="text-xs text-[#6b6459] uppercase tracking-widest mt-2 font-sans font-semibold">
+                        <p className="text-[10px] sm:text-xs text-[#2d2a25] uppercase tracking-widest mt-1.5 font-sans font-semibold">
                           {project.meta}
                         </p>
                       </div>

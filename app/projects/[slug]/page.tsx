@@ -202,7 +202,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
               Full Project Archive · 12 Site Photos
             </p>
-            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
               Picture by picture <i className="font-serif italic text-[#8f6530]">commercial site tour.</i>
             </h2>
             <p className="text-xs text-[#6e685e] font-sans mt-3">
@@ -226,7 +226,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   />
                 </div>
                 <div className="flex flex-col gap-1 px-1">
-                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                  <h3 className="font-serif text-base md:text-lg font-medium text-[#171717]">
                     {item.title}
                   </h3>
                   <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
@@ -246,7 +246,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
               Full Project Archive · 18 Site Photos Across 3 Flats
             </p>
-            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
               Picture by picture <i className="font-serif italic text-[#8f6530]">residential execution tour.</i>
             </h2>
             <p className="text-xs text-[#6e685e] font-sans mt-3">
@@ -270,7 +270,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   />
                 </div>
                 <div className="flex flex-col gap-1 px-1">
-                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                  <h3 className="font-serif text-base md:text-lg font-medium text-[#171717]">
                     {item.title}
                   </h3>
                   <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
@@ -290,7 +290,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
               Full Project Archive · 5 Architectural 3D Renders
             </p>
-            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
               Picture by picture <i className="font-serif italic text-[#8f6530]">3D render tour.</i>
             </h2>
             <p className="text-xs text-[#6e685e] font-sans mt-3">
@@ -314,7 +314,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   />
                 </div>
                 <div className="flex flex-col gap-1 px-1">
-                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                  <h3 className="font-serif text-base md:text-lg font-medium text-[#171717]">
                     {item.title}
                   </h3>
                   <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
@@ -334,7 +334,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
               Full Project Archive · 8 Custom Kitchen &amp; Wardrobe Fit-Out Views
             </p>
-            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
               Picture by picture <i className="font-serif italic text-[#8f6530]">kitchen &amp; wardrobe tour.</i>
             </h2>
             <p className="text-xs text-[#6e685e] font-sans mt-3">
@@ -358,7 +358,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   />
                 </div>
                 <div className="flex flex-col gap-1 px-1">
-                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                  <h3 className="font-serif text-base md:text-lg font-medium text-[#171717]">
                     {item.title}
                   </h3>
                   <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
@@ -378,7 +378,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
               Full Project Archive · 8 Lighting Architecture Views
             </p>
-            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
               Picture by picture <i className="font-serif italic text-[#8f6530]">lighting &amp; ceiling tour.</i>
             </h2>
             <p className="text-xs text-[#6e685e] font-sans mt-3">
@@ -402,7 +402,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   />
                 </div>
                 <div className="flex flex-col gap-1 px-1">
-                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                  <h3 className="font-serif text-base md:text-lg font-medium text-[#171717]">
                     {item.title}
                   </h3>
                   <p className="font-sans text-xs text-[#6e685e] leading-relaxed">
@@ -422,7 +422,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p className="eyebrow text-[#8f6530] font-mono font-bold text-xs uppercase tracking-[0.2em] mb-2">
               Full Project Archive · 13 Architectural Views
             </p>
-            <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
               Picture by picture <i className="font-serif italic text-[#8f6530]">residential tour.</i>
             </h2>
           </RevealSection>
@@ -443,7 +443,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   />
                 </div>
                 <div className="flex flex-col gap-1 px-1">
-                  <h3 className="font-serif text-xl md:text-2xl font-normal text-[#171717]">
+                  <h3 className="font-serif text-base md:text-lg font-medium text-[#171717]">
                     {item.title}
                   </h3>
                   <p className="font-sans text-xs text-[#6e685e] leading-relaxed">

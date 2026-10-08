@@ -21,15 +21,15 @@ export default function AboutPage() {
                 ABOUT US · SAID STUDIO
               </span>
               
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-8xl font-normal text-[#171717] tracking-tight leading-[0.95] mb-8">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#171717] tracking-tight leading-[1.1] mb-8">
                 We Build <i className="font-serif italic text-[#8f6530]">For People.</i>
               </h1>
 
-              <p className="text-lg md:text-xl text-[#4e4a43] leading-relaxed font-light max-w-3xl">
+              <p className="text-lg md:text-xl text-[#2d2a25] leading-relaxed font-light max-w-3xl">
                 Satwika Architecture and Interior Design (SAID) is a premier design &amp; build studio shaping deeply personal residential villas, luxury workspaces, and quiet architectural sanctuaries across Hyderabad, South India, and beyond.
               </p>
 
-              <p className="text-base text-[#666055] leading-relaxed font-normal max-w-3xl border-l-2 border-[#b89768] pl-6 py-2 italic">
+              <p className="text-base text-[#2d2a25] leading-relaxed font-normal max-w-3xl border-l-2 border-[#b89768] pl-6 py-2 italic">
                 "Our philosophy centers around making space for better living—combining natural light orientation, honest materials, and precise turnkey execution."
               </p>
             </RevealSection>
@@ -43,7 +43,7 @@ export default function AboutPage() {
               <span className="font-sans text-xs text-[#8f6530] uppercase tracking-[0.25em] font-bold block mb-3">
                 LEADERSHIP &amp; VISION
               </span>
-              <h2 className="font-serif text-4xl md:text-6xl font-normal text-[#171717]">
+              <h2 className="font-serif text-2xl md:text-3xl font-normal text-[#171717]">
                 Meet The <i className="font-serif italic text-[#8f6530]">Founder</i>
               </h2>
             </RevealSection>
@@ -70,22 +70,22 @@ export default function AboutPage() {
                 </div>
 
                 <blockquote className="font-serif text-2xl md:text-3xl text-[#171717] italic leading-snug">
-                  "Every building and interior space is an expression of human ambition. Our mission at SAID is to craft spaces that speak quietly of luxury, order, and warmth."
+                  “Good design is not just about how a space looks, but about how it makes you feel and how effortlessly it becomes a part of your life.”
                 </blockquote>
 
-                <div className="space-y-4 text-base text-[#4e4a43] leading-relaxed">
+                <div className="space-y-4 text-base text-[#2d2a25] leading-relaxed">
                   <p>
-                    As the founding visionary behind SAID, <strong>G. Ramesh Goud</strong> has spearheaded the studio's philosophy of blending architectural elegance with seamless interior execution across residential and commercial developments.
+                    SAID grew from bringing two distinct perspectives together: over 25 years of architectural experience and fundamentals, paired with curiosity, contemporary design thinking, and fresh possibilities.
                   </p>
                   <p>
-                    With an unwavering commitment to craftsmanship and spatial harmony, he guides every project from concept through white-glove handover. Under his leadership, SAID has earned a reputation for combining meticulous technical engineering with bespoke artisanal design.
+                    From architecture and interiors to turnkey execution and project management, we translate each client's lifestyle into spaces that are personal, purposeful, refined, and built to last.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-6 mt-8 pt-8 border-t border-[#e8e4dc]">
                   <div>
-                    <span className="block font-sans text-2xl md:text-3xl font-bold text-[#171717]">15+</span>
-                    <span className="font-sans text-[10px] uppercase tracking-wider text-[#8f6530] font-bold">Years Experience</span>
+                    <span className="block font-sans text-2xl md:text-3xl font-bold text-[#171717]">25+</span>
+                    <span className="font-sans text-[10px] uppercase tracking-wider text-[#8f6530] font-bold">Years Foundation</span>
                   </div>
                   <div>
                     <span className="block font-sans text-2xl md:text-3xl font-bold text-[#171717]">100+</span>
@@ -121,7 +121,7 @@ export default function AboutPage() {
                   </div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold tracking-widest block">01 / CAPABILITIES</span>
                   <h3 className="font-serif text-3xl font-normal text-[#171717]">OUR SERVICES</h3>
-                  <p className="text-base text-[#4e4a43] leading-relaxed font-normal">
+                  <p className="text-base text-[#2d2a25] leading-relaxed font-normal">
                     Spatial planning, interior fit-outs, 3D visualization, custom furniture, and turnkey execution managed under one roof.
                   </p>
                 </div>
@@ -137,7 +137,7 @@ export default function AboutPage() {
                   </div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold tracking-widest block">02 / CRAFTSMANSHIP</span>
                   <h3 className="font-serif text-3xl font-normal text-[#171717]">EXPERIENCE</h3>
-                  <p className="text-base text-[#4e4a43] leading-relaxed font-normal">
+                  <p className="text-base text-[#2d2a25] leading-relaxed font-normal">
                     Over 15 years of delivering architectural excellence across luxury residential villas, offices, and commercial interiors.
                   </p>
                 </div>
@@ -153,7 +153,7 @@ export default function AboutPage() {
                   </div>
                   <span className="font-sans text-xs text-[#8f6530] font-bold tracking-widest block">03 / INTEGRITY</span>
                   <h3 className="font-serif text-3xl font-normal text-[#171717]">ACCOUNTABILITY</h3>
-                  <p className="text-base text-[#4e4a43] leading-relaxed font-normal">
+                  <p className="text-base text-[#2d2a25] leading-relaxed font-normal">
                     Single-point ownership, transparent material specifications, strict timeline delivery, and white-glove key handover.
                   </p>
                 </div>

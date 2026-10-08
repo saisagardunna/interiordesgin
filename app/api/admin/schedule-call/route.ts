@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server'
 import { getScheduledCalls, addScheduledCall, updateCallStatus, deleteCall } from '@/lib/adminStore'
+import { isAuthorizedAdmin } from '@/lib/auth'
 
 export async function GET() {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   const calls = await getScheduledCalls()
   return NextResponse.json({ success: true, calls })
 }
@@ -31,8 +36,6 @@ export async function POST(request: Request) {
       status: 'Pending',
     })
 
-
-
     return NextResponse.json({
       success: true,
       message: 'Call consultation scheduled successfully!',
@@ -44,6 +47,10 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   try {
     const body = await request.json()
     const { id, status } = body
@@ -63,6 +70,10 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const authorized = await isAuthorizedAdmin()
+  if (!authorized) {
+    return NextResponse.json({ success: false, error: 'Unauthorized access' }, { status: 401 })
+  }
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
