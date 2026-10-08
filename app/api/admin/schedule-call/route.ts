@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getScheduledCalls, addScheduledCall, updateCallStatus, deleteCall } from '@/lib/adminStore'
 
 export async function GET() {
-  const calls = getScheduledCalls()
+  const calls = await getScheduledCalls()
   return NextResponse.json({ success: true, calls })
 }
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const newCall = addScheduledCall({
+    const newCall = await addScheduledCall({
       clientName: String(clientName).trim(),
       clientPhone: String(clientPhone).trim(),
       clientEmail: String(clientEmail || '').trim(),
@@ -31,28 +31,7 @@ export async function POST(request: Request) {
       status: 'Pending',
     })
 
-    // Optionally forward payload to Web3Forms so admin also gets instant email notification!
-    const web3Key = process.env.WEB3FORMS_ACCESS_KEY
-    if (web3Key) {
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_key: web3Key,
-          subject: `📅 New Call Consultation Scheduled: ${clientName} (${scheduledDate} ${scheduledTime})`,
-          from_name: 'SAID Atelier Schedule Engine',
-          to_email: 'satwikaarchitects@gmail.com',
-          client_name: clientName,
-          client_phone: clientPhone,
-          client_email: clientEmail,
-          scheduled_date: scheduledDate,
-          scheduled_time: scheduledTime,
-          service_required: serviceRequired,
-          estimated_budget: estimatedBudget,
-          location: location,
-        }),
-      }).catch(() => {})
-    }
+
 
     return NextResponse.json({
       success: true,
@@ -73,7 +52,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Call ID and new status required.' }, { status: 400 })
     }
 
-    const updated = updateCallStatus(id, status)
+    const updated = await updateCallStatus(id, status)
     if (updated) {
       return NextResponse.json({ success: true, message: `Call status updated to ${status}` })
     }
@@ -92,7 +71,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ success: false, error: 'Call ID required.' }, { status: 400 })
     }
 
-    deleteCall(id)
+    await deleteCall(id)
     return NextResponse.json({ success: true, message: 'Call schedule entry deleted.' })
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Failed to delete scheduled call.' }, { status: 500 })

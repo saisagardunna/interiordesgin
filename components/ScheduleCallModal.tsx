@@ -128,49 +128,14 @@ export default function ScheduleCallModal({ isOpen, onClose }: ScheduleCallModal
           notes: notes,
         }
 
-        // 1. Dual strategy: Client fetch with FormData
         const fd = new FormData()
         Object.entries(fields).forEach(([k, v]) => {
           if (v) fd.append(k, String(v))
         })
-        fetch('https://api.web3forms.com/submit', {
+        await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           body: fd,
-        }).catch((err) => console.log('Client fetch Web3Forms notice:', err))
-
-        // 2. Hidden DOM iframe submit fallback
-        const iframeName = 'web3forms_modal_iframe'
-        let iframe = document.getElementById(iframeName) as HTMLIFrameElement
-        if (!iframe) {
-          iframe = document.createElement('iframe')
-          iframe.id = iframeName
-          iframe.name = iframeName
-          iframe.style.display = 'none'
-          document.body.appendChild(iframe)
-        }
-
-        const form = document.createElement('form')
-        form.action = 'https://api.web3forms.com/submit'
-        form.method = 'POST'
-        form.target = iframeName
-        form.style.display = 'none'
-
-        Object.entries(fields).forEach(([k, v]) => {
-          if (v) {
-            const input = document.createElement('input')
-            input.type = 'hidden'
-            input.name = k
-            input.value = String(v)
-            form.appendChild(input)
-          }
         })
-
-        document.body.appendChild(form)
-        form.submit()
-
-        setTimeout(() => {
-          if (form.parentNode) form.parentNode.removeChild(form)
-        }, 1500)
       } catch (err) {
         console.error('Modal Web3Forms submit error:', err)
       }

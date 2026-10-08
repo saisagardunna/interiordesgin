@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const mapsUrl = body.maps_link || body.googleMapsUrl || (lat && lng ? `https://www.google.com/maps?q=${lat},${lng}` : '')
 
     // Add inquiry to in-memory / Supabase admin store so it appears in WEB3 & CONTACT INQUIRIES admin tab
-    const inquiry = addInquiry({
+    const inquiry = await addInquiry({
       name: String(body.name || 'Client').trim(),
       phone: String(body.phone || '').trim(),
       email: String(body.email || '').trim(),

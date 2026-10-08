@@ -100,7 +100,7 @@ const defaultReviews: ReviewItem[] = [
   },
 ]
 
-// In-Memory Storage Cache with Supabase Sync
+// In-Memory Storage Cache with Supabase Async Data Sync
 let callsStore: ScheduledCall[] = [
   {
     id: 'call-101',
@@ -147,97 +147,295 @@ let settingsStore: StudioSettings = {
   rates4BHKVilla: '₹30 Lakhs – ₹50+ Lakhs',
 }
 
-// Accessors
-export function getScheduledCalls(): ScheduledCall[] {
+// ----------------------
+// SCHEDULED CALLS
+// ----------------------
+export async function getScheduledCalls(): Promise<ScheduledCall[]> {
+  try {
+    const { data, error } = await supabase.from('scheduled_calls').select('*')
+    if (!error && data && data.length > 0) {
+      const fetchedCalls: ScheduledCall[] = data.map((c: any) => ({
+        id: String(c.id),
+        clientName: c.clientName || c.client_name || 'Client',
+        clientPhone: c.clientPhone || c.client_phone || '',
+        clientEmail: c.clientEmail || c.client_email || '',
+        location: c.location || 'Hyderabad',
+        serviceRequired: c.serviceRequired || c.service_required || 'Interior Architecture',
+        estimatedBudget: c.estimatedBudget || c.estimated_budget || '₹15L - ₹30L',
+        scheduledDate: c.scheduledDate || c.scheduled_date || new Date().toISOString().split('T')[0],
+        scheduledTime: c.scheduledTime || c.scheduled_time || '10:00 AM',
+        notes: c.notes || '',
+        status: (c.status as ScheduledCall['status']) || 'Pending',
+        createdAt: c.createdAt || c.created_at || new Date().toISOString(),
+      }))
+      callsStore = fetchedCalls
+      return callsStore
+    }
+  } catch (err) {
+    console.warn('Supabase scheduled_calls fetch fallback to store:', err)
+  }
   return callsStore
 }
 
-export function addScheduledCall(call: Omit<ScheduledCall, 'id' | 'createdAt'>): ScheduledCall {
+export async function addScheduledCall(call: Omit<ScheduledCall, 'id' | 'createdAt'>): Promise<ScheduledCall> {
   const newCall: ScheduledCall = {
     ...call,
     id: `call-${Date.now()}`,
     createdAt: new Date().toISOString(),
   }
   callsStore = [newCall, ...callsStore]
-  // Async sync to Supabase if table exists
-  supabase.from('scheduled_calls').insert([newCall]).then(() => {}).catch(() => {})
+
+  try {
+    await supabase.from('scheduled_calls').insert([
+      {
+        id: newCall.id,
+        client_name: newCall.clientName,
+        client_phone: newCall.clientPhone,
+        client_email: newCall.clientEmail,
+        location: newCall.location,
+        service_required: newCall.serviceRequired,
+        estimated_budget: newCall.estimatedBudget,
+        scheduled_date: newCall.scheduledDate,
+        scheduled_time: newCall.scheduledTime,
+        notes: newCall.notes,
+        status: newCall.status,
+        created_at: newCall.createdAt,
+      },
+    ])
+  } catch (err) {
+    console.error('Supabase scheduled_calls insert error:', err)
+  }
+
   return newCall
 }
 
-export function updateCallStatus(id: string, status: ScheduledCall['status']): boolean {
+export async function updateCallStatus(id: string, status: ScheduledCall['status']): Promise<boolean> {
   const index = callsStore.findIndex(c => c.id === id)
   if (index !== -1) {
     callsStore[index].status = status
-    supabase.from('scheduled_calls').update({ status }).eq('id', id).then(() => {}).catch(() => {})
-    return true
   }
-  return false
+  try {
+    await supabase.from('scheduled_calls').update({ status }).eq('id', id)
+  } catch (err) {
+    console.error('Supabase scheduled_calls update status error:', err)
+  }
+  return true
 }
 
-export function deleteCall(id: string): boolean {
+export async function deleteCall(id: string): Promise<boolean> {
   callsStore = callsStore.filter(c => c.id !== id)
-  supabase.from('scheduled_calls').delete().eq('id', id).then(() => {}).catch(() => {})
+  try {
+    await supabase.from('scheduled_calls').delete().eq('id', id)
+  } catch (err) {
+    console.error('Supabase scheduled_calls delete error:', err)
+  }
   return true
 }
 
-export function getReviews(): ReviewItem[] {
-  return reviewsStore
-}
-
-export function addReview(review: Omit<ReviewItem, 'id' | 'createdAt'>): ReviewItem {
-  const newReview: ReviewItem = {
-    ...review,
-    id: `rev-${Date.now()}`,
-    createdAt: new Date().toISOString().split('T')[0],
+// ----------------------
+// INQUIRIES
+// ----------------------
+export async function getInquiries(): Promise<InquiryItem[]> {
+  try {
+    const { data, error } = await supabase.from('inquiries').select('*')
+    if (!error && data && data.length > 0) {
+      const fetchedInquiries: InquiryItem[] = data.map((i: any) => ({
+        id: String(i.id),
+        name: i.name || 'Client',
+        phone: i.phone || '',
+        email: i.email || '',
+        location: i.location || '',
+        service: i.service || '',
+        budget: i.budget || '',
+        message: i.message || '',
+        coordinates: i.coordinates || '',
+        googleMapsUrl: i.googleMapsUrl || i.google_maps_url || '',
+        submittedAt: i.submittedAt || i.submitted_at || new Date().toISOString(),
+      }))
+      inquiriesStore = fetchedInquiries
+      return inquiriesStore
+    }
+  } catch (err) {
+    console.warn('Supabase inquiries fetch fallback to store:', err)
   }
-  reviewsStore = [newReview, ...reviewsStore]
-  supabase.from('reviews').insert([newReview]).then(() => {}).catch(() => {})
-  return newReview
-}
-
-export function updateReview(id: string, updated: Partial<ReviewItem>): boolean {
-  const index = reviewsStore.findIndex(r => r.id === id)
-  if (index !== -1) {
-    reviewsStore[index] = { ...reviewsStore[index], ...updated }
-    supabase.from('reviews').update(updated).eq('id', id).then(() => {}).catch(() => {})
-    return true
-  }
-  return false
-}
-
-export function deleteReview(id: string): boolean {
-  reviewsStore = reviewsStore.filter(r => r.id !== id)
-  supabase.from('reviews').delete().eq('id', id).then(() => {}).catch(() => {})
-  return true
-}
-
-export function getInquiries(): InquiryItem[] {
   return inquiriesStore
 }
 
-export function addInquiry(inquiry: Omit<InquiryItem, 'id' | 'submittedAt'>): InquiryItem {
+export async function addInquiry(inquiry: Omit<InquiryItem, 'id' | 'submittedAt'>): Promise<InquiryItem> {
   const newInq: InquiryItem = {
     ...inquiry,
     id: `inq-${Date.now()}`,
     submittedAt: new Date().toISOString(),
   }
   inquiriesStore = [newInq, ...inquiriesStore]
-  supabase.from('inquiries').insert([newInq]).then(() => {}).catch(() => {})
+
+  try {
+    await supabase.from('inquiries').insert([
+      {
+        id: newInq.id,
+        name: newInq.name,
+        phone: newInq.phone,
+        email: newInq.email,
+        location: newInq.location,
+        service: newInq.service,
+        budget: newInq.budget,
+        message: newInq.message,
+        coordinates: newInq.coordinates,
+        google_maps_url: newInq.googleMapsUrl,
+        submitted_at: newInq.submittedAt,
+      },
+    ])
+  } catch (err) {
+    console.error('Supabase inquiries insert error:', err)
+  }
+
   return newInq
 }
 
-export function deleteInquiry(id: string): boolean {
+export async function deleteInquiry(id: string): Promise<boolean> {
   inquiriesStore = inquiriesStore.filter(i => i.id !== id)
-  supabase.from('inquiries').delete().eq('id', id).then(() => {}).catch(() => {})
+  try {
+    await supabase.from('inquiries').delete().eq('id', id)
+  } catch (err) {
+    console.error('Supabase inquiries delete error:', err)
+  }
   return true
 }
 
-export function getStudioSettings(): StudioSettings {
+// ----------------------
+// REVIEWS
+// ----------------------
+export async function getReviews(): Promise<ReviewItem[]> {
+  try {
+    const { data, error } = await supabase.from('reviews').select('*')
+    if (!error && data && data.length > 0) {
+      const fetchedReviews: ReviewItem[] = data.map((r: any) => ({
+        id: String(r.id),
+        author: r.author || 'Client',
+        role: r.role || 'Client',
+        location: r.location || 'Hyderabad',
+        project: r.project || 'Residential',
+        quote: r.quote || '',
+        rating: Number(r.rating) || 5,
+        published: r.published !== false,
+        createdAt: r.createdAt || r.created_at || new Date().toISOString().split('T')[0],
+      }))
+      reviewsStore = fetchedReviews
+      return reviewsStore
+    }
+  } catch (err) {
+    console.warn('Supabase reviews fetch fallback to store:', err)
+  }
+  return reviewsStore
+}
+
+export async function addReview(review: Omit<ReviewItem, 'id' | 'createdAt'>): Promise<ReviewItem> {
+  const newReview: ReviewItem = {
+    ...review,
+    id: `rev-${Date.now()}`,
+    createdAt: new Date().toISOString().split('T')[0],
+  }
+  reviewsStore = [newReview, ...reviewsStore]
+
+  try {
+    await supabase.from('reviews').insert([
+      {
+        id: newReview.id,
+        author: newReview.author,
+        role: newReview.role,
+        location: newReview.location,
+        project: newReview.project,
+        quote: newReview.quote,
+        rating: newReview.rating,
+        published: newReview.published,
+        created_at: newReview.createdAt,
+      },
+    ])
+  } catch (err) {
+    console.error('Supabase reviews insert error:', err)
+  }
+
+  return newReview
+}
+
+export async function updateReview(id: string, updated: Partial<ReviewItem>): Promise<boolean> {
+  const index = reviewsStore.findIndex(r => r.id === id)
+  if (index !== -1) {
+    reviewsStore[index] = { ...reviewsStore[index], ...updated }
+  }
+
+  try {
+    const payload: any = {}
+    if (updated.author !== undefined) payload.author = updated.author
+    if (updated.role !== undefined) payload.role = updated.role
+    if (updated.location !== undefined) payload.location = updated.location
+    if (updated.project !== undefined) payload.project = updated.project
+    if (updated.quote !== undefined) payload.quote = updated.quote
+    if (updated.rating !== undefined) payload.rating = updated.rating
+    if (updated.published !== undefined) payload.published = updated.published
+
+    await supabase.from('reviews').update(payload).eq('id', id)
+  } catch (err) {
+    console.error('Supabase reviews update error:', err)
+  }
+
+  return true
+}
+
+export async function deleteReview(id: string): Promise<boolean> {
+  reviewsStore = reviewsStore.filter(r => r.id !== id)
+  try {
+    await supabase.from('reviews').delete().eq('id', id)
+  } catch (err) {
+    console.error('Supabase reviews delete error:', err)
+  }
+  return true
+}
+
+// ----------------------
+// STUDIO SETTINGS
+// ----------------------
+export async function getStudioSettings(): Promise<StudioSettings> {
+  try {
+    const { data, error } = await supabase.from('studio_settings').select('*')
+    if (!error && data && data.length > 0) {
+      const s = data[0]
+      settingsStore = {
+        contactEmail: s.contactEmail || s.contact_email || settingsStore.contactEmail,
+        contactPhone: s.contactPhone || s.contact_phone || settingsStore.contactPhone,
+        locationAddress: s.locationAddress || s.location_address || settingsStore.locationAddress,
+        latitude: Number(s.latitude) || settingsStore.latitude,
+        longitude: Number(s.longitude) || settingsStore.longitude,
+        rates2BHK: s.rates2BHK || s.rates_2bhk || settingsStore.rates2BHK,
+        rates3BHK: s.rates3BHK || s.rates_3bhk || settingsStore.rates3BHK,
+        rates4BHKVilla: s.rates4BHKVilla || s.rates_4bhk_villa || settingsStore.rates4BHKVilla,
+      }
+      return settingsStore
+    }
+  } catch (err) {
+    console.warn('Supabase studio_settings fetch fallback to store:', err)
+  }
   return settingsStore
 }
 
-export function updateStudioSettings(newSettings: Partial<StudioSettings>): StudioSettings {
+export async function updateStudioSettings(newSettings: Partial<StudioSettings>): Promise<StudioSettings> {
   settingsStore = { ...settingsStore, ...newSettings }
-  supabase.from('studio_settings').upsert([settingsStore]).then(() => {}).catch(() => {})
+  try {
+    await supabase.from('studio_settings').upsert([
+      {
+        id: 'main_settings',
+        contact_email: settingsStore.contactEmail,
+        contact_phone: settingsStore.contactPhone,
+        location_address: settingsStore.locationAddress,
+        latitude: settingsStore.latitude,
+        longitude: settingsStore.longitude,
+        rates_2bhk: settingsStore.rates2BHK,
+        rates_3bhk: settingsStore.rates3BHK,
+        rates_4bhk_villa: settingsStore.rates4BHKVilla,
+      },
+    ])
+  } catch (err) {
+    console.error('Supabase studio_settings upsert error:', err)
+  }
   return settingsStore
 }

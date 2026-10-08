@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getReviews, addReview, updateReview, deleteReview } from '@/lib/adminStore'
 
 export async function GET() {
-  const reviews = getReviews()
+  const reviews = await getReviews()
   return NextResponse.json({ success: true, reviews })
 }
 
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Author name and review quote are required.' }, { status: 400 })
     }
 
-    const review = addReview({
+    const review = await addReview({
       author: String(author).trim(),
       role: String(role || 'Client').trim(),
       location: String(location || 'Hyderabad').trim(),
@@ -40,7 +40,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Review ID is required for updates.' }, { status: 400 })
     }
 
-    const updated = updateReview(id, updatedFields)
+    const updated = await updateReview(id, updatedFields)
     if (updated) {
       return NextResponse.json({ success: true, message: 'Review updated successfully' })
     }
@@ -59,7 +59,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ success: false, error: 'Review ID required.' }, { status: 400 })
     }
 
-    deleteReview(id)
+    await deleteReview(id)
     return NextResponse.json({ success: true, message: 'Review deleted.' })
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Failed to delete review.' }, { status: 500 })

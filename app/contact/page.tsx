@@ -115,55 +115,18 @@ export default function ContactPage() {
     )
   }
 
-  const submitWeb3FormsNative = (fields: Record<string, string>) => {
+  const submitWeb3FormsNative = async (fields: Record<string, string>) => {
     try {
-      // 1. Dual strategy: Client fetch with FormData
       const fd = new FormData()
       Object.entries(fields).forEach(([k, v]) => {
         if (v !== undefined && v !== null && v !== '') fd.append(k, String(v))
       })
-      fetch('https://api.web3forms.com/submit', {
+      await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: fd,
-      }).catch((err) => console.log('Client fetch Web3Forms notice:', err))
-
-      // 2. Hidden DOM iframe submit fallback
-      const iframeName = 'web3forms_hidden_iframe'
-      let iframe = document.getElementById(iframeName) as HTMLIFrameElement
-      if (!iframe) {
-        iframe = document.createElement('iframe')
-        iframe.id = iframeName
-        iframe.name = iframeName
-        iframe.style.display = 'none'
-        document.body.appendChild(iframe)
-      }
-
-      const form = document.createElement('form')
-      form.action = 'https://api.web3forms.com/submit'
-      form.method = 'POST'
-      form.target = iframeName
-      form.style.display = 'none'
-
-      Object.entries(fields).forEach(([key, val]) => {
-        if (val !== undefined && val !== null && val !== '') {
-          const input = document.createElement('input')
-          input.type = 'hidden'
-          input.name = key
-          input.value = String(val)
-          form.appendChild(input)
-        }
       })
-
-      document.body.appendChild(form)
-      form.submit()
-
-      setTimeout(() => {
-        if (form.parentNode) {
-          form.parentNode.removeChild(form)
-        }
-      }, 1500)
     } catch (e) {
-      console.error('Web3Forms native submit fallback error:', e)
+      console.error('Web3Forms submit error:', e)
     }
   }
 

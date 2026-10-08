@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getInquiries, addInquiry, deleteInquiry } from '@/lib/adminStore'
 
 export async function GET() {
-  const inquiries = getInquiries()
+  const inquiries = await getInquiries()
   return NextResponse.json({ success: true, inquiries })
 }
 
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Name and phone number required.' }, { status: 400 })
     }
 
-    const inquiry = addInquiry({
+    const inquiry = await addInquiry({
       name: String(name).trim(),
       phone: String(phone).trim(),
       email: String(email || '').trim(),
@@ -40,7 +40,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json({ success: false, error: 'Inquiry ID required' }, { status: 400 })
     }
-    const success = deleteInquiry(id)
+    const success = await deleteInquiry(id)
     return NextResponse.json({ success })
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Failed to delete inquiry' }, { status: 500 })

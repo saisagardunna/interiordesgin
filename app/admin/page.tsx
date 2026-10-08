@@ -105,12 +105,43 @@ export default function AdminDashboardPage() {
       const revData = await revRes.json()
       const setData = await setRes.json()
 
-      if (callsData.success) setCalls(callsData.calls || [])
-      if (inqData.success) setInquiries(inqData.inquiries || [])
-      if (revData.success) setReviews(revData.reviews || [])
-      if (setData.success) setSettings(setData.settings)
+      if (callsData.success && Array.isArray(callsData.calls)) {
+        setCalls(callsData.calls)
+        try { localStorage.setItem('said_cached_calls', JSON.stringify(callsData.calls)) } catch {}
+      } else {
+        try {
+          const cached = localStorage.getItem('said_cached_calls')
+          if (cached) setCalls(JSON.parse(cached))
+        } catch {}
+      }
+
+      if (inqData.success && Array.isArray(inqData.inquiries)) {
+        setInquiries(inqData.inquiries)
+        try { localStorage.setItem('said_cached_inquiries', JSON.stringify(inqData.inquiries)) } catch {}
+      } else {
+        try {
+          const cached = localStorage.getItem('said_cached_inquiries')
+          if (cached) setInquiries(JSON.parse(cached))
+        } catch {}
+      }
+
+      if (revData.success && Array.isArray(revData.reviews)) {
+        setReviews(revData.reviews)
+        try { localStorage.setItem('said_cached_reviews', JSON.stringify(revData.reviews)) } catch {}
+      }
+
+      if (setData.success && setData.settings) {
+        setSettings(setData.settings)
+        try { localStorage.setItem('said_cached_settings', JSON.stringify(setData.settings)) } catch {}
+      }
     } catch (err) {
       console.error('Data sync failed:', err)
+      try {
+        const cachedCalls = localStorage.getItem('said_cached_calls')
+        if (cachedCalls) setCalls(JSON.parse(cachedCalls))
+        const cachedInq = localStorage.getItem('said_cached_inquiries')
+        if (cachedInq) setInquiries(JSON.parse(cachedInq))
+      } catch {}
     }
   }
 
