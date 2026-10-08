@@ -53,6 +53,22 @@ export default function AdminDashboardPage() {
   const [selectedCalendarDate, setSelectedCalendarDate] = useState<string>('')
   const [callStatusFilter, setCallStatusFilter] = useState<string>('All')
 
+  // Schedule Call Modal State
+  const [showCallModal, setShowCallModal] = useState(false)
+  const [newCallClientName, setNewCallClientName] = useState('')
+  const [newCallClientPhone, setNewCallClientPhone] = useState('')
+  const [newCallClientEmail, setNewCallClientEmail] = useState('')
+  const [newCallLocation, setNewCallLocation] = useState('')
+  const [newCallService, setNewCallService] = useState('Interior Architecture')
+  const [newCallBudget, setNewCallBudget] = useState('₹15L - ₹30L')
+  const [newCallDate, setNewCallDate] = useState<string>(() => {
+    const d = new Date()
+    d.setDate(d.getDate() + 1)
+    return d.toISOString().split('T')[0]
+  })
+  const [newCallTime, setNewCallTime] = useState('11:30 AM')
+  const [newCallNotes, setNewCallNotes] = useState('')
+
   // Review Modal State
   const [showReviewModal, setShowReviewModal] = useState(false)
   const [editingReviewId, setEditingReviewId] = useState<string | null>(null)
@@ -133,6 +149,25 @@ export default function AdminDashboardPage() {
   }, [router])
 
   const fetchAllData = async () => {
+    // 1. Load instantly from localStorage so calls, inquiries, and reviews NEVER show 0 or vanish
+    try {
+      const localCustomCalls: ScheduledCall[] = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
+      const localCachedCalls: ScheduledCall[] = JSON.parse(localStorage.getItem('said_cached_calls') || '[]')
+      const combinedCalls = [...localCustomCalls, ...localCachedCalls.filter((c) => !localCustomCalls.some((m) => m.id === c.id))]
+      if (combinedCalls.length > 0) setCalls(combinedCalls)
+
+      const localCustomInq: InquiryItem[] = JSON.parse(localStorage.getItem('said_custom_inquiries') || '[]')
+      const localCachedInq: InquiryItem[] = JSON.parse(localStorage.getItem('said_cached_inquiries') || '[]')
+      const combinedInq = [...localCustomInq, ...localCachedInq.filter((i) => !localCustomInq.some((m) => m.id === i.id))]
+      if (combinedInq.length > 0) setInquiries(combinedInq)
+
+      const localCustomRev: ReviewItem[] = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]')
+      const localCachedRev: ReviewItem[] = JSON.parse(localStorage.getItem('said_cached_reviews') || '[]')
+      const combinedRev = [...localCustomRev, ...localCachedRev.filter((r) => !localCustomRev.some((m) => m.id === r.id))]
+      if (combinedRev.length > 0) setReviews(combinedRev)
+    } catch {}
+
+    // 2. Fetch live data from backend & merge with local stores
     try {
       const [callsRes, inqRes, revRes, setRes] = await Promise.all([
         fetch('/api/admin/schedule-call'),
@@ -149,44 +184,34 @@ export default function AdminDashboardPage() {
       if (callsData.success && Array.isArray(callsData.calls)) {
         let localCustom: ScheduledCall[] = []
         try { localCustom = JSON.parse(localStorage.getItem('said_custom_calls') || '[]') } catch {}
-        const callIds = new Set(callsData.calls.map((c: ScheduledCall) => c.id))
+        const customIds = new Set(localCustom.map((c: ScheduledCall) => c.id))
         const mergedCalls = [
-          ...callsData.calls,
-          ...localCustom.filter((c: ScheduledCall) => !callIds.has(c.id))
+          ...localCustom,
+          ...callsData.calls.filter((c: ScheduledCall) => !customIds.has(c.id))
         ]
         setCalls(mergedCalls)
         try { localStorage.setItem('said_cached_calls', JSON.stringify(mergedCalls)) } catch {}
-      } else {
-        try {
-          const cached = localStorage.getItem('said_cached_calls')
-          if (cached) setCalls(JSON.parse(cached))
-        } catch {}
       }
 
       if (inqData.success && Array.isArray(inqData.inquiries)) {
         let localCustom: InquiryItem[] = []
         try { localCustom = JSON.parse(localStorage.getItem('said_custom_inquiries') || '[]') } catch {}
-        const inqIds = new Set(inqData.inquiries.map((i: InquiryItem) => i.id))
+        const customIds = new Set(localCustom.map((i: InquiryItem) => i.id))
         const mergedInq = [
-          ...inqData.inquiries,
-          ...localCustom.filter((i: InquiryItem) => !inqIds.has(i.id))
+          ...localCustom,
+          ...inqData.inquiries.filter((i: InquiryItem) => !customIds.has(i.id))
         ]
         setInquiries(mergedInq)
         try { localStorage.setItem('said_cached_inquiries', JSON.stringify(mergedInq)) } catch {}
-      } else {
-        try {
-          const cached = localStorage.getItem('said_cached_inquiries')
-          if (cached) setInquiries(JSON.parse(cached))
-        } catch {}
       }
 
       if (revData.success && Array.isArray(revData.reviews)) {
         let localCustom: ReviewItem[] = []
         try { localCustom = JSON.parse(localStorage.getItem('said_custom_reviews') || '[]') } catch {}
-        const revIds = new Set(revData.reviews.map((r: ReviewItem) => r.id))
+        const customIds = new Set(localCustom.map((r: ReviewItem) => r.id))
         const mergedRev = [
-          ...revData.reviews,
-          ...localCustom.filter((c: ReviewItem) => !revIds.has(c.id))
+          ...localCustom,
+          ...revData.reviews.filter((r: ReviewItem) => !customIds.has(r.id))
         ]
         setReviews(mergedRev)
         try { localStorage.setItem('said_cached_reviews', JSON.stringify(mergedRev)) } catch {}
@@ -197,13 +222,7 @@ export default function AdminDashboardPage() {
         try { localStorage.setItem('said_cached_settings', JSON.stringify(setData.settings)) } catch {}
       }
     } catch (err) {
-      console.error('Data sync failed:', err)
-      try {
-        const cachedCalls = localStorage.getItem('said_cached_calls')
-        if (cachedCalls) setCalls(JSON.parse(cachedCalls))
-        const cachedInq = localStorage.getItem('said_cached_inquiries')
-        if (cachedInq) setInquiries(JSON.parse(cachedInq))
-      } catch {}
+      console.warn('Data fetch warning:', err)
     }
   }
 
@@ -214,20 +233,77 @@ export default function AdminDashboardPage() {
   }
 
   // Call Actions
-  const handleUpdateCallStatus = async (id: string, status: ScheduledCall['status']) => {
+  const handleSaveCall = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newCallClientName.trim() || !newCallClientPhone.trim() || !newCallDate || !newCallTime) return
+
+    const newCall: ScheduledCall = {
+      id: `call-${Date.now()}`,
+      clientName: newCallClientName.trim(),
+      clientPhone: newCallClientPhone.trim(),
+      clientEmail: newCallClientEmail.trim(),
+      location: newCallLocation.trim() || 'Hyderabad',
+      serviceRequired: newCallService || 'Interior Architecture',
+      estimatedBudget: newCallBudget || '₹15L - ₹30L',
+      scheduledDate: newCallDate,
+      scheduledTime: newCallTime,
+      notes: newCallNotes.trim(),
+      status: 'Pending',
+      createdAt: new Date().toISOString(),
+    }
+
+    setCalls((prev) => {
+      const updated = [newCall, ...prev.filter((c) => c.id !== newCall.id)]
+      try {
+        localStorage.setItem('said_cached_calls', JSON.stringify(updated))
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
+        localStorage.setItem('said_custom_calls', JSON.stringify([newCall, ...localCustom.filter((c: any) => c.id !== newCall.id)]))
+        window.dispatchEvent(new Event('storage'))
+      } catch {}
+      return updated
+    })
+
     try {
-      const res = await fetch('/api/admin/schedule-call', {
+      await fetch('/api/admin/schedule-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCall),
+      })
+      showToast('New call booking scheduled')
+    } catch (err) {
+      showToast('Call saved to local terminal')
+    }
+
+    setShowCallModal(false)
+    setNewCallClientName('')
+    setNewCallClientPhone('')
+    setNewCallClientEmail('')
+    setNewCallLocation('')
+    setNewCallNotes('')
+  }
+
+  const handleUpdateCallStatus = async (id: string, status: ScheduledCall['status']) => {
+    setCalls((prev) => {
+      const updated = prev.map((c) => (c.id === id ? { ...c, status } : c))
+      try {
+        localStorage.setItem('said_cached_calls', JSON.stringify(updated))
+        const localCustom = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
+        const updatedCustom = localCustom.map((c: any) => (c.id === id ? { ...c, status } : c))
+        localStorage.setItem('said_custom_calls', JSON.stringify(updatedCustom))
+        window.dispatchEvent(new Event('storage'))
+      } catch {}
+      return updated
+    })
+    showToast(`Call status updated to ${status}`)
+
+    try {
+      await fetch('/api/admin/schedule-call', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status }),
       })
-      const data = await res.json()
-      if (data.success) {
-        showToast(`Call status updated to ${status}`)
-        fetchAllData()
-      }
     } catch (err) {
-      showToast('Failed to update call status.')
+      console.error('Call status backend sync warning:', err)
     }
   }
 
@@ -239,6 +315,7 @@ export default function AdminDashboardPage() {
         localStorage.setItem('said_cached_calls', JSON.stringify(updated))
         const localCustom = JSON.parse(localStorage.getItem('said_custom_calls') || '[]')
         localStorage.setItem('said_custom_calls', JSON.stringify(localCustom.filter((c: any) => c.id !== id)))
+        window.dispatchEvent(new Event('storage'))
       } catch {}
       return updated
     })
@@ -647,12 +724,20 @@ export default function AdminDashboardPage() {
                 )}
               </div>
 
-              <button
-                onClick={fetchAllData}
-                className="bg-[#262626] hover:bg-[#333] text-white px-4 py-2.5 text-xs font-mono uppercase tracking-widest font-bold rounded-xs border border-[#333] flex items-center gap-2 transition-colors"
-              >
-                <RefreshCw className="w-4 h-4 text-[#8f6530]" /> Refresh Calls
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowCallModal(true)}
+                  className="bg-[#8f6530] hover:bg-[#b89768] text-white px-4 py-2.5 text-xs font-mono uppercase tracking-widest font-bold rounded-xs flex items-center gap-2 transition-colors shadow-lg cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> Schedule New Call
+                </button>
+                <button
+                  onClick={fetchAllData}
+                  className="bg-[#262626] hover:bg-[#333] text-white px-4 py-2.5 text-xs font-mono uppercase tracking-widest font-bold rounded-xs border border-[#333] flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <RefreshCw className="w-4 h-4 text-[#8f6530]" /> Refresh Calls
+                </button>
+              </div>
             </div>
 
             {/* Scheduled Calls List */}
@@ -1147,6 +1232,175 @@ export default function AdminDashboardPage() {
                     className="w-2/3 bg-[#8f6530] hover:bg-[#b89768] text-white py-3 font-mono text-xs uppercase tracking-widest font-bold rounded-xs shadow-lg transition-colors"
                   >
                     Save Review
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Schedule Call Modal */}
+      <AnimatePresence>
+        {showCallModal && (
+          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowCallModal(false)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-lg bg-[#181818] border border-[#2a2a2a] p-8 rounded-xs shadow-2xl z-10 space-y-6 my-auto text-white font-sans"
+            >
+              <div className="flex justify-between items-center border-b border-[#2a2a2a] pb-4">
+                <h3 className="font-serif text-2xl font-normal text-white">
+                  Schedule New Call Consultation
+                </h3>
+                <button onClick={() => setShowCallModal(false)} className="text-[#888] hover:text-white">
+                  <XCircle className="w-6 h-6" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveCall} className="space-y-4 text-xs font-mono">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[#b89768] font-bold block mb-1">Client Name *</label>
+                    <input
+                      type="text"
+                      value={newCallClientName}
+                      onChange={(e) => setNewCallClientName(e.target.value)}
+                      placeholder="e.g. Ramesh Goud"
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[#b89768] font-bold block mb-1">Phone Number *</label>
+                    <input
+                      type="text"
+                      value={newCallClientPhone}
+                      onChange={(e) => setNewCallClientPhone(e.target.value)}
+                      placeholder="e.g. +91 99080 01558"
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[#888] block mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      value={newCallClientEmail}
+                      onChange={(e) => setNewCallClientEmail(e.target.value)}
+                      placeholder="client@gmail.com"
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[#888] block mb-1">Location</label>
+                    <input
+                      type="text"
+                      value={newCallLocation}
+                      onChange={(e) => setNewCallLocation(e.target.value)}
+                      placeholder="Jubilee Hills, Hyderabad"
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[#b89768] font-bold block mb-1">Scheduled Date *</label>
+                    <input
+                      type="date"
+                      value={newCallDate}
+                      onChange={(e) => setNewCallDate(e.target.value)}
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[#b89768] font-bold block mb-1">Time Slot *</label>
+                    <select
+                      value={newCallTime}
+                      onChange={(e) => setNewCallTime(e.target.value)}
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                    >
+                      <option value="10:00 AM">10:00 AM</option>
+                      <option value="11:30 AM">11:30 AM</option>
+                      <option value="02:00 PM">02:00 PM</option>
+                      <option value="04:00 PM">04:00 PM</option>
+                      <option value="06:00 PM">06:00 PM</option>
+                      <option value="07:30 PM">07:30 PM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[#888] block mb-1">Service Required</label>
+                    <select
+                      value={newCallService}
+                      onChange={(e) => setNewCallService(e.target.value)}
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                    >
+                      <option value="Interior Architecture">Interior Architecture</option>
+                      <option value="Turnkey Interiors">Turnkey Interiors</option>
+                      <option value="3D Visualization & VR">3D Visualization &amp; VR</option>
+                      <option value="Custom Furniture & Kitchens">Custom Furniture &amp; Kitchens</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[#888] block mb-1">Estimated Budget</label>
+                    <select
+                      value={newCallBudget}
+                      onChange={(e) => setNewCallBudget(e.target.value)}
+                      className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                    >
+                      <option value="Bespoke Fit-Out">Bespoke Fit-Out (Compact)</option>
+                      <option value="Full Residence">Full Residence</option>
+                      <option value="Luxury Villa / Estate">Luxury Villa / Estate</option>
+                      <option value="Commercial Workplace">Commercial Workplace</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[#888] block mb-1">Notes / Requirements</label>
+                  <textarea
+                    rows={2}
+                    value={newCallNotes}
+                    onChange={(e) => setNewCallNotes(e.target.value)}
+                    placeholder="Walkthrough notes or design requirements..."
+                    className="w-full bg-[#121212] border border-[#333] p-3 text-white rounded-xs focus:border-[#8f6530] focus:outline-none"
+                  />
+                </div>
+
+                <div className="pt-4 flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowCallModal(false)}
+                    className="w-1/3 bg-[#262626] text-white py-3 font-mono text-xs uppercase tracking-widest font-bold rounded-xs cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="w-2/3 bg-[#8f6530] hover:bg-[#b89768] text-white py-3 font-mono text-xs uppercase tracking-widest font-bold rounded-xs shadow-lg transition-colors cursor-pointer"
+                  >
+                    Save Call Booking
                   </button>
                 </div>
               </form>
